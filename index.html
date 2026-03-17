@@ -269,39 +269,25 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 
 <script>
 // ── GOOGLE SHEET CONFIG ──
-const SHEET_ID = '1lQiE-GpC_8Xy0VWiCDAffF9Lsw-YYB5tblxNFD24cbU';
-const SHEET_GID = '1293407987';
-// Use JSONP via Google Visualization API to bypass CORS
-function fetchSheetJSONP(){
-  return new Promise((resolve,reject)=>{
-    const cbName='gvizCallback_'+Date.now();
-    const script=document.createElement('script');
-    const timeout=setTimeout(()=>{
-      delete window[cbName];document.head.removeChild(script);
-      reject(new Error('Timeout'));
-    },15000);
-    window[cbName]=function(data){
-      clearTimeout(timeout);
-      delete window[cbName];
-      try{document.head.removeChild(script);}catch(e){}
-      resolve(data);
-    };
-    script.src=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?gid=${SHEET_GID}&tqx=out:json&callback=${cbName}&t=${Date.now()}`;
-    script.onerror=()=>{clearTimeout(timeout);delete window[cbName];reject(new Error('Script error'));};
-    document.head.appendChild(script);
-  });
-}
+const SHEET_ID = '1lQiE-GpC_8Xy0VWiCDAffF9Lsw-YYB5tblxNFD24cbU'; // kept for reference
+// Published CSV URL — no CORS issues
+const PUBLISHED_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRSqHLaqSLHpymK3ceLrwbiCF3y_3qw8_BIGSl8TDwnWGv9tcTfiZdElZJkB1rQFcpNQOrndUT8BfXb/pub?gid=1293407987&single=true&output=csv';
 
-function parseGvizData(data){
-  // Google Visualization JSON → array of row objects
-  const cols=data.table.cols.map(c=>c.label||c.id);
-  return (data.table.rows||[]).map(row=>{
-    const obj={};
-    (row.c||[]).forEach((cell,i)=>{
-      obj[cols[i]]=(cell&&cell.v!=null)?String(cell.v):'';
-    });
-    return obj;
-  });
+function parseCSV(text){
+  const lines=text.trim().split('\n');
+  const headers=lines[0].split(',').map(h=>h.replace(/^"|"$/g,'').trim());
+  return lines.slice(1).map(line=>{
+    const vals=[]; let cur='',inQ=false;
+    for(const c of line){
+      if(c==='"'){inQ=!inQ;}
+      else if(c===','&&!inQ){vals.push(cur.trim());cur='';}
+      else{cur+=c;}
+    }
+    vals.push(cur.trim());
+    const row={};
+    headers.forEach((h,i)=>row[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
+    return row;
+  }).filter(r=>Object.values(r).some(v=>v));
 }
 
 // ── TARGETS & NAME MAP ──
@@ -329,7 +315,7 @@ const AGENTS = {
   'Steena A S':         {display:'Steena A S',        tl:'Nikhil_KL',   region:'Malayam', target:150000},
   'R V Priyanka':       {display:'R V Priyanka',      tl:'Thanushree',  region:'Telugu',  target:500000},
   'Madhu Sudhan S':     {display:'Madhu Sudhan S',    tl:'Thanushree',  region:'Kannada', target:400000},
-  'Amanzen Kallangoden':{display:'Amanzen Kallangoden',tl:'Nikhil_KL',  region:'Malayam', target:500000},
+  'Amanzen Kallangoden':{display:'Amanzen Kallangoden',tl:'Nikhil_KL',  region:'Malayam', target:800000},
   'Thimmiseti Sravani': {display:'Thimmiseti Sravani',tl:'Madan Kumar', region:'Telugu',  target:150000},
   'Stefy Sony A S':     {display:'Stefy Sony A S',    tl:'Nikhil_KL',   region:'Malayam', target:150000},
   'Joe Christy':        {display:'Joe Christy',       tl:'Nikhil_TN',   region:'Tamil',   target:400000},
@@ -374,19 +360,23 @@ async function loadData(manual=false){
   document.getElementById('errorState').style.display='none';
 
   try{
-    const gvizData=await fetchSheetJSONP();
-    const rows=parseGvizData(gvizData);
-    if(!rows.length) throw new Error('No data rows');
+    // Use published CSV — works without CORS issues
+    const res=await fetch(PUBLISHED_CSV+'&t='+Date.now());
+    if(!res.ok) throw new Error('Could not fetch: '+res.status);
+    const text=await res.text();
+    if(!text||text.trim().length<10) throw new Error('Empty response');
+    const rows=parseCSV(text);
+    if(!rows.length) throw new Error('No rows parsed');
     processRows(rows);
     const now=new Date();
-    document.getElementById('updatedBadge').textContent='Fetched: '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('updatedBadge').textContent='Live · '+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
     document.getElementById('monthBadge').textContent=getMonthName();
     buildFilters();
     renderAll();
     document.getElementById('loadingState').style.display='none';
     document.getElementById('mainDash').style.display='block';
   }catch(e){
-    console.error('Load error:',e);
+    console.error('Load error:',e.message);
     document.getElementById('loadingState').style.display='none';
     document.getElementById('errorState').style.display='flex';
   }
@@ -415,14 +405,25 @@ function processRows(rows){
     const key=Object.keys(AGENTS).find(k=>k.toLowerCase()===agentName.toLowerCase());
     if(!key) return;
 
-    // Parse date — handle gviz Date(yyyy,m,d) format and regular strings
+    // Parse date — handle multiple formats from Google Sheets CSV
     let d;
     try{
-      if(dateStr.startsWith('Date(')){
-        const parts=dateStr.replace('Date(','').replace(')','').split(',').map(Number);
-        d=new Date(parts[0],parts[1],parts[2]);
-      } else {
-        d=new Date(dateStr);
+      if(!dateStr||dateStr.trim()===''){return;}
+      // Try direct parse first
+      d=new Date(dateStr);
+      // If invalid, try DD/MM/YYYY format
+      if(isNaN(d.getTime())){
+        const parts=dateStr.split('/');
+        if(parts.length===3){
+          d=new Date(parseInt(parts[2]),parseInt(parts[1])-1,parseInt(parts[0]));
+        }
+      }
+      // Try YYYY-MM-DD
+      if(isNaN(d.getTime())){
+        const parts=dateStr.split('-');
+        if(parts.length===3){
+          d=new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2]));
+        }
       }
     }catch(e){return;}
     if(!d||isNaN(d.getTime())) return;
