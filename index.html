@@ -340,43 +340,44 @@ function parseCSV(text){
 
 // ── TARGETS & NAME MAP ──
 // formName → { displayName, tl, region, target }
+// Keys = EXACT names as they appear in Google Form/Sheet
 const AGENTS = {
-  'Harry Manuel':       {display:'Harry Manuel',    tl:'Nikhil_TN',   region:'Tamil',   target:800000},
-  'Arbina Taj':         {display:'Arbina Taj',       tl:'Thanushree',  region:'Kannada', target:400000},
-  'B Komala':           {display:'Komala',           tl:'Madan Kumar', region:'Telugu',  target:400000},
-  'Santhosh S Jain':    {display:'Santhosh S Jain',  tl:'Thanushree',  region:'Kannada', target:500000},
-  'God Will Sandhya J P':{display:'Sandhya',         tl:'Nikhil_TN',   region:'Tamil',   target:100000},
-  'Srinivasa M V':      {display:'Srinivasa M V',    tl:'Madan Kumar', region:'Kannada', target:800000},
-  'Siddappaji M':       {display:'Siddappaji M',     tl:'Nikhil_TN',   region:'Tamil',   target:300000},
-  'Kotte Kiran Kumar':  {display:'Kotte Kiran Kumar',tl:'Thanushree',  region:'Telugu',  target:200000},
-  'Vigneswara Mohanraj':{display:'Vigneswara Mohanraj',tl:'Nikhil_TN', region:'Tamil',   target:200000},
-  'Gopal K R':          {display:'Gopal',            tl:'Madan Kumar', region:'Kannada', target:300000},
-  'Gudavalli Ismael':   {display:'Gudavalli Ismael', tl:'Madan Kumar', region:'Telugu',  target:150000},
-  'Sony Mary KP':       {display:'Sony Mary KP',     tl:'Nikhil_KL',   region:'Malayam', target:250000},
-  'Hemanth Kumar K P':  {display:'Hemanth Kumar K P',tl:'Madan Kumar', region:'Kannada', target:800000},
-  'Jeevan J':           {display:'Jeevan J',         tl:'Nikhil_TN',   region:'Tamil',   target:400000},
-  'Nithya Karunanithi': {display:'Nithya Karunanithi',tl:'Nikhil_TN',  region:'Tamil',   target:200000},
-  'Siddu':              {display:'Siddu',             tl:'Thanushree',  region:'Kannada', target:150000},
-  'Sumitha G':          {display:'Sumitha G',         tl:'Nikhil_TN',   region:'Tamil',   target:400000},
-  'Prema B':            {display:'Prema B',           tl:'Nikhil_TN',   region:'Tamil',   target:400000},
-  'Manoja Raju Arya':   {display:'Manoja Raju Arya',  tl:'Thanushree',  region:'Kannada', target:200000},
-  'Steena A S':         {display:'Steena A S',        tl:'Nikhil_KL',   region:'Malayam', target:150000},
-  'R V Priyanka':       {display:'R V Priyanka',      tl:'Thanushree',  region:'Telugu',  target:500000},
-  'Madhu Sudhan S':     {display:'Madhu Sudhan S',    tl:'Thanushree',  region:'Kannada', target:400000},
-  'Amanzen Kallangoden':{display:'Amanzen Kallangoden',tl:'Nikhil_KL',  region:'Malayam', target:800000},
-  'Thimmiseti Sravani': {display:'Thimmiseti Sravani',tl:'Madan Kumar', region:'Telugu',  target:150000},
-  'Stefy Sony A S':     {display:'Stefy Sony A S',    tl:'Nikhil_KL',   region:'Malayam', target:150000},
-  'Joe Christy':        {display:'Joe Christy',       tl:'Nikhil_TN',   region:'Tamil',   target:400000},
-  'Bandi. Maneesha':    {display:'Bandi Maneesha',    tl:'Madan Kumar', region:'Telugu',  target:300000},
-  'Bandi Srikanth':     {display:'Bandi Srikanth',    tl:'Madan Kumar', region:'Telugu',  target:150000},
-  'Lourd Gladies A':    {display:'Lourd Gladies A',   tl:'Nikhil_TN',   region:'Tamil',   target:100000},
-  'Gajulapalli Sai Teja':{display:'Gajulapalli Sai Teja',tl:'Thanushree',region:'Telugu', target:150000},
-  'ARUN':               {display:'Arun',              tl:'Nikhil_TN',   region:'Tamil',   target:150000},
-  'Bhagyashree Nimbal': {display:'Bhagyashree Nimbal',tl:'Thanushree',  region:'Telugu',  target:150000},
-  'Maila Uday Kumar':   {display:'Maila Uday Kumar',  tl:'Madan Kumar', region:'Telugu',  target:200000},
-  'Mithun':             {display:'Mithun',            tl:'Nikhil_KL',   region:'Malayam', target:150000},
-  'Sidireddy Nagavardan Reddy':{display:'Sidireddy Nagavardan Reddy',tl:'Madan Kumar',region:'Telugu',target:150000},
+  'Harry Manuel':              {display:'Harry',              tl:'Nikhil_TN',   region:'Tamil',   target:800000},
+  'Arbina Taj':                {display:'Arbina',                tl:'Thanushree',  region:'Kannada', target:400000},
+  'B Komala':                  {display:'Komala',                    tl:'Madan Kumar', region:'Telugu',  target:400000},
+  'Santhosh S Jain':           {display:'Santhosh Jain',           tl:'Thanushree',  region:'Kannada', target:500000},
+  'God Will Sandhya J P':      {display:'Sandhya',                   tl:'Nikhil_TN',   region:'Tamil',   target:100000},
+  'Srinivasa M V':             {display:'Srinivas',             tl:'Madan Kumar', region:'Kannada', target:800000},
+  'Siddappaji M':              {display:'Siddappaji',              tl:'Nikhil_TN',   region:'Tamil',   target:300000},
+  'Kotte Kiran Kumar':         {display:'Kotte Kiran',         tl:'Thanushree',  region:'Telugu',  target:200000},
+  'Vigneswara Mohanraj':       {display:'Vigneswara',       tl:'Nikhil_TN',   region:'Tamil',   target:200000},
+  'Gopal K R':                 {display:'Gopal',                     tl:'Madan Kumar', region:'Kannada', target:300000},
+  'Gudavalli Ismael':          {display:'Gudavalli Ismael',          tl:'Madan Kumar', region:'Telugu',  target:150000},
+  'Sony Mary KP':              {display:'Sony',              tl:'Nikhil_KL',   region:'Malayam', target:250000},
+  'Hemanth Kumar K P':         {display:'Hemanth',         tl:'Madan Kumar', region:'Kannada', target:800000},
+  'Jeevan J':                  {display:'Jeevan',                  tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Nithya Karunanithi':        {display:'Nithya',        tl:'Nikhil_TN',   region:'Tamil',   target:200000},
+  'Siddu':                     {display:'Siddu',                     tl:'Thanushree',  region:'Kannada', target:150000},
+  'Sumitha G':                 {display:'Sumitha',                 tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Prema B':                   {display:'Prema',                   tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Manoja Raju Arya':          {display:'Manoja Raju',          tl:'Thanushree',  region:'Kannada', target:200000},
+  'Steena A S':                {display:'Steena',                tl:'Nikhil_KL',   region:'Malayam', target:150000},
+  'R V Priyanka':              {display:'Priyanka',              tl:'Thanushree',  region:'Telugu',  target:500000},
+  'Madhu Sudhan S':            {display:'Madhu',            tl:'Thanushree',  region:'Kannada', target:400000},
+  'Amanzen Kallangoden':       {display:'Amanzen',       tl:'Nikhil_KL',   region:'Malayam', target:500000},
+  'Thimmiseti Sravani':        {display:'Thimmiseti Sravani',        tl:'Madan Kumar', region:'Telugu',  target:150000},
+  'Stefy Sony A S':            {display:'Stefy',            tl:'Nikhil_KL',   region:'Malayam', target:150000},
+  'Joe Christy':               {display:'Christy',               tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Bandi. Maneesha':           {display:'Bandi Maneesha',            tl:'Madan Kumar', region:'Telugu',  target:300000},
+  'Bandi Srikanth':            {display:'Bandi Srikanth',            tl:'Madan Kumar', region:'Telugu',  target:150000},
+  'Lourd Gladies A':           {display:'Gladies',           tl:'Nikhil_TN',   region:'Tamil',   target:100000},
+  'Gajulapalli Sai Teja':      {display:'Gajulapalli Sai Teja',      tl:'Thanushree',  region:'Telugu',  target:150000},
+  'Arun Kumar':                {display:'Arun',                      tl:'Nikhil_TN',   region:'Tamil',   target:150000},
+  'Bhagyashree Nimbal':        {display:'Bhagyashree Nimbal',        tl:'Thanushree',  region:'Telugu',  target:150000},
+  'Mithun':                    {display:'Mithun',                    tl:'Nikhil_KL',   region:'Malayam', target:150000},
+  'Sidireddy Nagavardan Reddy':{display:'Sidireddy Nagavardan Reddy',tl:'Madan Kumar', region:'Telugu',  target:150000},
 };
+// Note: 'Maila Uday Kumar' removed — not present in Google Sheet data
 
 const CAR_COLORS=['#f0c040','#e74c3c','#3498db','#2ecc71','#9b59b6','#1abc9c','#e67e22','#e91e63','#00bcd4','#8bc34a','#ff6b6b','#4ecdc4','#45b7d1','#96ceb4','#dda0dd','#98d8c8','#f7dc6f','#82e0aa','#85c1e9','#f39c12'];
 const MEDALS=['🥇','🥈','🥉'];
@@ -478,7 +479,13 @@ function processRows(rows){
   rows.forEach(r=>{
     const agentName=(r['Agent Name']||'').trim();
     const type=(r['Type']||'').trim();
-    const dateStr=r['Date( Collection Date/Waiver Raised Date/PTP Date)']||r['Date']||'';
+    // Column H — try multiple possible header names
+    const dateStr=r['Date( Collection Date/Waiver Raised Date/PTP Date)']
+      ||r['Date(Collection Date/Waiver Raised Date/PTP Date)']
+      ||r['Date']
+      ||r['date']
+      ||Object.entries(r).find(([k])=>k.toLowerCase().includes('date')&&k.toLowerCase().includes('collection'))?.[1]
+      ||''  ;
     const amountStr=(r['Amount']||'0').toString().replace(/[^0-9.]/g,'');
     const amount=parseFloat(amountStr)||0;
     if(!agentName||!type) return;
@@ -487,25 +494,28 @@ function processRows(rows){
     const key=Object.keys(AGENTS).find(k=>k.toLowerCase()===agentName.toLowerCase());
     if(!key) return;
 
-    // Parse date — handle multiple formats from Google Sheets CSV
+    // Parse date — handles all formats from Google Forms/Sheets
     let d;
     try{
       if(!dateStr||dateStr.trim()===''){return;}
-      // Try direct parse first
-      d=new Date(dateStr);
-      // If invalid, try DD/MM/YYYY format
-      if(isNaN(d.getTime())){
-        const parts=dateStr.split('/');
+      const ds=dateStr.trim();
+
+      // Format 1: M/DD/YYYY or MM/DD/YYYY (Google Forms default)
+      if(ds.includes('/')){
+        const parts=ds.split('/');
         if(parts.length===3){
-          d=new Date(parseInt(parts[2]),parseInt(parts[1])-1,parseInt(parts[0]));
+          const m=parseInt(parts[0]),dy=parseInt(parts[1]),yr=parseInt(parts[2]);
+          if(yr>2000){ d=new Date(yr,m-1,dy); }
+          else { d=new Date(parseInt(parts[2]),parseInt(parts[1])-1,parseInt(parts[0])); }
         }
       }
-      // Try YYYY-MM-DD
-      if(isNaN(d.getTime())){
-        const parts=dateStr.split('-');
-        if(parts.length===3){
-          d=new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2]));
-        }
+      // Format 2: YYYY-MM-DD or YYYY-MM-DD HH:MM:SS (Excel/Sheets export)
+      else if(ds.includes('-')){
+        d=new Date(ds.split(' ')[0]);
+      }
+      // Format 3: Direct JS parse fallback
+      else {
+        d=new Date(ds);
       }
     }catch(e){return;}
     if(!d||isNaN(d.getTime())) return;
