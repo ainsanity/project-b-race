@@ -91,7 +91,47 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .track-row:last-child{margin-bottom:0;}
 .track-road{position:absolute;inset:0;border-radius:10px;background:repeating-linear-gradient(90deg,transparent 0,transparent 20px,rgba(255,255,255,.012) 20px,rgba(255,255,255,.012) 21px);}
 .track-fill{position:absolute;top:0;left:0;height:100%;border-radius:10px 0 0 10px;transition:width 1.8s cubic-bezier(.34,1.4,.64,1);opacity:.13;}
-.ptp-bar{position:absolute;bottom:0;left:0;height:3px;border-radius:0 0 0 10px;background:linear-gradient(90deg,#7c3aed,#a78bfa);transition:width 1.8s ease;opacity:.9;}
+.ptp-bar{display:none;}
+/* ── FUEL STATION POPUP ── */
+.fuel-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);align-items:center;justify-content:center;padding:20px;}
+.fuel-overlay.show{display:flex;}
+.fuel-popup{background:var(--surface);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:400px;overflow:hidden;animation:popIn .3s cubic-bezier(.34,1.56,.64,1);}
+.fuel-popup-hdr{padding:20px 20px 16px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border);}
+.fuel-avatar{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;border:2px solid;}
+.fuel-agent-name{font-size:15px;font-weight:700;color:#fff;}
+.fuel-agent-sub{font-size:11px;color:var(--muted2);margin-top:2px;}
+.fuel-rank{font-size:30px;margin-left:auto;}
+.fuel-popup-body{padding:18px 20px;}
+.fuel-ach-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.fuel-ach-label{font-size:11px;color:var(--muted2);}
+.fuel-ach-val{font-family:'Orbitron',monospace;font-size:16px;font-weight:800;}
+.fuel-ach-bar-bg{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-bottom:14px;}
+.fuel-ach-bar-fill{height:100%;border-radius:3px;}
+.fuel-target-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.fuel-stat{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;text-align:center;}
+.fuel-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.fuel-stat-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;}
+.fuel-input-section{background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:14px;margin-bottom:12px;}
+.fuel-input-label{font-size:12px;font-weight:600;color:var(--muted2);margin-bottom:8px;}
+.fuel-input-wrap{display:flex;gap:8px;}
+.fuel-input{flex:1;background:var(--surface3);border:1px solid var(--border2);color:var(--text);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;padding:10px 14px;border-radius:8px;outline:none;transition:border .15s;}
+.fuel-input:focus{border-color:var(--gold);}
+.fuel-input::placeholder{color:var(--muted);font-size:12px;font-weight:400;}
+.fuel-check-btn{background:linear-gradient(135deg,#f0c040,#f97316);color:#000;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:800;font-family:'Inter',sans-serif;white-space:nowrap;transition:all .2s;}
+.fuel-check-btn:hover{transform:scale(1.05);}
+.fuel-gauge-wrap{display:none;margin-bottom:12px;}
+.fuel-gauge-wrap.show{display:block;}
+.fuel-gauge-label{font-size:11px;color:var(--muted2);margin-bottom:6px;display:flex;justify-content:space-between;}
+.fuel-gauge-bg{height:24px;background:var(--surface2);border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;}
+.fuel-gauge-fill{height:100%;border-radius:12px;transition:width 1.4s cubic-bezier(.34,1.4,.64,1);width:0%;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;}
+.fuel-gauge-pct{text-align:center;font-family:'Orbitron',monospace;font-size:13px;font-weight:800;margin-top:5px;}
+.fuel-result{display:none;padding:12px 16px;border-radius:10px;font-size:13px;font-weight:600;line-height:1.7;border-left:4px solid;margin-bottom:4px;}
+.fuel-result.show{display:block;}
+.fuel-result.full{background:#14532d22;color:#86efac;border-color:var(--green);}
+.fuel-result.ok{background:#1e3a5f22;color:#93c5fd;border-color:var(--blue);}
+.fuel-result.low{background:#45000022;color:#fca5a5;border-color:var(--red);}
+.fuel-close-btn{width:100%;padding:11px;background:var(--surface2);border:none;border-top:1px solid var(--border);color:var(--muted2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background .15s;}
+.fuel-close-btn:hover{background:var(--surface3);}
 .track-rank{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:15px;width:26px;text-align:center;z-index:3;}
 .car-group{position:absolute;top:50%;transform:translateY(-50%);transition:left 2.2s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;gap:6px;cursor:pointer;z-index:5;left:8%;}
 .car-svg{width:50px;height:25px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7));transition:filter .2s;}
@@ -276,7 +316,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
   <div class="race-section">
     <div class="sec-title">🏎️ Live Race Track
       <span style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-weight:400;text-transform:none;letter-spacing:0;">
-        — car position = achievement % &nbsp;|&nbsp; ⛽ purple bar = PTP pipeline (future dates)
+        — car position = achievement % &nbsp;|&nbsp; ⛽ click any car to check fuel
       </span>
     </div>
     <div class="track-wrap" id="trackWrap"></div>
@@ -315,6 +355,62 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
   </div>
 </div>
 
+<!-- ── FUEL STATION POPUP ── -->
+<div class="fuel-overlay" id="fuelOverlay" onclick="if(event.target===this)closeFuel()">
+  <div class="fuel-popup">
+    <div class="fuel-popup-hdr" id="fuelHdr">
+      <div class="fuel-avatar" id="fuelAvatar">?</div>
+      <div>
+        <div class="fuel-agent-name" id="fuelName">–</div>
+        <div class="fuel-agent-sub" id="fuelSub">–</div>
+      </div>
+      <div class="fuel-rank" id="fuelRank">–</div>
+    </div>
+    <div class="fuel-popup-body">
+      <!-- Achievement -->
+      <div class="fuel-ach-row">
+        <span class="fuel-ach-label">Current Achievement</span>
+        <span class="fuel-ach-val" id="fuelAchVal">0%</span>
+      </div>
+      <div class="fuel-ach-bar-bg"><div class="fuel-ach-bar-fill" id="fuelAchBar" style="width:0%"></div></div>
+      <!-- Stats -->
+      <div class="fuel-target-row">
+        <div class="fuel-stat">
+          <div class="fuel-stat-lbl">Collected</div>
+          <div class="fuel-stat-val" id="fuelCollected" style="color:var(--green)">–</div>
+        </div>
+        <div class="fuel-stat">
+          <div class="fuel-stat-lbl">Still Needed</div>
+          <div class="fuel-stat-val" id="fuelRemaining" style="color:var(--red)">–</div>
+        </div>
+      </div>
+      <!-- PTP Input -->
+      <div class="fuel-input-section">
+        <div class="fuel-input-label">⛽ How much PTP fuel do you have? (₹)</div>
+        <div class="fuel-input-wrap">
+          <input class="fuel-input" type="number" id="fuelInput" placeholder="Enter PTP amount…" min="0" onkeydown="if(event.key==='Enter')checkFuel()">
+          <button class="fuel-check-btn" onclick="checkFuel()">Check Fuel 🔍</button>
+        </div>
+      </div>
+      <!-- Fuel Gauge -->
+      <div class="fuel-gauge-wrap" id="fuelGaugeWrap">
+        <div class="fuel-gauge-label">
+          <span>⛽ Fuel Level</span>
+          <span id="fuelGaugeLabelPct">0%</span>
+        </div>
+        <div class="fuel-gauge-bg">
+          <div class="fuel-gauge-fill" id="fuelGaugeFill" style="width:0%">
+            <span style="font-size:14px;">🏎️</span>
+          </div>
+        </div>
+        <div class="fuel-gauge-pct" id="fuelGaugePct"></div>
+      </div>
+      <!-- Result message -->
+      <div class="fuel-result" id="fuelResult"></div>
+    </div>
+    <button class="fuel-close-btn" onclick="closeFuel()">✕ Close Fuel Station</button>
+  </div>
+</div>
 <script>
 // ── GOOGLE SHEET CONFIG ──
 const SHEET_ID = '1lQiE-GpC_8Xy0VWiCDAffF9Lsw-YYB5tblxNFD24cbU'; // kept for reference
@@ -342,35 +438,35 @@ function parseCSV(text){
 // formName → { displayName, tl, region, target }
 // Keys = EXACT names as they appear in Google Form/Sheet
 const AGENTS = {
-  'Harry Manuel':              {display:'Harry',              tl:'Nikhil_TN',   region:'Tamil',   target:800000},
-  'Arbina Taj':                {display:'Arbina',                tl:'Thanushree',  region:'Kannada', target:400000},
+  'Harry Manuel':              {display:'Harry Manuel',              tl:'Nikhil_TN',   region:'Tamil',   target:800000},
+  'Arbina Taj':                {display:'Arbina Taj',                tl:'Thanushree',  region:'Kannada', target:400000},
   'B Komala':                  {display:'Komala',                    tl:'Madan Kumar', region:'Telugu',  target:400000},
-  'Santhosh S Jain':           {display:'Santhosh Jain',           tl:'Thanushree',  region:'Kannada', target:500000},
+  'Santhosh S Jain':           {display:'Santhosh S Jain',           tl:'Thanushree',  region:'Kannada', target:500000},
   'God Will Sandhya J P':      {display:'Sandhya',                   tl:'Nikhil_TN',   region:'Tamil',   target:100000},
-  'Srinivasa M V':             {display:'Srinivas',             tl:'Madan Kumar', region:'Kannada', target:800000},
-  'Siddappaji M':              {display:'Siddappaji',              tl:'Nikhil_TN',   region:'Tamil',   target:300000},
-  'Kotte Kiran Kumar':         {display:'Kotte Kiran',         tl:'Thanushree',  region:'Telugu',  target:200000},
-  'Vigneswara Mohanraj':       {display:'Vigneswara',       tl:'Nikhil_TN',   region:'Tamil',   target:200000},
+  'Srinivasa M V':             {display:'Srinivasa M V',             tl:'Madan Kumar', region:'Kannada', target:800000},
+  'Siddappaji M':              {display:'Siddappaji M',              tl:'Nikhil_TN',   region:'Tamil',   target:300000},
+  'Kotte Kiran Kumar':         {display:'Kotte Kiran Kumar',         tl:'Thanushree',  region:'Telugu',  target:200000},
+  'Vigneswara Mohanraj':       {display:'Vigneswara Mohanraj',       tl:'Nikhil_TN',   region:'Tamil',   target:200000},
   'Gopal K R':                 {display:'Gopal',                     tl:'Madan Kumar', region:'Kannada', target:300000},
   'Gudavalli Ismael':          {display:'Gudavalli Ismael',          tl:'Madan Kumar', region:'Telugu',  target:150000},
-  'Sony Mary KP':              {display:'Sony',              tl:'Nikhil_KL',   region:'Malayam', target:250000},
-  'Hemanth Kumar K P':         {display:'Hemanth',         tl:'Madan Kumar', region:'Kannada', target:800000},
-  'Jeevan J':                  {display:'Jeevan',                  tl:'Nikhil_TN',   region:'Tamil',   target:400000},
-  'Nithya Karunanithi':        {display:'Nithya',        tl:'Nikhil_TN',   region:'Tamil',   target:200000},
+  'Sony Mary KP':              {display:'Sony Mary KP',              tl:'Nikhil_KL',   region:'Malayam', target:250000},
+  'Hemanth Kumar K P':         {display:'Hemanth Kumar K P',         tl:'Madan Kumar', region:'Kannada', target:800000},
+  'Jeevan J':                  {display:'Jeevan J',                  tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Nithya Karunanithi':        {display:'Nithya Karunanithi',        tl:'Nikhil_TN',   region:'Tamil',   target:200000},
   'Siddu':                     {display:'Siddu',                     tl:'Thanushree',  region:'Kannada', target:150000},
-  'Sumitha G':                 {display:'Sumitha',                 tl:'Nikhil_TN',   region:'Tamil',   target:400000},
-  'Prema B':                   {display:'Prema',                   tl:'Nikhil_TN',   region:'Tamil',   target:400000},
-  'Manoja Raju Arya':          {display:'Manoja Raju',          tl:'Thanushree',  region:'Kannada', target:200000},
-  'Steena A S':                {display:'Steena',                tl:'Nikhil_KL',   region:'Malayam', target:150000},
-  'R V Priyanka':              {display:'Priyanka',              tl:'Thanushree',  region:'Telugu',  target:500000},
-  'Madhu Sudhan S':            {display:'Madhu',            tl:'Thanushree',  region:'Kannada', target:400000},
-  'Amanzen Kallangoden':       {display:'Amanzen',       tl:'Nikhil_KL',   region:'Malayam', target:500000},
+  'Sumitha G':                 {display:'Sumitha G',                 tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Prema B':                   {display:'Prema B',                   tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Manoja Raju Arya':          {display:'Manoja Raju Arya',          tl:'Thanushree',  region:'Kannada', target:200000},
+  'Steena A S':                {display:'Steena A S',                tl:'Nikhil_KL',   region:'Malayam', target:150000},
+  'R V Priyanka':              {display:'R V Priyanka',              tl:'Thanushree',  region:'Telugu',  target:500000},
+  'Madhu Sudhan S':            {display:'Madhu Sudhan S',            tl:'Thanushree',  region:'Kannada', target:400000},
+  'Amanzen Kallangoden':       {display:'Amanzen Kallangoden',       tl:'Nikhil_KL',   region:'Malayam', target:800000},
   'Thimmiseti Sravani':        {display:'Thimmiseti Sravani',        tl:'Madan Kumar', region:'Telugu',  target:150000},
-  'Stefy Sony A S':            {display:'Stefy',            tl:'Nikhil_KL',   region:'Malayam', target:150000},
-  'Joe Christy':               {display:'Christy',               tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Stefy Sony A S':            {display:'Stefy Sony A S',            tl:'Nikhil_KL',   region:'Malayam', target:150000},
+  'Joe Christy':               {display:'Joe Christy',               tl:'Nikhil_TN',   region:'Tamil',   target:400000},
   'Bandi. Maneesha':           {display:'Bandi Maneesha',            tl:'Madan Kumar', region:'Telugu',  target:300000},
   'Bandi Srikanth':            {display:'Bandi Srikanth',            tl:'Madan Kumar', region:'Telugu',  target:150000},
-  'Lourd Gladies A':           {display:'Gladies',           tl:'Nikhil_TN',   region:'Tamil',   target:100000},
+  'Lourd Gladies A':           {display:'Lourd Gladies A',           tl:'Nikhil_TN',   region:'Tamil',   target:100000},
   'Gajulapalli Sai Teja':      {display:'Gajulapalli Sai Teja',      tl:'Thanushree',  region:'Telugu',  target:150000},
   'Arun Kumar':                {display:'Arun',                      tl:'Nikhil_TN',   region:'Tamil',   target:150000},
   'Bhagyashree Nimbal':        {display:'Bhagyashree Nimbal',        tl:'Thanushree',  region:'Telugu',  target:150000},
@@ -466,73 +562,67 @@ async function loadData(manual=false){
   btn.classList.remove('spinning');
 }
 
+// ── PARSE DATE — handles M/D/YYYY, M/DD/YYYY, MM/DD/YYYY, YYYY-MM-DD ──
+function parseDate(ds){
+  if(!ds||!ds.trim()) return null;
+  ds=ds.trim();
+  let d=null;
+  try{
+    if(ds.includes('/')){
+      // Google Forms: M/D/YYYY or M/DD/YYYY or MM/DD/YYYY
+      const p=ds.split('/');
+      if(p.length===3){
+        const m=parseInt(p[0]),dy=parseInt(p[1]),yr=parseInt(p[2]);
+        d=new Date(yr>100?yr:2000+yr, m-1, dy);
+      }
+    } else if(ds.includes('-')){
+      // YYYY-MM-DD or YYYY-MM-DD HH:MM:SS
+      const parts=ds.split(' ')[0].split('-').map(Number);
+      if(parts.length===3) d=new Date(parts[0],parts[1]-1,parts[2]);
+    } else {
+      d=new Date(ds);
+    }
+  }catch(e){return null;}
+  return (d&&!isNaN(d.getTime()))?d:null;
+}
+
 // ── PROCESS ROWS ──
 function processRows(rows){
   const now=new Date();
   const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
   const cm=now.getMonth()+1, cy=now.getFullYear();
-
-  // Accumulate per agent
   const map={};
   Object.keys(AGENTS).forEach(k=>{map[k]={collection:0,ptp_amount:0};});
+
+  // Log headers for debugging
+  if(rows.length>0) console.log('CSV Headers:', Object.keys(rows[0]));
+
+  // Find date column key once — any header containing 'date' (column H)
+  const dateKey=rows.length>0?Object.keys(rows[0]).find(k=>k.toLowerCase().includes('date')):null;
+  const amtKey=rows.length>0?(Object.keys(rows[0]).find(k=>k.toLowerCase()==='amount')||'Amount'):null;
+  console.log('Date column:', dateKey, '| Amount column:', amtKey);
 
   rows.forEach(r=>{
     const agentName=(r['Agent Name']||'').trim();
     const type=(r['Type']||'').trim();
-    // Column H — try multiple possible header names
-    const dateStr=r['Date( Collection Date/Waiver Raised Date/PTP Date)']
-      ||r['Date(Collection Date/Waiver Raised Date/PTP Date)']
-      ||r['Date']
-      ||r['date']
-      ||Object.entries(r).find(([k])=>k.toLowerCase().includes('date')&&k.toLowerCase().includes('collection'))?.[1]
-      ||''  ;
-    const amountStr=(r['Amount']||'0').toString().replace(/[^0-9.]/g,'');
-    const amount=parseFloat(amountStr)||0;
+    const rawDate=(dateKey?r[dateKey]:'')||'';
+    const amount=parseFloat(((amtKey?r[amtKey]:'')||'0').toString().replace(/[^0-9.]/g,''))||0;
     if(!agentName||!type) return;
 
-    // Find matching agent key (case-insensitive)
+    // Case-insensitive agent name match
     const key=Object.keys(AGENTS).find(k=>k.toLowerCase()===agentName.toLowerCase());
     if(!key) return;
 
-    // Parse date — handles all formats from Google Forms/Sheets
-    let d;
-    try{
-      if(!dateStr||dateStr.trim()===''){return;}
-      const ds=dateStr.trim();
-
-      // Format 1: M/DD/YYYY or MM/DD/YYYY (Google Forms default)
-      if(ds.includes('/')){
-        const parts=ds.split('/');
-        if(parts.length===3){
-          const m=parseInt(parts[0]),dy=parseInt(parts[1]),yr=parseInt(parts[2]);
-          if(yr>2000){ d=new Date(yr,m-1,dy); }
-          else { d=new Date(parseInt(parts[2]),parseInt(parts[1])-1,parseInt(parts[0])); }
-        }
-      }
-      // Format 2: YYYY-MM-DD or YYYY-MM-DD HH:MM:SS (Excel/Sheets export)
-      else if(ds.includes('-')){
-        d=new Date(ds.split(' ')[0]);
-      }
-      // Format 3: Direct JS parse fallback
-      else {
-        d=new Date(ds);
-      }
-    }catch(e){return;}
-    if(!d||isNaN(d.getTime())) return;
+    const d=parseDate(rawDate);
+    if(!d) return;
 
     const rowDate=new Date(d.getFullYear(),d.getMonth(),d.getDate());
     const rowMonth=d.getMonth()+1, rowYear=d.getFullYear();
 
     if(type==='Collection'){
-      // Current month collections only
-      if(rowMonth===cm&&rowYear===cy){
-        map[key].collection+=amount;
-      }
+      if(rowMonth===cm&&rowYear===cy) map[key].collection+=amount;
     } else if(type==='PTP'){
-      // PTP: only D+1 and beyond (strictly future dates)
-      if(rowDate>today){
-        map[key].ptp_amount+=amount;
-      }
+      if(rowDate>today) map[key].ptp_amount+=amount;  // D+1 and beyond only
     }
   });
 
@@ -603,7 +693,7 @@ function buildKPI(data){
     <div class="kpi"><div class="lbl">Total Collection</div><div class="val gold">${fmtRs(totC)}</div><div class="sub">vs ${fmtRs(totT)} target</div></div>
     <div class="kpi"><div class="lbl">Overall Achievement</div><div class="val ${overall>=100?'green':'blue'}">${fmtPct(overall)}</div><div class="sub">Team average: ${fmtPct(avg)}</div></div>
     <div class="kpi"><div class="lbl">Target Hit ≥100%</div><div class="val green">${above}</div><div class="sub">out of ${data.length} agents</div></div>
-    <div class="kpi"><div class="lbl">PTP Pipeline</div><div class="val purple">${fmtRs(ptpAmt)}</div><div class="sub">Future dated (D+1)</div></div>
+    <div class="kpi"><div class="lbl">Fuel Check</div><div class="val purple">⛽ Click</div><div class="sub">Click any car to check</div></div>
     <div class="kpi"><div class="lbl">Active Agents</div><div class="val white">${active}</div><div class="sub">with collections</div></div>
     <div class="kpi"><div class="lbl">Race Leader</div><div class="val gold">${data[0]?data[0].name.split(' ')[0]:'–'}</div><div class="sub">${data[0]?fmtPct(data[0].ach_pct):''}</div></div>`;
 }
@@ -686,7 +776,7 @@ function buildTracks(data){
       <div class="tt-row"><span class="tt-lbl">Collected</span><span class="tt-v" style="color:var(--green)">${fmtRs(a.collection)}</span></div>
       <div class="tt-row"><span class="tt-lbl">Target</span><span class="tt-v" style="color:var(--gold)">${fmtRs(a.target)}</span></div>
       <div class="tt-row"><span class="tt-lbl">Remaining</span><span class="tt-v" style="color:${a.remaining>0?'var(--red)':'var(--green)'}">${fmtRs(Math.max(a.remaining,0))}</span></div>
-      <div class="tt-row"><span class="tt-lbl">PTP Pipeline</span><span class="tt-v" style="color:var(--purple)">${fmtRs(a.ptp_amount)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">⛽ Click car for fuel check!</span><span class="tt-v" style="color:var(--purple)">→</span></div>
       <div class="tt-row"><span class="tt-lbl">TL</span><span class="tt-v" style="color:var(--muted2)">${a.tl}</span></div>
     </div>`;
 
@@ -807,41 +897,120 @@ function animatedCarSVG(color, idx, isLeader, achPct){
   </svg>`;
 }
 
-// ── POPUP ──
+// ── FUEL STATION ──
+let _fuelAgent=null, _fuelIdx=0;
+
 function openPopup(idx){
-  const data=getFiltered(),a=data[idx];
-  if(!a)return;
+  const data=getFiltered(), a=data[idx];
+  if(!a) return;
+  _fuelAgent=a; _fuelIdx=idx;
   const color=CAR_COLORS[idx%CAR_COLORS.length];
   const initials=a.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  const av=document.getElementById('popupAvatar');
-  av.textContent=initials;av.style.background=color+'22';av.style.borderColor=color;av.style.color=color;
-  document.getElementById('popupHdr').style.background=`linear-gradient(135deg,${color}11,transparent)`;
-  document.getElementById('popupName').textContent=a.name;
-  document.getElementById('popupTL').textContent='TL: '+a.tl+' · '+a.region;
-  document.getElementById('popupRankBig').textContent=idx<3?MEDALS[idx]:'#'+(idx+1);
-  const achEl=document.getElementById('popupAchNum');
-  achEl.textContent=fmtPct(a.ach_pct);
-  achEl.style.color=a.ach_pct>=100?'var(--green)':a.ach_pct>=75?'var(--gold)':'var(--red)';
-  const pf=document.getElementById('popupProgressFill');
-  pf.style.width=Math.min(a.ach_pct,100)+'%';
-  pf.style.background=a.ach_pct>=100?'linear-gradient(90deg,#22c55e,#86efac)':a.ach_pct>=75?'linear-gradient(90deg,#f0c040,#fbbf24)':'linear-gradient(90deg,#f87171,#fca5a5)';
-  document.getElementById('popupGrid').innerHTML=`
-    <div class="popup-stat"><div class="popup-stat-lbl">Collected</div><div class="popup-stat-val" style="color:var(--green)">${fmtRs(a.collection)}</div></div>
-    <div class="popup-stat"><div class="popup-stat-lbl">Target</div><div class="popup-stat-val" style="color:var(--gold)">${fmtRs(a.target)}</div></div>
-    <div class="popup-stat"><div class="popup-stat-lbl">Remaining</div><div class="popup-stat-val" style="color:${a.remaining>0?'var(--red)':'var(--green)'}">${fmtRs(Math.max(a.remaining,0))}</div></div>
-    <div class="popup-stat"><div class="popup-stat-lbl">Rank</div><div class="popup-stat-val" style="color:var(--gold)">#${idx+1} / ${data.length}</div></div>`;
-  const maxPTP=Math.max(...data.map(x=>x.ptp_amount),1);
-  document.getElementById('popupPTPVal').textContent=fmtRs(a.ptp_amount)+' in pipeline';
-  document.getElementById('popupPTPFill').style.width=Math.min((a.ptp_amount/maxPTP)*100,100)+'%';
-  const msgEl=document.getElementById('popupMsg');
-  const first=a.name.split(' ')[0];
-  if(a.ach_pct>=100){msgEl.className='popup-msg great';msgEl.innerHTML='🏆 <strong>Target Crushed!</strong> '+first+' has smashed the monthly target! Keep the momentum going!';}
-  else if(a.ach_pct>=75){msgEl.className='popup-msg good';msgEl.innerHTML='🚀 <strong>Almost There!</strong> Just '+fmtRs(a.remaining)+' more to hit target. The finish line is close — push harder!';}
-  else if(a.ach_pct>=50){msgEl.className='popup-msg warn';msgEl.innerHTML='⚡ <strong>Halfway Mark!</strong> '+fmtPct(a.ach_pct)+' achieved. '+fmtRs(a.ptp_amount)+' in PTP pipeline — convert them fast!';}
-  else{msgEl.className='popup-msg low';msgEl.innerHTML='🔥 <strong>Time to Accelerate!</strong> Only '+fmtPct(a.ach_pct)+' so far. Focus on high-value customers. '+fmtRs(a.ptp_amount)+' in PTP fuel can change this!';}
-  document.getElementById('popupOverlay').classList.add('show');
+
+  // Header
+  const av=document.getElementById('fuelAvatar');
+  av.textContent=initials; av.style.background=color+'22'; av.style.borderColor=color; av.style.color=color;
+  document.getElementById('fuelHdr').style.background=`linear-gradient(135deg,${color}11,transparent)`;
+  document.getElementById('fuelName').textContent=a.name;
+  document.getElementById('fuelSub').textContent='TL: '+a.tl+' · '+a.region;
+  document.getElementById('fuelRank').textContent=idx<3?MEDALS[idx]:'#'+(idx+1);
+
+  // Achievement bar
+  const achColor=a.ach_pct>=100?'var(--green)':a.ach_pct>=75?'var(--gold)':'var(--red)';
+  document.getElementById('fuelAchVal').textContent=fmtPct(a.ach_pct);
+  document.getElementById('fuelAchVal').style.color=achColor;
+  const achBar=document.getElementById('fuelAchBar');
+  achBar.style.width=Math.min(a.ach_pct,100)+'%';
+  achBar.style.background=a.ach_pct>=100?'linear-gradient(90deg,#22c55e,#86efac)':a.ach_pct>=75?'linear-gradient(90deg,#f0c040,#fbbf24)':'linear-gradient(90deg,#f87171,#fca5a5)';
+
+  // Stats
+  document.getElementById('fuelCollected').textContent=fmtRs(a.collection);
+  document.getElementById('fuelRemaining').textContent=a.remaining>0?fmtRs(a.remaining):'✅ Done!';
+  document.getElementById('fuelRemaining').style.color=a.remaining>0?'var(--red)':'var(--green)';
+
+  // Reset fuel section
+  document.getElementById('fuelInput').value='';
+  document.getElementById('fuelGaugeWrap').classList.remove('show');
+  document.getElementById('fuelResult').classList.remove('show');
+  document.getElementById('fuelGaugeFill').style.width='0%';
+
+  document.getElementById('fuelOverlay').classList.add('show');
+  setTimeout(()=>document.getElementById('fuelInput').focus(),300);
 }
-function closePopup(){document.getElementById('popupOverlay').classList.remove('show');}
+
+function checkFuel(){
+  const a=_fuelAgent;
+  if(!a) return;
+  const ptpRaw=parseFloat(document.getElementById('fuelInput').value)||0;
+  if(ptpRaw<=0){
+    document.getElementById('fuelInput').style.borderColor='var(--red)';
+    setTimeout(()=>document.getElementById('fuelInput').style.borderColor='',1000);
+    return;
+  }
+
+  const remaining=Math.max(a.remaining,0);
+  const needed50=remaining*0.5; // 50% of remaining = minimum fuel needed
+
+  // Fuel coverage %: how much of remaining does PTP cover
+  const coverPct=remaining>0?Math.min((ptpRaw/remaining)*100,150):150;
+
+  // Show gauge
+  const gaugeWrap=document.getElementById('fuelGaugeWrap');
+  gaugeWrap.classList.add('show');
+
+  // Animate gauge fill
+  const fill=document.getElementById('fuelGaugeFill');
+  fill.style.width='0%';
+  const displayPct=Math.min(coverPct,100);
+
+  let gaugeColor, resultClass, resultMsg;
+
+  if(a.remaining<=0){
+    // Already hit target!
+    gaugeColor='linear-gradient(90deg,#22c55e,#86efac)';
+    resultClass='full';
+    resultMsg=`🏆 <strong>Target Already Crossed!</strong><br>${a.name.split(' ')[0]} has already achieved ${fmtPct(a.ach_pct)} of target. You've crossed the finish line — keep collecting for extra miles! 🎉`;
+  } else if(ptpRaw>=remaining){
+    // PTP covers full remaining
+    gaugeColor='linear-gradient(90deg,#22c55e,#86efac)';
+    resultClass='full';
+    resultMsg=`🏆 <strong>Tank Full! Ready to finish the race!</strong><br>Your PTP of ${fmtRs(ptpRaw)} covers the entire remaining target of ${fmtRs(remaining)}. <strong>Drive hard and convert every PTP — the finish line is yours!</strong> 🏁`;
+  } else if(ptpRaw>=needed50){
+    // PTP ≥ 50% of remaining — sufficient fuel
+    const stillNeeded=remaining-ptpRaw;
+    gaugeColor='linear-gradient(90deg,#60a5fa,#a78bfa)';
+    resultClass='ok';
+    resultMsg=`🚀 <strong>Fuel Sufficient! Keep driving!</strong><br>Your PTP of ${fmtRs(ptpRaw)} covers ${fmtPct(coverPct)} of your remaining target. You still need ${fmtRs(stillNeeded)} more in collections. <strong>Convert your PTPs and push for the goal!</strong> ⚡`;
+  } else {
+    // PTP < 50% of remaining — fuel low
+    const shortfall=needed50-ptpRaw;
+    gaugeColor='linear-gradient(90deg,#f87171,#fca5a5)';
+    resultClass='low';
+    resultMsg=`🔴 <strong>Fuel Low! You need more PTPs!</strong><br>Your PTP of ${fmtRs(ptpRaw)} covers only ${fmtPct(coverPct)} of your remaining ${fmtRs(remaining)}. You need at least ${fmtRs(needed50)} in PTP to be on track. <strong>Go get ${fmtRs(shortfall)} more in PTPs to fill up the tank!</strong> ⛽`;
+  }
+
+  fill.style.background=gaugeColor;
+  document.getElementById('fuelGaugeLabelPct').textContent=fmtPct(coverPct)+'  of remaining covered';
+
+  setTimeout(()=>{
+    fill.style.width=displayPct+'%';
+    document.getElementById('fuelGaugePct').textContent=fmtRs(ptpRaw)+' PTP';
+    document.getElementById('fuelGaugePct').style.color=resultClass==='low'?'var(--red)':resultClass==='full'?'var(--green)':'var(--blue)';
+  },100);
+
+  // Show result after gauge animates
+  setTimeout(()=>{
+    const resultEl=document.getElementById('fuelResult');
+    resultEl.className='fuel-result show '+resultClass;
+    resultEl.innerHTML=resultMsg;
+  },800);
+}
+
+function closeFuel(){
+  document.getElementById('fuelOverlay').classList.remove('show');
+  _fuelAgent=null;
+}
+function closePopup(){closeFuel();}
 
 // ── INIT ──
 buildStars();
