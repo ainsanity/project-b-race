@@ -268,7 +268,47 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:5px;animation:livePulse 1.5s ease-in-out infinite;}
 @keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
-@media(max-width:900px){.kpi-strip{grid-template-columns:repeat(3,1fr);}.podium{flex-direction:column;align-items:center;}}
+/* OVERALL TARGET BANNER */
+.overall-banner{position:relative;z-index:10;margin:16px 24px 0;background:linear-gradient(135deg,#0f1e3a,#1a2d50);border:1px solid var(--border2);border-radius:14px;padding:16px 20px;overflow:hidden;}
+.overall-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(240,192,64,.06),transparent 60%);pointer-events:none;}
+.overall-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:12px;flex-wrap:wrap;}
+.overall-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:2px;}
+.overall-nums{display:flex;align-items:baseline;gap:6px;}
+.overall-collected{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:var(--green);}
+.overall-sep{color:var(--muted);font-size:14px;}
+.overall-target-num{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:var(--gold);}
+.overall-pct-badge{font-family:'Orbitron',monospace;font-size:13px;font-weight:800;padding:4px 12px;border-radius:20px;border:1px solid;}
+.overall-bar-bg{height:14px;background:var(--surface2);border-radius:7px;overflow:hidden;border:1px solid var(--border);}
+.overall-bar-fill{height:100%;border-radius:7px;background:linear-gradient(90deg,#22c55e,#86efac);transition:width 2s cubic-bezier(.34,1.4,.64,1);position:relative;overflow:hidden;}
+.overall-bar-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);animation:shimmer 2s linear infinite;}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.overall-sub{display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--muted2);font-family:'JetBrains Mono',monospace;}
+
+/* TL LEADERSHIP RACE */
+.tl-section{position:relative;z-index:10;padding:16px 24px 0;}
+.tl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.tl-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:14px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;}
+.tl-card:hover{transform:translateY(-3px);}
+.tl-card.tl-leader{border-color:var(--gold);box-shadow:0 0 20px rgba(240,192,64,.15);}
+.tl-card::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:12px;}
+.tl-rank-crown{position:absolute;top:10px;right:12px;font-size:18px;}
+.tl-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tl-region{font-size:9px;color:var(--muted);margin-bottom:10px;}
+.tl-pct{font-family:'Orbitron',monospace;font-size:24px;font-weight:900;line-height:1;margin-bottom:3px;}
+.tl-collected{font-size:11px;color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:600;margin-bottom:1px;}
+.tl-target-txt{font-size:10px;color:var(--muted2);font-family:'JetBrains Mono',monospace;}
+.tl-bar-bg{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-top:10px;}
+.tl-bar-fill{height:100%;border-radius:3px;transition:width 2s cubic-bezier(.34,1.4,.64,1);}
+.tl-agents-row{display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:var(--muted);}
+.tl-race-track{margin-top:14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;}
+.tl-race-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.tl-race-row:last-child{margin-bottom:0;}
+.tl-race-name{font-size:10px;font-weight:700;width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
+.tl-race-bar-bg{flex:1;height:10px;background:var(--surface3);border-radius:5px;overflow:hidden;}
+.tl-race-bar-fill{height:100%;border-radius:5px;transition:width 2s cubic-bezier(.34,1.4,.64,1);}
+.tl-race-pct{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;width:42px;text-align:right;flex-shrink:0;}
+
+@media(max-width:900px){.kpi-strip{grid-template-columns:repeat(3,1fr);}.podium{flex-direction:column;align-items:center;}.tl-grid{grid-template-columns:repeat(2,1fr);}}
 </style>
 </head>
 <body>
@@ -349,6 +389,35 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 
 <!-- MAIN -->
 <div id="mainDash">
+
+  <!-- OVERALL TARGET BANNER -->
+  <div class="overall-banner" id="overallBanner">
+    <div class="overall-top">
+      <div>
+        <div class="overall-title">🎯 Overall Team Target — Project B</div>
+        <div style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:2px;">All TLs combined · Month target</div>
+      </div>
+      <div class="overall-nums">
+        <div class="overall-collected" id="overallCollected">₹0</div>
+        <div class="overall-sep">/</div>
+        <div class="overall-target-num">₹1,35,50,000</div>
+        <div class="overall-pct-badge" id="overallPctBadge" style="color:var(--green);border-color:var(--green);">0%</div>
+      </div>
+    </div>
+    <div class="overall-bar-bg"><div class="overall-bar-fill" id="overallBarFill" style="width:0%"></div></div>
+    <div class="overall-sub">
+      <span id="overallRemaining">–</span>
+      <span id="overallAgentCount">–</span>
+    </div>
+  </div>
+
+  <!-- TL LEADERSHIP RACE -->
+  <div class="tl-section">
+    <div class="sec-title" style="margin-bottom:10px;">👑 TL Leadership Race</div>
+    <div class="tl-grid" id="tlGrid"></div>
+    <div class="tl-race-track" id="tlRaceTrack" style="margin-top:10px;"></div>
+  </div>
+
   <div class="podium-section">
     <div class="sec-title">🏆 Podium — Top 3 Racers</div>
     <div class="podium" id="podium"></div>
@@ -471,6 +540,15 @@ function parseCSV(text){
     return row;
   }).filter(r=>Object.values(r).some(v=>v));
 }
+
+const OVERALL_TARGET = 13550000;
+
+const TL_TARGETS = {
+  'Madan Kumar': { target: 3200000, color: '#3498db', regions: 'Kannada · Telugu' },
+  'Thanushree':  { target: 2800000, color: '#e91e63', regions: 'Kannada · Telugu' },
+  'Nikhil_TN':   { target: 4050000, color: '#f0c040', regions: 'Tamil Nadu' },
+  'Nikhil_KL':   { target: 1500000, color: '#2ecc71', regions: 'Kerala' },
+};
 
 const AGENTS = {
   'Harry Manuel':              {display:'Harry Manuel',              tl:'Nikhil_TN',   region:'Tamil',   target:300000},
@@ -670,12 +748,12 @@ function applyFilters(){renderAll();}
 
 function renderAll(){
   const all=getFiltered();
-  // Split: racing (collection>0) vs bench (collection===0)
   const racing=all.filter(a=>a.collection>0);
   const benched=all.filter(a=>a.collection===0);
 
   buildKPI(all);
-  // Podium only from racing agents
+  buildOverallBanner();
+  buildTLRace();
   buildPodium(racing);
   buildTracks(racing);
   buildBench(benched);
@@ -691,12 +769,99 @@ function buildKPI(data){
   const active=data.filter(a=>a.collection>0).length;
   const racing=data.filter(a=>a.collection>0);
   document.getElementById('kpiStrip').innerHTML=`
-    <div class="kpi"><div class="lbl">Total Collection</div><div class="val gold">${fmtRs(totC)}</div><div class="sub">vs ${fmtRs(totT)} target</div></div>
+    <div class="kpi"><div class="lbl">Total Collection</div><div class="val gold">${fmtRs(totC)}</div><div class="sub">vs ${fmtRs(totT)} agent targets</div></div>
     <div class="kpi"><div class="lbl">Overall Achievement</div><div class="val ${overall>=100?'green':'blue'}">${fmtPct(overall)}</div><div class="sub">Team average: ${fmtPct(avg)}</div></div>
     <div class="kpi"><div class="lbl">Target Hit ≥100%</div><div class="val green">${above}</div><div class="sub">out of ${data.length} agents</div></div>
     <div class="kpi"><div class="lbl">⛽ PTP Hover</div><div class="val purple">3× Target</div><div class="sub">Hover any car to see PTP</div></div>
     <div class="kpi"><div class="lbl">Active Racers</div><div class="val white">${active}</div><div class="sub">with collections</div></div>
     <div class="kpi"><div class="lbl">Race Leader</div><div class="val gold">${racing[0]?racing[0].name.split(' ')[0]:'–'}</div><div class="sub">${racing[0]?fmtPct(racing[0].ach_pct):''}</div></div>`;
+}
+
+// ── OVERALL BANNER ──
+function buildOverallBanner(){
+  const totalCollected=ALL_DATA.reduce((s,a)=>s+a.collection,0);
+  const pct=Math.min((totalCollected/OVERALL_TARGET)*100,200);
+  const remaining=Math.max(OVERALL_TARGET-totalCollected,0);
+  const active=ALL_DATA.filter(a=>a.collection>0).length;
+
+  document.getElementById('overallCollected').textContent=fmtRs(totalCollected);
+  const badge=document.getElementById('overallPctBadge');
+  badge.textContent=fmtPct(pct);
+  if(pct>=100){badge.style.color='var(--green)';badge.style.borderColor='var(--green)';}
+  else if(pct>=75){badge.style.color='var(--gold)';badge.style.borderColor='var(--gold)';}
+  else if(pct>=50){badge.style.color='var(--blue)';badge.style.borderColor='var(--blue)';}
+  else{badge.style.color='var(--red)';badge.style.borderColor='var(--red)';}
+
+  const fill=document.getElementById('overallBarFill');
+  fill.style.background=pct>=100?'linear-gradient(90deg,#22c55e,#86efac)':pct>=75?'linear-gradient(90deg,#f0c040,#fbbf24)':pct>=50?'linear-gradient(90deg,#60a5fa,#a78bfa)':'linear-gradient(90deg,#f87171,#fca5a5)';
+  setTimeout(()=>fill.style.width=Math.min(pct,100)+'%',200);
+
+  document.getElementById('overallRemaining').textContent=remaining>0?`Still needed: ${fmtRs(remaining)}`:'✅ Overall target crossed!';
+  document.getElementById('overallAgentCount').textContent=`${active} of ${ALL_DATA.length} agents collecting`;
+}
+
+// ── TL LEADERSHIP RACE ──
+function buildTLRace(){
+  // Aggregate from ALL_DATA (not filtered) for accurate TL totals
+  const tlData={};
+  Object.entries(TL_TARGETS).forEach(([tl,info])=>{
+    const agents=ALL_DATA.filter(a=>a.tl===tl);
+    const collected=agents.reduce((s,a)=>s+a.collection,0);
+    const pct=info.target>0?(collected/info.target*100):0;
+    tlData[tl]={...info,tl,collected,pct:Math.round(pct*10)/10,
+      agentCount:agents.length,
+      activeCount:agents.filter(a=>a.collection>0).length,
+      remaining:Math.max(info.target-collected,0)};
+  });
+
+  const sorted=Object.values(tlData).sort((a,b)=>b.pct-a.pct);
+  const maxPct=Math.max(...sorted.map(t=>t.pct),1);
+
+  // Cards
+  const crowns=['👑','🥈','🥉','4️⃣'];
+  document.getElementById('tlGrid').innerHTML=sorted.map((t,i)=>{
+    const achColor=t.pct>=100?'var(--green)':t.pct>=75?'var(--gold2)':t.pct>=50?'var(--blue)':'var(--red)';
+    const isLeader=i===0;
+    return `<div class="tl-card ${isLeader?'tl-leader':''}" style="border-color:${isLeader?t.color:''};${isLeader?`box-shadow:0 0 20px ${t.color}22`:''};background:linear-gradient(135deg,${t.color}08,var(--surface))">
+      <div class="tl-rank-crown">${crowns[i]}</div>
+      <div class="tl-name" style="color:${t.color}">${t.tl}</div>
+      <div class="tl-region">${t.regions}</div>
+      <div class="tl-pct" style="color:${achColor}">${fmtPct(t.pct)}</div>
+      <div class="tl-collected">${fmtRs(t.collected)}</div>
+      <div class="tl-target-txt">of ${fmtRs(t.target)}</div>
+      <div class="tl-bar-bg"><div class="tl-bar-fill" style="background:${t.color};width:0%" id="tlbar_${i}"></div></div>
+      <div class="tl-agents-row">
+        <span>${t.activeCount}/${t.agentCount} active</span>
+        <span style="color:${t.remaining>0?'var(--red)':'var(--green)'}">${t.remaining>0?'−'+fmtRs(t.remaining):'✅ Done'}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Horizontal race bars
+  document.getElementById('tlRaceTrack').innerHTML=`
+    <div style="font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">Achievement Race</div>
+    ${sorted.map((t,i)=>{
+      const achColor=t.pct>=100?'var(--green)':t.pct>=75?'var(--gold)':t.pct>=50?'var(--blue)':'var(--red)';
+      return `<div class="tl-race-row">
+        <div class="tl-race-name" style="color:${t.color}">${t.tl}</div>
+        <div class="tl-race-bar-bg">
+          <div class="tl-race-bar-fill" id="tlrace_${i}" style="background:linear-gradient(90deg,${t.color},${t.color}88);width:0%"></div>
+        </div>
+        <div class="tl-race-pct" style="color:${achColor}">${fmtPct(t.pct)}</div>
+      </div>`;
+    }).join('')}`;
+
+  // Animate bars
+  setTimeout(()=>{
+    sorted.forEach((t,i)=>{
+      const bar=document.getElementById(`tlbar_${i}`);
+      const race=document.getElementById(`tlrace_${i}`);
+      const w=Math.min(t.pct,100)+'%';
+      const raceW=Math.min((t.pct/maxPct)*100,100)+'%';
+      if(bar) bar.style.width=w;
+      if(race) race.style.width=raceW;
+    });
+  },300);
 }
 
 function buildPodium(data){
