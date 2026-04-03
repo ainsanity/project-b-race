@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TATA CAPITAL LSA — Collection Performance Race</title>
+<title>Project B — Collection Performance Race</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -268,47 +268,114 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:5px;animation:livePulse 1.5s ease-in-out infinite;}
 @keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
-/* OVERALL TARGET BANNER */
-.overall-banner{position:relative;z-index:10;margin:16px 24px 0;background:linear-gradient(135deg,#0f1e3a,#1a2d50);border:1px solid var(--border2);border-radius:14px;padding:16px 20px;overflow:hidden;}
-.overall-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(240,192,64,.06),transparent 60%);pointer-events:none;}
-.overall-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:12px;flex-wrap:wrap;}
-.overall-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:2px;}
-.overall-nums{display:flex;align-items:baseline;gap:6px;}
-.overall-collected{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:var(--green);}
-.overall-sep{color:var(--muted);font-size:14px;}
-.overall-target-num{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:var(--gold);}
-.overall-pct-badge{font-family:'Orbitron',monospace;font-size:13px;font-weight:800;padding:4px 12px;border-radius:20px;border:1px solid;}
-.overall-bar-bg{height:14px;background:var(--surface2);border-radius:7px;overflow:hidden;border:1px solid var(--border);}
-.overall-bar-fill{height:100%;border-radius:7px;background:linear-gradient(90deg,#22c55e,#86efac);transition:width 2s cubic-bezier(.34,1.4,.64,1);position:relative;overflow:hidden;}
-.overall-bar-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);animation:shimmer 2s linear infinite;}
-@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.overall-sub{display:flex;justify-content:space-between;margin-top:5px;font-size:10px;color:var(--muted2);font-family:'JetBrains Mono',monospace;}
+/* ═══════════════════════════════════════════════
+   TICKER HEADLINE STRIP
+═══════════════════════════════════════════════ */
+.ticker-strip{position:relative;z-index:10;background:#030612;border-top:1px solid var(--border2);border-bottom:2px solid #f0c04044;overflow:hidden;height:32px;display:flex;align-items:center;}
+.ticker-flag{flex-shrink:0;width:44px;height:32px;display:flex;align-items:center;justify-content:center;background:#f0c040;position:relative;z-index:2;}
+.ticker-flag svg{width:22px;height:22px;}
+.ticker-inner{display:flex;align-items:center;white-space:nowrap;animation:tickerScroll 35s linear infinite;}
+@keyframes tickerScroll{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
+.ticker-item{display:inline-flex;align-items:center;gap:7px;margin-right:60px;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:.5px;}
+.ticker-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.ticker-sep{color:#f0c04055;margin:0 10px;font-size:14px;}
 
-/* TL LEADERSHIP RACE */
-.tl-section{position:relative;z-index:10;padding:16px 24px 0;}
-.tl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
-.tl-card{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:14px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;}
-.tl-card:hover{transform:translateY(-3px);}
-.tl-card.tl-leader{border-color:var(--gold);box-shadow:0 0 20px rgba(240,192,64,.15);}
-.tl-card::before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:12px;}
-.tl-rank-crown{position:absolute;top:10px;right:12px;font-size:18px;}
-.tl-name{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:.5px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tl-region{font-size:9px;color:var(--muted);margin-bottom:10px;}
-.tl-pct{font-family:'Orbitron',monospace;font-size:24px;font-weight:900;line-height:1;margin-bottom:3px;}
-.tl-collected{font-size:11px;color:var(--green);font-family:'JetBrains Mono',monospace;font-weight:600;margin-bottom:1px;}
-.tl-target-txt{font-size:10px;color:var(--muted2);font-family:'JetBrains Mono',monospace;}
-.tl-bar-bg{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-top:10px;}
-.tl-bar-fill{height:100%;border-radius:3px;transition:width 2s cubic-bezier(.34,1.4,.64,1);}
-.tl-agents-row{display:flex;justify-content:space-between;margin-top:6px;font-size:9px;color:var(--muted);}
-.tl-race-track{margin-top:14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;}
-.tl-race-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.tl-race-row:last-child{margin-bottom:0;}
-.tl-race-name{font-size:10px;font-weight:700;width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
-.tl-race-bar-bg{flex:1;height:10px;background:var(--surface3);border-radius:5px;overflow:hidden;}
-.tl-race-bar-fill{height:100%;border-radius:5px;transition:width 2s cubic-bezier(.34,1.4,.64,1);}
-.tl-race-pct{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;width:42px;text-align:right;flex-shrink:0;}
+/* ═══════════════════════════════════════════════
+   CINEMATIC OVERALL RACE ARENA
+═══════════════════════════════════════════════ */
+.arena-wrap{position:relative;z-index:10;margin:0;background:#030612;border-bottom:2px solid var(--border2);overflow:hidden;}
+.arena-sky{position:absolute;inset:0;background:radial-gradient(ellipse 120% 60% at 50% 100%,#0d1f40 0%,#030612 70%);pointer-events:none;}
+/* Road perspective */
+.arena-road{position:absolute;bottom:0;left:0;right:0;height:90px;background:linear-gradient(180deg,transparent,#0a0f1e 40%,#111827 100%);clip-path:polygon(20% 0%,80% 0%,100% 100%,0% 100%);}
+.arena-road-lines{position:absolute;bottom:0;left:0;right:0;height:90px;overflow:hidden;clip-path:polygon(20% 0%,80% 0%,100% 100%,0% 100%);}
+.road-dash{position:absolute;bottom:20px;height:4px;border-radius:2px;background:#ffffff18;animation:dashRush 0.4s linear infinite;}
+@keyframes dashRush{0%{transform:scaleX(1) translateX(0);opacity:.6}100%{transform:scaleX(3) translateX(-40px);opacity:0}}
+/* Arena content */
+.arena-content{position:relative;z-index:2;padding:18px 24px 14px;}
+.arena-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.arena-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;background:linear-gradient(90deg,#f0c040,#fff,#f0c040);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;text-transform:uppercase;}
+.arena-pct-giant{font-family:'Orbitron',monospace;font-size:38px;font-weight:900;line-height:1;text-shadow:0 0 30px currentColor;}
+.arena-nums-col{text-align:right;}
+.arena-collected-lbl{font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:.8px;}
+.arena-collected-val{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:var(--green);}
+.arena-target-val{font-size:10px;color:var(--muted2);font-family:'JetBrains Mono',monospace;}
 
-@media(max-width:900px){.kpi-strip{grid-template-columns:repeat(3,1fr);}.podium{flex-direction:column;align-items:center;}.tl-grid{grid-template-columns:repeat(2,1fr);}}
+/* THE RACE TRACK */
+.arena-track{position:relative;height:70px;background:#08101e;border:1px solid #1e2d4a;border-radius:12px;overflow:hidden;margin-bottom:8px;}
+.arena-track-road{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 41px);}
+.arena-track-center{position:absolute;top:50%;left:4px;right:4px;height:1px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.08) 0,rgba(255,255,255,.08) 20px,transparent 20px,transparent 40px);transform:translateY(-50%);}
+/* Progress fill */
+.arena-fill{position:absolute;top:0;left:0;height:100%;border-radius:12px 0 0 12px;transition:width 2.5s cubic-bezier(.22,1,.36,1);overflow:hidden;}
+.arena-fill-shimmer{position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.15) 50%,transparent 100%);animation:shimmer 1.8s linear infinite;}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+/* Supercar on arena track */
+.arena-car{position:absolute;top:50%;transform:translateY(-50%);transition:left 2.5s cubic-bezier(.22,1,.36,1);left:4%;z-index:6;filter:drop-shadow(0 0 16px #f0c040) drop-shadow(0 0 6px #fff);}
+/* Speed streak behind car */
+.arena-streaks{position:absolute;top:50%;transform:translateY(-50%);pointer-events:none;z-index:5;}
+.arena-streak{position:absolute;height:2px;border-radius:1px;animation:streakFade .3s linear infinite;}
+@keyframes streakFade{0%{opacity:.7;width:60px}100%{opacity:0;width:20px;transform:translateX(-30px)}}
+/* Flames behind car */
+.arena-flames{position:absolute;top:50%;transform:translateY(-50%);right:calc(100% + 1px);pointer-events:none;}
+/* Finish flag at right edge */
+.arena-finish{position:absolute;right:0;top:0;bottom:0;width:18px;background:repeating-linear-gradient(180deg,#fff 0,#fff 9px,#111 9px,#111 18px);opacity:.35;border-radius:0 12px 12px 0;}
+/* Milestone markers */
+.arena-milestone{position:absolute;top:0;bottom:0;width:1px;opacity:.25;}
+.arena-milestone-lbl{position:absolute;bottom:2px;font-size:8px;font-family:'JetBrains Mono',monospace;color:rgba(255,255,255,.4);transform:translateX(-50%);}
+
+/* Progress sub row */
+.arena-sub{display:flex;justify-content:space-between;align-items:center;font-size:10px;}
+.arena-remaining{color:var(--red);font-family:'JetBrains Mono',monospace;font-weight:600;}
+.arena-remaining.done{color:var(--green);}
+.arena-agents{color:var(--muted);font-family:'JetBrains Mono',monospace;}
+
+/* ═══════════════════════════════════════════════
+   TL LEADERSHIP DASHBOARDS
+═══════════════════════════════════════════════ */
+.tl-section{position:relative;z-index:10;padding:20px 24px 0;}
+.tl-dashboards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+
+.tl-dash{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--border2);transition:transform .25s,box-shadow .25s;cursor:default;}
+.tl-dash:hover{transform:translateY(-5px);}
+.tl-dash.rank1{border-width:2px;}
+/* Animated corner accent for leader */
+.tl-dash.rank1::after{content:'';position:absolute;top:-1px;left:-1px;right:-1px;bottom:-1px;border-radius:16px;background:transparent;border:2px solid transparent;animation:leaderBorder 2s ease-in-out infinite;pointer-events:none;}
+@keyframes leaderBorder{0%,100%{box-shadow:0 0 0 0 rgba(240,192,64,0)}50%{box-shadow:0 0 20px 2px rgba(240,192,64,.3)}}
+
+/* Dashboard header band */
+.tl-dash-hdr{padding:14px 14px 10px;position:relative;overflow:hidden;}
+.tl-dash-hdr::before{content:'';position:absolute;inset:0;opacity:.12;}
+.tl-dash-rank{position:absolute;top:10px;right:12px;font-size:22px;line-height:1;}
+.tl-dash-name{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:900;letter-spacing:.8px;margin-bottom:1px;}
+.tl-dash-region{font-size:9px;opacity:.7;font-family:'JetBrains Mono',monospace;}
+
+/* Giant % in middle */
+.tl-dash-pct-wrap{padding:10px 14px 6px;text-align:center;position:relative;}
+.tl-dash-pct{font-family:'Orbitron',monospace;font-size:36px;font-weight:900;line-height:1;text-shadow:0 0 20px currentColor;}
+.tl-dash-pct-lbl{font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:2px;text-transform:uppercase;letter-spacing:.5px;}
+
+/* Mini race track inside card */
+.tl-mini-track{position:relative;height:28px;margin:0 14px 10px;background:#08101e;border-radius:6px;overflow:hidden;border:1px solid #1e2d4a22;}
+.tl-mini-road{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 15px,rgba(255,255,255,.02) 15px,rgba(255,255,255,.02) 16px);}
+.tl-mini-fill{position:absolute;top:0;left:0;height:100%;border-radius:6px 0 0 6px;opacity:.25;transition:width 2s cubic-bezier(.34,1.4,.64,1);}
+.tl-mini-car{position:absolute;top:50%;transform:translateY(-50%);font-size:16px;transition:left 2s cubic-bezier(.22,1,.36,1);left:4%;filter:drop-shadow(0 0 4px gold);}
+.tl-mini-finish{position:absolute;right:0;top:0;bottom:0;width:8px;background:repeating-linear-gradient(180deg,#fff 0,#fff 4px,#111 4px,#111 8px);opacity:.3;border-radius:0 6px 6px 0;}
+
+/* Stats grid */
+.tl-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 14px 10px;}
+.tl-stat-cell{background:rgba(0,0,0,.3);border-radius:6px;padding:7px 8px;}
+.tl-stat-lbl{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:2px;}
+.tl-stat-val{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;}
+
+/* Spark lines area */
+.tl-dash-footer{padding:8px 14px 12px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;}
+.tl-active-dots{display:flex;gap:3px;flex-wrap:wrap;max-width:80px;}
+.tl-agent-dot{width:6px;height:6px;border-radius:50%;transition:all .3s;}
+.tl-gap-pill{font-size:9px;font-family:'Orbitron',monospace;font-weight:700;padding:2px 7px;border-radius:10px;border:1px solid;}
+
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+
+@media(max-width:1100px){.tl-dashboards{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:900px){.kpi-strip{grid-template-columns:repeat(3,1fr);}.podium{flex-direction:column;align-items:center;}.tl-dashboards{grid-template-columns:repeat(2,1fr);}}
 </style>
 </head>
 <body>
@@ -321,7 +388,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
     <span style="font-size:26px;filter:drop-shadow(0 0 8px #f0c04088);">🏎️</span>
     <div>
       <div class="hdr-title">TATA CAPITAL- LSA </div>
-      <div class="hdr-sub"><span class="live-dot"></span>Live · Google Sheet · TATA CAPITAL LSA — Monthly Collection Achievement</div>
+      <div class="hdr-sub"><span class="live-dot"></span>Live · Google Sheet · Project B — Monthly Collection Achievement</div>
     </div>
   </div>
   <div class="hdr-right">
@@ -390,32 +457,116 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 <!-- MAIN -->
 <div id="mainDash">
 
-  <!-- OVERALL TARGET BANNER -->
-  <div class="overall-banner" id="overallBanner">
-    <div class="overall-top">
-      <div>
-        <div class="overall-title">🎯 Overall Team Target — TATA CAPITAL LSA</div>
-        <div style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:2px;">All TLs combined · Month target</div>
-      </div>
-      <div class="overall-nums">
-        <div class="overall-collected" id="overallCollected">₹0</div>
-        <div class="overall-sep">/</div>
-        <div class="overall-target-num">₹1,35,50,000</div>
-        <div class="overall-pct-badge" id="overallPctBadge" style="color:var(--green);border-color:var(--green);">0%</div>
-      </div>
+  <!-- TICKER HEADLINE STRIP -->
+  <div class="ticker-strip" id="tickerStrip">
+    <div class="ticker-flag">
+      <svg viewBox="0 0 22 22" fill="none">
+        <!-- Waving race flag animation -->
+        <rect x="2" y="2" width="4" height="18" rx="1" fill="#555"/>
+        <g style="transform-origin:6px 3px;animation:flagWave .6s ease-in-out infinite alternate">
+          <rect x="6" y="2" width="7" height="5" fill="#fff"/>
+          <rect x="6" y="7" width="7" height="5" fill="#111"/>
+          <rect x="13" y="2" width="7" height="5" fill="#111"/>
+          <rect x="13" y="7" width="7" height="5" fill="#fff"/>
+        </g>
+      </svg>
     </div>
-    <div class="overall-bar-bg"><div class="overall-bar-fill" id="overallBarFill" style="width:0%"></div></div>
-    <div class="overall-sub">
-      <span id="overallRemaining">–</span>
-      <span id="overallAgentCount">–</span>
+    <div class="ticker-inner" id="tickerInner"><!-- filled by JS --></div>
+  </div>
+  <style>
+  @keyframes flagWave{0%{transform:skewY(-3deg) scaleX(1)}100%{transform:skewY(3deg) scaleX(1.04)}}
+  </style>
+
+  <!-- CINEMATIC OVERALL RACE ARENA -->
+  <div class="arena-wrap" id="arenaWrap">
+    <div class="arena-sky"></div>
+    <div class="arena-content">
+      <div class="arena-title-row">
+        <div>
+          <div class="arena-title">🏁 Project B · Grand Prix</div>
+          <div style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-top:2px;">Overall team target · All TLs combined</div>
+        </div>
+        <div class="arena-nums-col">
+          <div class="arena-collected-lbl">Total Collected</div>
+          <div class="arena-collected-val" id="arenaCollected">₹0</div>
+          <div class="arena-target-val">of ₹1,35,50,000</div>
+        </div>
+        <div>
+          <div class="arena-pct-giant" id="arenaPctGiant" style="color:var(--blue);">0.0%</div>
+          <div style="font-size:9px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-align:right;">achievement</div>
+        </div>
+      </div>
+
+      <!-- THE TRACK -->
+      <div class="arena-track" id="arenaTrack">
+        <div class="arena-track-road"></div>
+        <div class="arena-track-center"></div>
+        <!-- milestone markers at 25/50/75/100% -->
+        <div class="arena-milestone" style="left:25%;background:#fff;"><div class="arena-milestone-lbl" style="left:0">25%</div></div>
+        <div class="arena-milestone" style="left:50%;background:#f0c040;"><div class="arena-milestone-lbl" style="left:0">50%</div></div>
+        <div class="arena-milestone" style="left:75%;background:#f97316;"><div class="arena-milestone-lbl" style="left:0">75%</div></div>
+        <!-- Fill -->
+        <div class="arena-fill" id="arenaFill" style="width:0%;background:linear-gradient(90deg,#1d6ae5,#22c55e);">
+          <div class="arena-fill-shimmer"></div>
+        </div>
+        <!-- Streaks -->
+        <div class="arena-streaks" id="arenaStreaks"></div>
+        <!-- Supercar -->
+        <div class="arena-car" id="arenaCar">
+          <svg width="90" height="38" viewBox="0 0 90 38" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+            <defs>
+              <filter id="superglow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+              <linearGradient id="subbody" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f0c040"/><stop offset="40%" stop-color="#fff" stop-opacity=".5"/><stop offset="100%" stop-color="#f97316"/></linearGradient>
+            </defs>
+            <!-- Glow aura -->
+            <ellipse cx="45" cy="24" rx="40" ry="10" fill="#f0c040" opacity=".18" filter="url(#superglow)" style="animation:engineGlow .5s ease-in-out infinite"/>
+            <!-- Shadow -->
+            <ellipse cx="45" cy="36" rx="32" ry="2.5" fill="rgba(0,0,0,.6)"/>
+            <!-- Wide body -->
+            <path d="M6 17 L16 9 L74 9 L84 17 L84 28 L6 28 Z" fill="url(#subbody)" filter="url(#superglow)"/>
+            <!-- Cockpit -->
+            <path d="M22 9 L32 2 L58 2 L68 9 Z" fill="#f0c04099"/>
+            <!-- Windshield -->
+            <path d="M34 8 L40 2.5 L52 2.5 L58 8 Z" fill="#b8e8ff" opacity=".9"/>
+            <!-- Gold racing stripe -->
+            <rect x="6" y="22" width="78" height="3" rx="1.5" fill="#f0c040" opacity=".5"/>
+            <!-- LED lights front -->
+            <rect x="78" y="14" width="7" height="3" rx="1.5" fill="#fff" style="animation:engineGlow .15s ease-in-out infinite"/>
+            <rect x="78" y="18" width="5" height="2" rx="1" fill="#a8e6ff" opacity=".8"/>
+            <!-- Tail lights -->
+            <rect x="4" y="15" width="5" height="3" rx="1.5" fill="#ff0044" style="animation:engineGlow .2s ease-in-out infinite"/>
+            <!-- Front wheel -->
+            <g transform="translate(72,28)"><circle r="7" fill="#111"/><circle r="5.5" fill="#1e1e1e"/><g style="animation:wheelSpin .08s linear infinite;transform-origin:0 0"><line x1="0" y1="-4.5" x2="0" y2="4.5" stroke="#666" stroke-width="1.8"/><line x1="-4.5" y1="0" x2="4.5" y2="0" stroke="#666" stroke-width="1.8"/><line x1="-3" y1="-3" x2="3" y2="3" stroke="#444" stroke-width="1.2"/><line x1="3" y1="-3" x2="-3" y2="3" stroke="#444" stroke-width="1.2"/></g><circle r="2" fill="#f0c040"/></g>
+            <!-- Rear wheel -->
+            <g transform="translate(18,28)"><circle r="7" fill="#111"/><circle r="5.5" fill="#1e1e1e"/><g style="animation:wheelSpin .08s linear infinite;transform-origin:0 0"><line x1="0" y1="-4.5" x2="0" y2="4.5" stroke="#666" stroke-width="1.8"/><line x1="-4.5" y1="0" x2="4.5" y2="0" stroke="#666" stroke-width="1.8"/><line x1="-3" y1="-3" x2="3" y2="3" stroke="#444" stroke-width="1.2"/><line x1="3" y1="-3" x2="-3" y2="3" stroke="#444" stroke-width="1.2"/></g><circle r="2" fill="#f0c040"/></g>
+            <!-- Front spoiler -->
+            <path d="M80 24 L90 28 L90 30 L80 27 Z" fill="#f0c040" opacity=".7"/>
+            <!-- Rear diffuser -->
+            <path d="M3 22 L6 26 L6 28 L3 28 Z" fill="#f97316" opacity=".8"/>
+            <!-- Star badge -->
+            <text x="45" y="21" text-anchor="middle" font-size="9" fill="#000" font-family="monospace" font-weight="900">★</text>
+            <!-- Nitro flames -->
+            <path d="M6 19 L-4 17 L-8 19 L-4 21Z" fill="#f97316" style="animation:nitroFlame .12s ease-in-out infinite"/>
+            <path d="M6 19 L-2 18 L-5 19 L-2 20Z" fill="#fbbf24" style="animation:nitroFlame .1s ease-in-out infinite .04s"/>
+            <path d="M6 21 L-6 19.5 L-10 21 L-6 22.5Z" fill="#f0c040" opacity=".6" style="animation:nitroFlame .15s ease-in-out infinite .02s"/>
+          </svg>
+        </div>
+        <!-- Road speed dashes behind car -->
+        <div id="arenaDashes"></div>
+        <div class="arena-finish"></div>
+      </div>
+
+      <div class="arena-sub">
+        <div class="arena-remaining" id="arenaRemaining">Calculating…</div>
+        <div class="arena-agents" id="arenaAgents">–</div>
+      </div>
     </div>
   </div>
 
-  <!-- TL LEADERSHIP RACE -->
+  <!-- TL LEADERSHIP DASHBOARDS -->
   <div class="tl-section">
-    <div class="sec-title" style="margin-bottom:10px;">👑 TL Leadership Race</div>
-    <div class="tl-grid" id="tlGrid"></div>
-    <div class="tl-race-track" id="tlRaceTrack" style="margin-top:10px;"></div>
+    <div class="sec-title" style="margin-bottom:12px;">👑 TL Command Centers</div>
+    <div class="tl-dashboards" id="tlDashboards"></div>
   </div>
 
   <div class="podium-section">
@@ -752,6 +903,7 @@ function renderAll(){
   const benched=all.filter(a=>a.collection===0);
 
   buildKPI(all);
+  buildTicker();
   buildOverallBanner();
   buildTLRace();
   buildPodium(racing);
@@ -777,91 +929,186 @@ function buildKPI(data){
     <div class="kpi"><div class="lbl">Race Leader</div><div class="val gold">${racing[0]?racing[0].name.split(' ')[0]:'–'}</div><div class="sub">${racing[0]?fmtPct(racing[0].ach_pct):''}</div></div>`;
 }
 
-// ── OVERALL BANNER ──
+// ── TICKER ──
+function buildTicker(){
+  const tlData=getTLData();
+  const totalC=ALL_DATA.reduce((s,a)=>s+a.collection,0);
+  const overallPct=(totalC/OVERALL_TARGET*100).toFixed(1);
+  const sorted=Object.values(tlData).sort((a,b)=>b.pct-a.pct);
+
+  const items=[
+    {color:'#f0c040',text:`🏁 GRAND PRIX ${overallPct}% — Overall Team Achievement`},
+    ...sorted.map((t,i)=>{
+      const rank=['👑 LEADER','🥈 P2','🥉 P3','4th'][i];
+      const status=t.pct>=100?'TARGET CROSSED ✅':t.pct>=75?'ON TRACK 🔥':t.pct>=50?'IN RACE ⚡':'NEEDS FUEL ⛽';
+      return {color:t.color,text:`${rank} · ${t.tl} · ${t.pct.toFixed(1)}% · ${fmtRs(t.collected)} collected · ${status}`};
+    }),
+    {color:'#a78bfa',text:`⛽ PTP Rule: Generate 3× your collection target to keep your tank full`},
+    {color:'#22c55e',text:`🏎️ ${ALL_DATA.filter(a=>a.collection>0).length} agents currently racing · ${ALL_DATA.filter(a=>a.ach_pct>=100).length} targets crossed`},
+  ];
+
+  const html=items.map(it=>`
+    <span class="ticker-item">
+      <span class="ticker-dot" style="background:${it.color}"></span>
+      <span style="color:${it.color}">${it.text}</span>
+    </span>
+    <span class="ticker-sep">|</span>
+  `).join('');
+  // Repeat for seamless loop
+  document.getElementById('tickerInner').innerHTML=html+html;
+}
+
+// ── OVERALL ARENA ──
 function buildOverallBanner(){
   const totalCollected=ALL_DATA.reduce((s,a)=>s+a.collection,0);
-  const pct=Math.min((totalCollected/OVERALL_TARGET)*100,200);
+  const pct=Math.min((totalCollected/OVERALL_TARGET)*100,150);
   const remaining=Math.max(OVERALL_TARGET-totalCollected,0);
   const active=ALL_DATA.filter(a=>a.collection>0).length;
 
-  document.getElementById('overallCollected').textContent=fmtRs(totalCollected);
-  const badge=document.getElementById('overallPctBadge');
-  badge.textContent=fmtPct(pct);
-  if(pct>=100){badge.style.color='var(--green)';badge.style.borderColor='var(--green)';}
-  else if(pct>=75){badge.style.color='var(--gold)';badge.style.borderColor='var(--gold)';}
-  else if(pct>=50){badge.style.color='var(--blue)';badge.style.borderColor='var(--blue)';}
-  else{badge.style.color='var(--red)';badge.style.borderColor='var(--red)';}
+  document.getElementById('arenaCollected').textContent=fmtRs(totalCollected);
 
-  const fill=document.getElementById('overallBarFill');
-  fill.style.background=pct>=100?'linear-gradient(90deg,#22c55e,#86efac)':pct>=75?'linear-gradient(90deg,#f0c040,#fbbf24)':pct>=50?'linear-gradient(90deg,#60a5fa,#a78bfa)':'linear-gradient(90deg,#f87171,#fca5a5)';
-  setTimeout(()=>fill.style.width=Math.min(pct,100)+'%',200);
+  const giant=document.getElementById('arenaPctGiant');
+  giant.textContent=fmtPct(pct);
+  giant.style.color=pct>=100?'var(--green)':pct>=75?'var(--gold)':pct>=50?'var(--blue)':'var(--red)';
 
-  document.getElementById('overallRemaining').textContent=remaining>0?`Still needed: ${fmtRs(remaining)}`:'✅ Overall target crossed!';
-  document.getElementById('overallAgentCount').textContent=`${active} of ${ALL_DATA.length} agents collecting`;
+  const fill=document.getElementById('arenaFill');
+  const gradMap=pct>=100?'linear-gradient(90deg,#22c55e,#86efac,#22c55e)':
+    pct>=75?'linear-gradient(90deg,#f97316,#f0c040,#f97316)':
+    pct>=50?'linear-gradient(90deg,#3b82f6,#a78bfa,#3b82f6)':
+    'linear-gradient(90deg,#f87171,#fca5a5,#f87171)';
+  fill.style.background=gradMap;
+  setTimeout(()=>fill.style.width=Math.min(pct/1.5*100,100)+'%',200);
+
+  // Supercar position on track
+  const carLeft=Math.min(Math.max(pct/1.5*88,4),88);
+  setTimeout(()=>{
+    const car=document.getElementById('arenaCar');
+    if(car) car.style.left=carLeft+'%';
+  },300);
+
+  // Speed streaks
+  const streaksEl=document.getElementById('arenaStreaks');
+  if(streaksEl){
+    streaksEl.innerHTML=Array.from({length:5},(_,i)=>`
+      <div class="arena-streak" style="top:${-8+i*4}px;left:${-40-i*12}px;width:${30+i*10}px;background:linear-gradient(90deg,transparent,#f0c04066);animation-delay:${i*0.06}s"></div>
+    `).join('');
+    // Position streaks behind car
+    streaksEl.style.left=carLeft+'%';
+  }
+
+  // Road dashes
+  const dashes=document.getElementById('arenaDashes');
+  if(dashes){
+    dashes.innerHTML=Array.from({length:8},(_,i)=>`
+      <div class="road-dash" style="bottom:${8+i%3*10}px;left:${5+i*12}%;width:${20+Math.random()*20}px;animation-delay:${i*0.05}s;animation-duration:${0.3+Math.random()*0.2}s"></div>
+    `).join('');
+  }
+
+  const remEl=document.getElementById('arenaRemaining');
+  remEl.textContent=remaining>0?`🏁 Still needed: ${fmtRs(remaining)}`:'🏆 OVERALL TARGET CROSSED!';
+  remEl.className='arena-remaining'+(remaining===0?' done':'');
+  document.getElementById('arenaAgents').textContent=`${active}/${ALL_DATA.length} agents collecting`;
 }
 
-// ── TL LEADERSHIP RACE ──
-function buildTLRace(){
-  // Aggregate from ALL_DATA (not filtered) for accurate TL totals
+// ── GET TL DATA helper ──
+function getTLData(){
   const tlData={};
   Object.entries(TL_TARGETS).forEach(([tl,info])=>{
     const agents=ALL_DATA.filter(a=>a.tl===tl);
     const collected=agents.reduce((s,a)=>s+a.collection,0);
     const pct=info.target>0?(collected/info.target*100):0;
     tlData[tl]={...info,tl,collected,pct:Math.round(pct*10)/10,
+      agents,
       agentCount:agents.length,
       activeCount:agents.filter(a=>a.collection>0).length,
+      hitTarget:agents.filter(a=>a.ach_pct>=100).length,
       remaining:Math.max(info.target-collected,0)};
   });
+  return tlData;
+}
 
+// ── TL COMMAND CENTERS ──
+function buildTLRace(){
+  const tlData=getTLData();
   const sorted=Object.values(tlData).sort((a,b)=>b.pct-a.pct);
-  const maxPct=Math.max(...sorted.map(t=>t.pct),1);
+  const ranks=['👑','🥈','🥉','4️⃣'];
+  const rankLabels=['LEADER','2ND','3RD','4TH'];
 
-  // Cards
-  const crowns=['👑','🥈','🥉','4️⃣'];
-  document.getElementById('tlGrid').innerHTML=sorted.map((t,i)=>{
-    const achColor=t.pct>=100?'var(--green)':t.pct>=75?'var(--gold2)':t.pct>=50?'var(--blue)':'var(--red)';
+  document.getElementById('tlDashboards').innerHTML=sorted.map((t,i)=>{
+    const achColor=t.pct>=100?'#22c55e':t.pct>=75?'#f0c040':t.pct>=50?'#60a5fa':'#f87171';
     const isLeader=i===0;
-    return `<div class="tl-card ${isLeader?'tl-leader':''}" style="border-color:${isLeader?t.color:''};${isLeader?`box-shadow:0 0 20px ${t.color}22`:''};background:linear-gradient(135deg,${t.color}08,var(--surface))">
-      <div class="tl-rank-crown">${crowns[i]}</div>
-      <div class="tl-name" style="color:${t.color}">${t.tl}</div>
-      <div class="tl-region">${t.regions}</div>
-      <div class="tl-pct" style="color:${achColor}">${fmtPct(t.pct)}</div>
-      <div class="tl-collected">${fmtRs(t.collected)}</div>
-      <div class="tl-target-txt">of ${fmtRs(t.target)}</div>
-      <div class="tl-bar-bg"><div class="tl-bar-fill" style="background:${t.color};width:0%" id="tlbar_${i}"></div></div>
-      <div class="tl-agents-row">
-        <span>${t.activeCount}/${t.agentCount} active</span>
-        <span style="color:${t.remaining>0?'var(--red)':'var(--green)'}">${t.remaining>0?'−'+fmtRs(t.remaining):'✅ Done'}</span>
+    const carPos=Math.min(Math.max(t.pct/100*82,4),88);
+
+    // Agent dots — green=active, dim=zero
+    const dots=t.agents.slice(0,12).map(a=>
+      `<div class="tl-agent-dot" title="${a.name}" style="background:${a.collection>0?(a.ach_pct>=100?'#22c55e':t.color):'#1e2d4a'};box-shadow:${a.collection>0?`0 0 4px ${t.color}66`:''};"></div>`
+    ).join('');
+
+    const gapFromLeader=i===0?'— LEADING':sorted[0].collected-t.collected>0?`-${fmtRs(sorted[0].collected-t.collected)}`:'=';
+
+    return `<div class="tl-dash rank${i+1}" style="background:linear-gradient(160deg,${t.color}14,#0a0e1a 50%,#0f1628);border-color:${isLeader?t.color:t.color+'44'};${isLeader?`box-shadow:0 0 30px ${t.color}22`:''}" id="tlcard_${i}">
+      <!-- Header band -->
+      <div class="tl-dash-hdr" style="background:linear-gradient(135deg,${t.color}22,${t.color}08)">
+        <div class="tl-dash-rank">${ranks[i]}</div>
+        <div class="tl-dash-name" style="color:${t.color}">${t.tl}</div>
+        <div class="tl-dash-region">${t.regions} · ${rankLabels[i]}</div>
+      </div>
+      <!-- Big % -->
+      <div class="tl-dash-pct-wrap">
+        <div class="tl-dash-pct" style="color:${achColor}">${t.pct.toFixed(1)}%</div>
+        <div class="tl-dash-pct-lbl">Achievement</div>
+      </div>
+      <!-- Mini race track -->
+      <div class="tl-mini-track">
+        <div class="tl-mini-road"></div>
+        <div class="tl-mini-fill" id="tlmf_${i}" style="background:${t.color};width:0%"></div>
+        <div class="tl-mini-car" id="tlmc_${i}" style="left:4%">${isLeader?'🏎️':'🚗'}</div>
+        <div class="tl-mini-finish"></div>
+        ${t.pct>=100?`<div style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:14px;animation:medalBounce 1s ease-in-out infinite">🏆</div>`:''}
+      </div>
+      <!-- Stats -->
+      <div class="tl-stats">
+        <div class="tl-stat-cell">
+          <div class="tl-stat-lbl">Collected</div>
+          <div class="tl-stat-val" style="color:#22c55e">${fmtRs(t.collected)}</div>
+        </div>
+        <div class="tl-stat-cell">
+          <div class="tl-stat-lbl">Target</div>
+          <div class="tl-stat-val" style="color:${t.color}">${fmtRs(t.target)}</div>
+        </div>
+        <div class="tl-stat-cell">
+          <div class="tl-stat-lbl">Remaining</div>
+          <div class="tl-stat-val" style="color:${t.remaining>0?'#f87171':'#22c55e'}">${t.remaining>0?fmtRs(t.remaining):'✅ Done'}</div>
+        </div>
+        <div class="tl-stat-cell">
+          <div class="tl-stat-lbl">Hit Target</div>
+          <div class="tl-stat-val" style="color:#f0c040">${t.hitTarget}/${t.agentCount} 🎯</div>
+        </div>
+      </div>
+      <!-- Footer: agent dots + gap -->
+      <div class="tl-dash-footer">
+        <div>
+          <div style="font-size:8px;color:var(--muted);margin-bottom:4px;font-family:'JetBrains Mono',monospace;">TEAM (${t.activeCount} active)</div>
+          <div class="tl-active-dots">${dots}</div>
+        </div>
+        <div class="tl-gap-pill" style="color:${i===0?t.color:'var(--muted2)'};border-color:${i===0?t.color:'var(--border)'}">
+          ${gapFromLeader}
+        </div>
       </div>
     </div>`;
   }).join('');
 
-  // Horizontal race bars
-  document.getElementById('tlRaceTrack').innerHTML=`
-    <div style="font-family:'Orbitron',sans-serif;font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;">Achievement Race</div>
-    ${sorted.map((t,i)=>{
-      const achColor=t.pct>=100?'var(--green)':t.pct>=75?'var(--gold)':t.pct>=50?'var(--blue)':'var(--red)';
-      return `<div class="tl-race-row">
-        <div class="tl-race-name" style="color:${t.color}">${t.tl}</div>
-        <div class="tl-race-bar-bg">
-          <div class="tl-race-bar-fill" id="tlrace_${i}" style="background:linear-gradient(90deg,${t.color},${t.color}88);width:0%"></div>
-        </div>
-        <div class="tl-race-pct" style="color:${achColor}">${fmtPct(t.pct)}</div>
-      </div>`;
-    }).join('')}`;
-
-  // Animate bars
+  // Animate mini track cars and fills
   setTimeout(()=>{
     sorted.forEach((t,i)=>{
-      const bar=document.getElementById(`tlbar_${i}`);
-      const race=document.getElementById(`tlrace_${i}`);
+      const mf=document.getElementById(`tlmf_${i}`);
+      const mc=document.getElementById(`tlmc_${i}`);
       const w=Math.min(t.pct,100)+'%';
-      const raceW=Math.min((t.pct/maxPct)*100,100)+'%';
-      if(bar) bar.style.width=w;
-      if(race) race.style.width=raceW;
+      const carP=Math.min(Math.max(t.pct/100*80,4),85)+'%';
+      if(mf) mf.style.width=w;
+      if(mc) mc.style.left=carP;
     });
-  },300);
+  },400);
 }
 
 function buildPodium(data){
