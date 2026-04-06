@@ -3,856 +3,2054 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tata Capital LSA — Collection Race Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<title>Project B — Collection Performance Race</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --bg:#070b14;--surf:#0d1220;--surf2:#121929;--surf3:#172035;
-  --bdr:#1c2a42;--bdr2:#243355;
-  --txt:#e2e8f0;--muted:#5a7090;--muted2:#8ba5c0;
-  --gold:#f0c040;--gold2:#fbbf24;--green:#22c55e;--red:#f87171;--blue:#60a5fa;--purple:#a78bfa;--silver:#c0c0d0;--bronze:#cd7f32;
+  --bg:#0a0e1a;--surface:#0f1628;--surface2:#141c2e;--surface3:#1a2340;
+  --border:#1e2d4a;--border2:#253560;
+  --text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8;
+  --gold:#f0c040;--gold2:#fbbf24;--silver:#c0c0d0;--bronze:#cd7f32;
+  --green:#22c55e;--red:#f87171;--blue:#60a5fa;--purple:#a78bfa;
 }
-body{background:var(--bg);color:var(--txt);font-family:'Outfit',sans-serif;font-size:13px;min-height:100vh;overflow-x:hidden;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:13px;min-height:100vh;overflow-x:hidden;}
 
-.stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle var(--d) ease-in-out infinite var(--dl);}
-@keyframes twinkle{0%,100%{opacity:.1}50%{opacity:.7}}
+.stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle
+var(--d,3s) ease-in-out infinite var(--delay,0s);}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.8}}
 
-.hdr{position:relative;z-index:20;background:linear-gradient(135deg,#0d1220,#172035);border-bottom:1.5px solid var(--bdr2);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;}
-.hdr-left{display:flex;align-items:center;gap:12px;}
-.hdr-icon{font-size:28px;}
-.hdr-title{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:900;background:linear-gradient(135deg,#f0c040,#fbbf24,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:1px;}
-.hdr-sub{font-size:10px;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono',monospace;}
-.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 1.5s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
-.hdr-right{display:flex;align-items:center;gap:8px;}
-.month-badge{font-size:10px;padding:4px 12px;border-radius:20px;border:1px solid var(--gold);color:var(--gold);background:#1a1400;font-family:'Orbitron',monospace;font-weight:700;}
-
-.toggle-wrap{position:relative;z-index:20;background:var(--surf);border-bottom:1px solid var(--bdr);padding:12px 24px;display:flex;align-items:center;gap:16px;}
-.toggle-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
-.page-toggle{display:flex;background:var(--surf2);border:1px solid var(--bdr);border-radius:30px;padding:3px;gap:3px;}
-.ptab{padding:7px 20px;border-radius:25px;cursor:pointer;font-size:12px;font-weight:700;color:var(--muted);transition:all .25s;border:none;background:transparent;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:7px;}
-.ptab.active{background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;box-shadow:0 2px 16px rgba(29,78,216,.4);}
-.ptab:hover:not(.active){color:var(--txt);background:var(--surf3);}
-.ptab-icon{font-size:14px;}
-
-.refresh-btn{background:linear-gradient(135deg,#1d6ae5,#7c3aed);color:#fff;border:none;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:11px;font-weight:700;font-family:'Outfit',sans-serif;display:flex;align-items:center;gap:5px;margin-left:auto;transition:all .2s;}
+/* HEADER */
+.hdr{position:relative;z-index:10;background:linear-gradient(135deg,#0f1628,#1a2340);border-bottom:2px
+solid var(--border2);padding:14px
+24px;display:flex;align-items:center;justify-content:space-between;}
+.hdr-title{font-family:'Orbitron',sans-serif;font-size:17px;font-weight:900;background:linear-gradient(135deg,#f0c040,#fbbf24,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:1px;}
+.hdr-sub{font-size:11px;color:var(--muted);margin-top:2px;font-family:'JetBrains
+Mono',monospace;}
+.hdr-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.month-badge{font-size:11px;padding:5px
+14px;border-radius:20px;border:1px solid
+var(--gold);color:var(--gold);background:#1a1400;font-family:'Orbitron',monospace;font-weight:700;}
+.updated-badge{font-size:10px;padding:4px
+10px;border-radius:20px;border:1px solid
+var(--border2);color:var(--muted);background:var(--surface2);font-family:'JetBrains
+Mono',monospace;}
+.refresh-btn{background:linear-gradient(135deg,#1d6ae5,#7c3aed);color:#fff;border:none;padding:7px
+16px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:700;font-family:'Inter',sans-serif;transition:all
+.2s;display:flex;align-items:center;gap:6px;}
 .refresh-btn:hover{transform:translateY(-1px);}
-.refresh-btn.spin svg{animation:spinIcon .7s linear infinite;}
-@keyframes spinIcon{to{transform:rotate(360deg)}}
+.refresh-btn.spinning svg{animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-.page{display:none;position:relative;z-index:10;}
-.page.active{display:block;}
+/* FILTERS */
+.filters{position:relative;z-index:10;background:var(--surface);border-bottom:1px
+solid var(--border);padding:10px
+24px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.filter-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;white-space:nowrap;}
+.filter-group{display:flex;gap:4px;flex-wrap:wrap;}
+.fb{background:var(--surface2);border:1px solid
+var(--border);color:var(--muted);padding:4px
+12px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:600;font-family:'Inter',sans-serif;transition:all
+.15s;user-select:none;}
+.fb:hover{border-color:var(--gold);color:var(--gold);}
+.fb.active{background:#1a1400;border-color:var(--gold);color:var(--gold);}
+.divider-v{width:1px;height:22px;background:var(--border);margin:0 2px;}
+.search-wrap{position:relative;margin-left:auto;}
+.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:13px;height:13px;stroke:var(--muted);fill:none;stroke-width:2;}
+.search{background:var(--surface2);border:1px solid
+var(--border);color:var(--text);font-size:12px;padding:6px 12px 6px
+30px;border-radius:20px;width:180px;outline:none;transition:border
+.15s;font-family:'Inter',sans-serif;}
+.search:focus{border-color:var(--gold);}
+.search::placeholder{color:var(--muted);}
+.cnt-badge{font-size:10px;color:var(--muted);font-family:'JetBrains
+Mono',monospace;white-space:nowrap;}
 
-.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--bdr);border-bottom:1px solid var(--bdr);}
-.kpi{background:var(--surf);padding:11px 16px;}
-.kpi .lbl{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:700;margin-bottom:3px;}
-.kpi .val{font-size:18px;font-weight:800;font-family:'Orbitron',monospace;}
-.kpi .sub{font-size:10px;color:var(--muted2);margin-top:1px;}
-.val-gold{color:var(--gold);}
-.val-green{color:var(--green);}
-.val-blue{color:var(--blue);}
-.val-purple{color:var(--purple);}
-.val-red{color:var(--red);}
+/* KPI */
+.kpi-strip{position:relative;z-index:10;display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:var(--border);border-bottom:1px
+solid var(--border);}
+.kpi{background:var(--surface);padding:12px 16px;}
+.kpi .lbl{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:700;margin-bottom:4px;}
+.kpi .val{font-size:19px;font-weight:700;font-family:'Orbitron',monospace;}
+.kpi .sub{font-size:10px;color:var(--muted2);margin-top:2px;}
+.val.gold{color:var(--gold);}
+.val.green{color:var(--green);}
+.val.blue{color:var(--blue);}
+.val.purple{color:var(--purple);}
+.val.red{color:var(--red);}
+.val.white{color:#fff;}
 
-.section{padding:18px 24px;}
+/* PODIUM */
+.podium-section{position:relative;z-index:10;padding:20px 24px 0;}
 .sec-title{font-family:'Orbitron',sans-serif;font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
-.sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--bdr2),transparent);}
+.sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:12px;margin-bottom:4px;}
+.podium-card{background:var(--surface);border:1px solid
+var(--border2);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:transform
+.2s;}
+.podium-card:hover{transform:translateY(-4px);}
+.podium-card.p1{width:200px;border-color:var(--gold);box-shadow:0 0
+24px rgba(240,192,64,.15);}
+.podium-card.p2{width:172px;border-color:var(--silver);}
+.podium-card.p3{width:156px;border-color:var(--bronze);}
+.podium-medal{font-size:28px;display:block;animation:medalBounce 2s
+ease-in-out infinite;}
+@keyframes medalBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.podium-name{font-size:12px;font-weight:700;color:#fff;margin:4px 0
+2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.podium-pct{font-family:'Orbitron',monospace;font-size:18px;font-weight:800;margin-bottom:2px;}
+.p1 .podium-pct{color:var(--gold);}
+.p2 .podium-pct{color:var(--silver);}
+.p3 .podium-pct{color:var(--bronze);}
+.podium-sub{font-size:10px;color:var(--muted2);}
+.podium-tl{font-size:10px;color:var(--muted);margin-top:2px;}
+.podium-bar{width:100%;border-radius:4px 4px 0 0;margin-top:10px;opacity:.25;}
+.p1 .podium-bar{height:50px;background:var(--gold);}
+.p2 .podium-bar{height:34px;background:var(--silver);}
+.p3 .podium-bar{height:22px;background:var(--bronze);}
 
-.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
-.fl{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
-.fb{background:var(--surf2);border:1px solid var(--bdr);color:var(--muted);padding:4px 11px;border-radius:20px;cursor:pointer;font-size:11px;font-weight:600;font-family:'Outfit',sans-serif;transition:all .15s;}
-.fb:hover,.fb.active{background:#1a1400;border-color:var(--gold);color:var(--gold);}
-.srch{background:var(--surf2);border:1px solid var(--bdr);color:var(--txt);font-size:11px;padding:5px 12px;border-radius:20px;width:160px;outline:none;font-family:'Outfit',sans-serif;}
-.srch:focus{border-color:var(--gold);}
-.srch::placeholder{color:var(--muted);}
+/* NO COLLECTION — BENCH SECTION */
+.bench-section{position:relative;z-index:10;padding:0 24px 16px;}
+.bench-wrap{background:var(--surface);border:1px solid
+var(--border2);border-radius:12px;padding:12px 16px;}
+.bench-title{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;}
+.bench-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.bench-card{background:var(--surface2);border:1px solid
+var(--border);border-radius:10px;padding:10px
+14px;min-width:160px;position:relative;overflow:hidden;transition:border-color
+.2s;}
+.bench-card:hover{border-color:var(--gold2);}
+.bench-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(240,192,64,.04),transparent);pointer-events:none;}
+.bench-name{font-size:11px;font-weight:700;color:var(--muted2);margin-bottom:3px;}
+.bench-target{font-size:10px;color:var(--muted);font-family:'JetBrains
+Mono',monospace;}
+.bench-msg{font-size:10px;color:var(--gold2);margin-top:4px;font-style:italic;}
+.bench-emoji{font-size:16px;position:absolute;right:10px;top:50%;transform:translateY(-50%);}
 
-.track-list{display:flex;flex-direction:column;gap:8px;}
-.track-row{position:relative;height:54px;border-radius:10px;background:#04080f;border:1px solid var(--bdr);overflow:hidden;cursor:pointer;transition:border-color .2s;}
-.track-row:hover{border-color:var(--gold2);}
-.track-row.finished{border-color:var(--gold) !important;box-shadow:0 0 14px rgba(240,192,64,.2);}
-.track-road{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 20px,rgba(255,255,255,.01) 20px,rgba(255,255,255,.01) 21px);}
-.track-center{position:absolute;top:50%;left:36px;right:14px;height:1px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0,rgba(255,255,255,.06) 12px,transparent 12px,transparent 24px);transform:translateY(-50%);}
-.track-fill{position:absolute;top:0;left:0;height:100%;border-radius:10px 0 0 10px;transition:width 1.8s cubic-bezier(.34,1.4,.64,1);opacity:.18;}
-.track-rank{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:14px;width:24px;text-align:center;z-index:3;}
-.car-grp{position:absolute;top:50%;transform:translateY(-50%);transition:left 2s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;gap:7px;z-index:5;left:8%;}
-.car-svg{width:48px;height:22px;}
-.car-label{display:flex;flex-direction:column;gap:0px;}
-.car-name{font-size:11px;font-weight:700;color:#fff;white-space:nowrap;}
-.car-stat{font-size:10px;font-family:'JetBrains Mono',monospace;font-weight:600;white-space:nowrap;}
-.finish-line{position:absolute;right:0;top:0;bottom:0;width:10px;background:repeating-linear-gradient(180deg,#fff 0,#fff 5px,#111 5px,#111 10px);opacity:.25;border-radius:0 10px 10px 0;z-index:2;}
-.ach-badge{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-family:'Orbitron',monospace;font-size:10px;font-weight:700;opacity:.5;z-index:2;}
-.fin-trophy{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:18px;z-index:6;animation:bob 1.5s ease-in-out infinite;}
-@keyframes bob{0%,100%{transform:translateY(-50%) translateY(0)}50%{transform:translateY(-50%) translateY(-3px)}}
+/* RACE TRACK */
+.race-section{position:relative;z-index:10;padding:16px 24px 28px;}
+.track-wrap{background:var(--surface);border:1px solid
+var(--border2);border-radius:14px;padding:16px;}
+.track-row{position:relative;height:58px;margin-bottom:10px;border-radius:10px;background:#060810;border:1px
+solid var(--border);overflow:visible;}
+.track-row:last-child{margin-bottom:0;}
+.track-road{position:absolute;inset:0;border-radius:10px;background:repeating-linear-gradient(90deg,transparent
+0,transparent 20px,rgba(255,255,255,.012) 20px,rgba(255,255,255,.012)
+21px);}
+.track-fill{position:absolute;top:0;left:0;height:100%;border-radius:10px
+0 0 10px;transition:width 1.8s
+cubic-bezier(.34,1.4,.64,1);opacity:.13;}
 
-.podium-wrap{display:flex;align-items:flex-end;justify-content:center;gap:14px;margin-bottom:20px;}
-.pod-card{background:var(--surf);border:1px solid var(--bdr2);border-radius:12px;padding:12px 16px;text-align:center;cursor:pointer;transition:transform .2s;}
-.pod-card:hover{transform:translateY(-4px);}
-.pod-card.p1{width:190px;border-color:var(--gold);box-shadow:0 0 20px rgba(240,192,64,.15);}
-.pod-card.p2{width:164px;border-color:var(--silver);}
-.pod-card.p3{width:150px;border-color:var(--bronze);}
-.pod-medal{font-size:26px;display:block;animation:bob 2s ease-in-out infinite;}
-.pod-name{font-size:12px;font-weight:700;color:#fff;margin:4px 0 2px;}
-.pod-pct{font-family:'Orbitron',monospace;font-size:17px;font-weight:800;margin-bottom:2px;}
-.p1 .pod-pct{color:var(--gold);}
-.p2 .pod-pct{color:var(--silver);}
-.p3 .pod-pct{color:var(--bronze);}
-.pod-sub{font-size:10px;color:var(--muted2);}
-.pod-tl{font-size:10px;color:var(--muted);}
+/* PTP BAR — shows inside track */
+.ptp-track-bar{position:absolute;bottom:0;left:36px;height:4px;border-radius:0
+2px 2px 0;background:linear-gradient(90deg,#7c3aed88,#a78bfa88);transition:width
+2.2s ease;z-index:2;}
 
-.sv-arena{padding:18px 24px 28px;}
-.sv-kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--bdr);border-bottom:1px solid var(--bdr);}
+/* FINISH LINE CROSSED STATE */
+.track-row.finished{border-color:#f0c040 !important;box-shadow:0 0
+18px rgba(240,192,64,.25);}
+.track-row.finished
+.track-road{background:repeating-linear-gradient(90deg,transparent
+0,transparent 20px,rgba(240,192,64,.03) 20px,rgba(240,192,64,.03)
+21px);}
 
-.running-scene{background:#04080f;border:1px solid var(--bdr2);border-radius:16px;padding:20px;margin-bottom:20px;position:relative;overflow:hidden;}
-.running-scene::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 40px,rgba(255,255,255,.007) 40px,rgba(255,255,255,.007) 41px);}
+/* FUEL STATION POPUP */
+.fuel-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);align-items:center;justify-content:center;padding:20px;}
+.fuel-overlay.show{display:flex;}
+.fuel-popup{background:var(--surface);border:1px solid
+var(--border2);border-radius:20px;width:100%;max-width:420px;overflow:hidden;animation:popIn
+.3s cubic-bezier(.34,1.56,.64,1);}
+.fuel-popup-hdr{padding:20px 20px
+16px;display:flex;align-items:center;gap:14px;border-bottom:1px solid
+var(--border);}
+.fuel-avatar{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;flex-shrink:0;border:2px
+solid;}
+.fuel-agent-name{font-size:15px;font-weight:700;color:#fff;}
+.fuel-agent-sub{font-size:11px;color:var(--muted2);margin-top:2px;}
+.fuel-rank{font-size:30px;margin-left:auto;}
+.fuel-popup-body{padding:18px 20px;}
+.fuel-ach-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.fuel-ach-label{font-size:11px;color:var(--muted2);}
+.fuel-ach-val{font-family:'Orbitron',monospace;font-size:16px;font-weight:800;}
+.fuel-ach-bar-bg{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-bottom:14px;}
+.fuel-ach-bar-fill{height:100%;border-radius:3px;}
+.fuel-target-row{display:grid;grid-template-columns:1fr
+1fr;gap:8px;margin-bottom:14px;}
+.fuel-stat{background:var(--surface2);border:1px solid
+var(--border);border-radius:8px;padding:10px 12px;text-align:center;}
+.fuel-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.fuel-stat-val{font-family:'JetBrains
+Mono',monospace;font-size:13px;font-weight:700;}
 
-.track-lane{position:relative;height:88px;margin-bottom:8px;border-radius:10px;background:#06090e;border:1px solid var(--bdr);}
-.track-lane:last-child{margin-bottom:0;}
-.track-lane.finished{border-color:var(--gold) !important;box-shadow:0 0 14px rgba(240,192,64,.2);}
-.lane-fill{position:absolute;top:0;left:0;height:100%;border-radius:10px 0 0 10px;transition:width 2s cubic-bezier(.34,1.4,.64,1);opacity:.12;}
-.lane-road{position:absolute;inset:0;border-radius:10px;background:repeating-linear-gradient(90deg,transparent 0,transparent 18px,rgba(255,255,255,.012) 18px,rgba(255,255,255,.012) 19px);}
-.lane-center{position:absolute;top:50%;left:48px;right:16px;height:1px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0,rgba(255,255,255,.07) 10px,transparent 10px,transparent 22px);transform:translateY(-50%);}
-.lane-num{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;width:28px;text-align:center;z-index:3;}
+/* PTP STATS SECTION in popup */
+.ptp-stats-section{background:linear-gradient(135deg,#1a0f3022,#0f162888);border:1px
+solid #7c3aed44;border-radius:12px;padding:14px;margin-bottom:14px;}
+.ptp-stats-title{font-size:10px;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.ptp-stats-grid{display:grid;grid-template-columns:1fr 1fr
+1fr;gap:8px;margin-bottom:10px;}
+.ptp-mini-stat{text-align:center;}
+.ptp-mini-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;}
+.ptp-mini-val{font-family:'JetBrains
+Mono',monospace;font-size:12px;font-weight:700;}
+.ptp-progress-bar-bg{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;margin-top:6px;}
+.ptp-progress-bar-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#a78bfa);border-radius:4px;transition:width
+1.4s ease;}
+.ptp-progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--muted2);margin-top:4px;}
 
-.runner-grp{position:absolute;top:50%;transform:translateY(-50%);transition:left 2.2s cubic-bezier(.22,1,.36,1);left:8%;z-index:6;display:flex;align-items:center;gap:8px;}
-.runner-fig{position:relative;width:40px;height:64px;}
-.runner-info{display:flex;flex-direction:column;gap:2px;}
-.runner-name{font-size:11px;font-weight:700;color:#fff;white-space:nowrap;}
-.runner-pct{font-size:13px;font-weight:800;font-family:'Orbitron',monospace;white-space:nowrap;}
-.runner-amt{font-size:10px;color:var(--muted2);font-family:'JetBrains Mono',monospace;white-space:nowrap;}
-.runner-rem{font-size:9px;color:var(--muted);white-space:nowrap;}
+.fuel-input-section{background:var(--surface2);border:1px solid
+var(--border2);border-radius:12px;padding:14px;margin-bottom:12px;}
+.fuel-input-label{font-size:12px;font-weight:600;color:var(--muted2);margin-bottom:8px;}
+.fuel-input-wrap{display:flex;gap:8px;}
+.fuel-input{flex:1;background:var(--surface3);border:1px solid
+var(--border2);color:var(--text);font-family:'JetBrains
+Mono',monospace;font-size:14px;font-weight:600;padding:10px
+14px;border-radius:8px;outline:none;transition:border .15s;}
+.fuel-input:focus{border-color:var(--gold);}
+.fuel-input::placeholder{color:var(--muted);font-size:12px;font-weight:400;}
+.fuel-check-btn{background:linear-gradient(135deg,#f0c040,#f97316);color:#000;border:none;padding:10px
+18px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:800;font-family:'Inter',sans-serif;white-space:nowrap;transition:all
+.2s;}
+.fuel-check-btn:hover{transform:scale(1.05);}
+.fuel-gauge-wrap{display:none;margin-bottom:12px;}
+.fuel-gauge-wrap.show{display:block;}
+.fuel-gauge-label{font-size:11px;color:var(--muted2);margin-bottom:6px;display:flex;justify-content:space-between;}
+.fuel-gauge-bg{height:24px;background:var(--surface2);border-radius:12px;overflow:hidden;border:1px
+solid var(--border);position:relative;}
+.fuel-gauge-fill{height:100%;border-radius:12px;transition:width 1.4s
+cubic-bezier(.34,1.4,.64,1);width:0%;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;}
+.fuel-gauge-pct{text-align:center;font-family:'Orbitron',monospace;font-size:13px;font-weight:800;margin-top:5px;}
+.fuel-result{display:none;padding:12px
+16px;border-radius:10px;font-size:13px;font-weight:600;line-height:1.7;border-left:4px
+solid;margin-bottom:4px;}
+.fuel-result.show{display:block;}
+.fuel-result.full{background:#14532d22;color:#86efac;border-color:var(--green);}
+.fuel-result.ok{background:#1e3a5f22;color:#93c5fd;border-color:var(--blue);}
+.fuel-result.low{background:#45000022;color:#fca5a5;border-color:var(--red);}
+.fuel-close-btn{width:100%;padding:11px;background:var(--surface2);border:none;border-top:1px
+solid var(--border);color:var(--muted2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background
+.15s;}
+.fuel-close-btn:hover{background:var(--surface3);}
 
-.run-finish{position:absolute;right:0;top:0;bottom:0;width:14px;background:repeating-linear-gradient(180deg,#fff 0,#fff 7px,#111 7px,#111 14px);opacity:.35;border-radius:0 10px 10px 0;z-index:4;}
-.run-trophy{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:22px;z-index:7;animation:bob 1.2s ease-in-out infinite;}
-.lane-ach{position:absolute;right:20px;top:50%;transform:translateY(-50%);font-family:'Orbitron',monospace;font-size:12px;font-weight:700;opacity:.55;z-index:3;}
+.track-rank{position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:15px;width:26px;text-align:center;z-index:3;}
+.car-group{position:absolute;top:50%;transform:translateY(-50%);transition:left
+2.2s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;gap:6px;cursor:pointer;z-index:5;left:8%;}
+.car-svg{width:50px;height:25px;filter:drop-shadow(0 2px 8px
+rgba(0,0,0,.7));transition:filter .2s;}
+.car-group:hover .car-svg{filter:drop-shadow(0 0 12px currentColor);}
+.car-group:hover .car-tooltip{opacity:1;pointer-events:auto;}
 
-.sv-table-wrap{background:var(--surf);border:1px solid var(--bdr2);border-radius:14px;overflow:hidden;}
-.sv-table{width:100%;border-collapse:collapse;}
-.sv-table th{background:var(--surf2);padding:10px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);text-align:left;border-bottom:1px solid var(--bdr);}
-.sv-table td{padding:12px 16px;font-size:12px;border-bottom:1px solid var(--bdr);vertical-align:middle;}
-.sv-table tr:last-child td{border-bottom:none;}
-.sv-table tr:hover td{background:var(--surf2);}
-.tl-name-cell{display:flex;align-items:center;gap:10px;}
-.tl-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex-shrink:0;border:2px solid;}
-.tl-pct-bar{width:100%;height:6px;background:var(--surf3);border-radius:3px;overflow:hidden;margin-top:4px;}
-.tl-pct-fill{height:100%;border-radius:3px;transition:width 1.6s ease;}
-.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;font-size:14px;}
+/* CAR ANIMATIONS */
+@keyframes carBob{0%,100%{transform:translateY(-50%)
+rotate(0deg)}25%{transform:translateY(-52%)
+rotate(.4deg)}75%{transform:translateY(-48%) rotate(-.4deg)}}
+@keyframes carDrift{0%,100%{transform:translateY(-50%)
+skewX(0deg)}30%{transform:translateY(-51%)
+skewX(-1.5deg)}70%{transform:translateY(-49%) skewX(1deg)}}
+@keyframes wheelSpin{to{transform:rotate(360deg)}}
+@keyframes smokeFloat{0%{transform:translateX(0) translateY(0)
+scale(1);opacity:.7}100%{transform:translateX(-30px) translateY(-12px)
+scale(2.5);opacity:0}}
+@keyframes speedLine{0%{transform:translateX(0);opacity:.6}100%{transform:translateX(-40px);opacity:0}}
+@keyframes engineGlow{0%,100%{opacity:.4}50%{opacity:.9}}
+@keyframes nitroFlame{0%,100%{transform:scaleX(1)
+scaleY(1);opacity:.9}50%{transform:scaleX(1.4) scaleY(.7);opacity:.6}}
+@keyframes supercarspark{0%,100%{opacity:0}50%{opacity:1}}
+@keyframes finishPulse{0%,100%{box-shadow:0 0 18px
+rgba(240,192,64,.25)}50%{box-shadow:0 0 35px rgba(240,192,64,.55),0 0
+60px rgba(240,192,64,.15)}}
 
-.popup-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.85);align-items:center;justify-content:center;padding:20px;}
+.car-group.racing{animation:carBob .5s ease-in-out infinite;}
+.car-group.racing .car-svg{animation:carDrift .8s ease-in-out infinite;}
+.car-group.supercar-mode .car-svg{filter:drop-shadow(0 0 14px gold)
+drop-shadow(0 0 4px #fff);}
+.track-row.finished{animation:finishPulse 2s ease-in-out infinite;}
+
+/* SMOKE PARTICLES */
+.smoke-container{position:absolute;right:calc(100% -
+4px);top:50%;transform:translateY(-50%);pointer-events:none;z-index:4;}
+.smoke-dot{position:absolute;border-radius:50%;animation:smokeFloat
+var(--sd,1.2s) ease-out infinite var(--sdl,0s);}
+
+/* SPEED LINES */
+.speed-lines{position:absolute;right:100%;top:50%;transform:translateY(-50%);pointer-events:none;display:flex;flex-direction:column;gap:4px;}
+.speed-line{height:1px;border-radius:1px;animation:speedLine
+var(--sl,0.4s) linear infinite var(--sll,0s);opacity:0;}
+
+/* NITRO FLAME */
+.nitro{position:absolute;right:calc(100% +
+2px);top:50%;transform:translateY(-50%);pointer-events:none;}
+.car-label{display:flex;flex-direction:column;gap:1px;}
+.car-name{font-size:11px;font-weight:700;color:#fff;white-space:nowrap;text-shadow:0
+1px 3px rgba(0,0,0,.9);}
+.car-stats{font-size:10px;white-space:nowrap;font-family:'JetBrains
+Mono',monospace;font-weight:600;}
+.ptp-pill{font-size:9px;color:#a78bfa;font-family:'JetBrains
+Mono',monospace;white-space:nowrap;display:flex;align-items:center;gap:3px;margin-top:1px;}
+.ach-badge{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-family:'Orbitron',monospace;font-size:11px;font-weight:700;opacity:.45;z-index:2;}
+.finish-line{position:absolute;right:0;top:0;bottom:0;width:12px;background:repeating-linear-gradient(180deg,#fff
+0,#fff 6px,#111 6px,#111 12px);opacity:.3;border-radius:0 10px 10px
+0;z-index:2;}
+
+/* TROPHY for finished */
+.finish-trophy{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:20px;z-index:6;animation:medalBounce
+1.5s ease-in-out infinite;}
+
+/* TOOLTIP */
+.car-tooltip{position:absolute;bottom:calc(100% +
+10px);left:0;background:#050810;border:1px solid
+var(--border2);border-radius:10px;padding:10px
+12px;min-width:240px;z-index:9999;pointer-events:none;opacity:0;transition:opacity
+.2s;box-shadow:0 8px 24px rgba(0,0,0,.9);}
+.car-tooltip::after{content:'';position:absolute;top:100%;left:20px;border:6px
+solid transparent;border-top-color:var(--border2);}
+.tt-name{font-size:12px;font-weight:700;color:#fff;margin-bottom:6px;padding-bottom:6px;border-bottom:1px
+solid var(--border);}
+.tt-row{display:flex;justify-content:space-between;gap:8px;padding:2px
+0;font-size:11px;}
+.tt-lbl{color:var(--muted2);}
+.tt-v{font-family:'JetBrains Mono',monospace;font-weight:600;}
+.tt-divider{height:1px;background:var(--border);margin:5px 0;}
+.tt-ptp-title{font-size:10px;font-weight:700;color:var(--purple);margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px;}
+
+/* POPUP */
+.popup-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.82);align-items:center;justify-content:center;padding:20px;}
 .popup-overlay.show{display:flex;}
-.popup{background:var(--surf);border:1px solid var(--bdr2);border-radius:18px;width:100%;max-width:400px;overflow:hidden;animation:popIn .25s cubic-bezier(.34,1.56,.64,1);}
-@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
-.pop-hdr{padding:18px 20px 14px;border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:12px;}
-.pop-av{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;border:2px solid;}
-.pop-name{font-size:15px;font-weight:700;color:#fff;}
-.pop-sub{font-size:11px;color:var(--muted2);margin-top:2px;}
-.pop-rank{font-size:32px;margin-left:auto;}
-.pop-body{padding:16px 20px;}
-.pop-ach-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
-.pop-ach-label{font-size:11px;color:var(--muted2);}
-.pop-ach-val{font-family:'Orbitron',monospace;font-size:16px;font-weight:800;}
-.pop-ach-bar{height:8px;background:var(--surf2);border-radius:4px;overflow:hidden;margin-bottom:14px;}
-.pop-ach-fill{height:100%;border-radius:4px;transition:width 1s ease;}
-.pop-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
-.pop-stat{background:var(--surf2);border:1px solid var(--bdr);border-radius:8px;padding:10px 12px;}
-.pop-stat-lbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
-.pop-stat-val{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;}
-.pop-msg{font-size:12px;font-weight:600;padding:10px 14px;border-radius:8px;margin-bottom:10px;border-left:3px solid;line-height:1.6;}
-.pop-msg.great{background:#14532d22;color:#86efac;border-color:var(--green);}
-.pop-msg.good{background:#1e3a5f22;color:#93c5fd;border-color:var(--blue);}
-.pop-msg.low{background:#45000022;color:#fca5a5;border-color:var(--red);}
-.pop-close{width:100%;padding:10px;background:var(--surf2);border:none;border-top:1px solid var(--bdr);color:var(--muted2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:background .15s;}
-.pop-close:hover{background:var(--surf3);}
+.popup{background:var(--surface);border:1px solid
+var(--border2);border-radius:18px;width:100%;max-width:390px;overflow:hidden;animation:popIn
+.25s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.popup-hdr{padding:18px 20px;display:flex;align-items:center;gap:14px;}
+.popup-avatar{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0;border:2px
+solid;}
+.popup-name{font-size:15px;font-weight:700;color:#fff;}
+.popup-tl{font-size:11px;color:var(--muted2);margin-top:2px;}
+.popup-rank-big{font-size:32px;margin-left:auto;}
+.popup-body{padding:14px 20px;}
+.popup-ach{text-align:center;margin-bottom:12px;}
+.popup-ach-num{font-family:'Orbitron',sans-serif;font-size:38px;font-weight:900;}
+.popup-ach-label{font-size:11px;color:var(--muted2);margin-top:2px;}
+.popup-progress{height:10px;background:var(--surface2);border-radius:5px;overflow:hidden;margin-bottom:12px;}
+.popup-progress-fill{height:100%;border-radius:5px;transition:width 1s ease;}
+.popup-grid{display:grid;grid-template-columns:1fr
+1fr;gap:8px;margin-bottom:12px;}
+.popup-stat{background:var(--surface2);border:1px solid
+var(--border);border-radius:8px;padding:10px 12px;}
+.popup-stat-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.popup-stat-val{font-family:'JetBrains
+Mono',monospace;font-size:13px;font-weight:700;}
+.popup-ptp{display:flex;align-items:center;gap:10px;background:#1a0f30;border:1px
+solid #7c3aed44;border-radius:8px;padding:10px
+14px;margin-bottom:12px;}
+.ptp-info{flex:1;}
+.ptp-label{font-size:10px;color:var(--purple);font-weight:700;text-transform:uppercase;letter-spacing:.6px;}
+.ptp-val{font-size:13px;font-weight:700;color:var(--purple);font-family:'JetBrains
+Mono',monospace;}
+.ptp-track{height:5px;background:var(--surface2);border-radius:3px;margin-top:4px;overflow:hidden;}
+.ptp-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#a78bfa);border-radius:3px;}
+.popup-msg{font-size:12px;font-weight:600;padding:10px
+14px;border-radius:8px;margin-bottom:12px;line-height:1.6;border-left:3px
+solid;}
+.popup-msg.great{background:#14532d22;color:#86efac;border-color:var(--green);}
+.popup-msg.good{background:#1e3a5f22;color:#93c5fd;border-color:var(--blue);}
+.popup-msg.warn{background:#3d280022;color:#fcd34d;border-color:var(--gold2);}
+.popup-msg.low{background:#45000022;color:#fca5a5;border-color:var(--red);}
+.popup-close{width:100%;padding:11px;background:var(--surface2);border:none;border-top:1px
+solid var(--border);color:var(--muted2);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:background
+.15s;}
+.popup-close:hover{background:var(--surface3);}
 
-#loadingState{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;gap:14px;position:relative;z-index:10;}
-.spinner{width:36px;height:36px;border:3px solid var(--bdr2);border-top-color:var(--gold);border-radius:50%;animation:spinIcon .8s linear infinite;}
-.load-txt{color:var(--muted);font-family:'Orbitron',monospace;font-size:11px;letter-spacing:1px;}
+/* LOADING / ERROR */
+#loadingState{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:65vh;gap:16px;}
+.spinner{width:40px;height:40px;border:3px solid
+var(--border2);border-top-color:var(--gold);border-radius:50%;animation:spin
+.8s linear infinite;}
+.load-text{color:var(--muted);font-family:'Orbitron',monospace;font-size:12px;letter-spacing:1px;}
+#errorState{display:none;position:relative;z-index:10;flex-direction:column;align-items:center;justify-content:center;min-height:65vh;gap:14px;}
+.err-title{font-family:'Orbitron',monospace;font-size:13px;color:var(--red);letter-spacing:1px;}
+.err-sub{font-size:12px;color:var(--muted);text-align:center;line-height:1.8;max-width:400px;}
+#mainDash{display:none;position:relative;z-index:10;}
 
-@media(max-width:700px){
-  .kpi-strip,.sv-kpi-strip{grid-template-columns:repeat(2,1fr);}
-  .podium-wrap{flex-direction:column;align-items:center;}
-}
+/* CONFETTI */
+@keyframes confFall{0%{transform:translateY(-20px)
+rotate(0);opacity:1}100%{transform:translateY(70px)
+rotate(360deg);opacity:0}}
+.conf-dot{position:absolute;width:7px;height:7px;border-radius:1px;animation:confFall
+2.5s ease-in infinite;}
+
+/* LIVE INDICATOR */
+.live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:5px;animation:livePulse
+1.5s ease-in-out infinite;}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* ═══════════════════════════════════════════════
+   TICKER HEADLINE STRIP
+═══════════════════════════════════════════════ */
+.ticker-strip{position:relative;z-index:10;background:#030612;border-top:1px
+solid var(--border2);border-bottom:2px solid
+#f0c04044;overflow:hidden;height:32px;display:flex;align-items:center;}
+.ticker-flag{flex-shrink:0;width:44px;height:32px;display:flex;align-items:center;justify-content:center;background:#f0c040;position:relative;z-index:2;}
+.ticker-flag svg{width:22px;height:22px;}
+.ticker-inner{display:flex;align-items:center;white-space:nowrap;animation:tickerScroll
+80s linear infinite;}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{display:inline-flex;align-items:center;gap:8px;margin-right:48px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:.2px;}
+.ticker-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.ticker-sep{color:#f0c04077;margin:0 8px;font-size:16px;line-height:1;}
+
+/* ═══════════════════════════════════════════════
+   CINEMATIC OVERALL RACE ARENA
+═══════════════════════════════════════════════ */
+.arena-wrap{position:relative;z-index:10;margin:0;background:#030612;border-bottom:2px
+solid var(--border2);overflow:hidden;}
+.arena-sky{position:absolute;inset:0;background:radial-gradient(ellipse
+120% 60% at 50% 100%,#0d1f40 0%,#030612 70%);pointer-events:none;}
+/* Road perspective */
+.arena-road{position:absolute;bottom:0;left:0;right:0;height:90px;background:linear-gradient(180deg,transparent,#0a0f1e
+40%,#111827 100%);clip-path:polygon(20% 0%,80% 0%,100% 100%,0% 100%);}
+.arena-road-lines{position:absolute;bottom:0;left:0;right:0;height:90px;overflow:hidden;clip-path:polygon(20%
+0%,80% 0%,100% 100%,0% 100%);}
+.road-dash{position:absolute;bottom:20px;height:4px;border-radius:2px;background:#ffffff18;animation:dashRush
+0.4s linear infinite;}
+@keyframes dashRush{0%{transform:scaleX(1)
+translateX(0);opacity:.6}100%{transform:scaleX(3)
+translateX(-40px);opacity:0}}
+/* Arena content */
+.arena-content{position:relative;z-index:2;padding:18px 24px 14px;}
+.arena-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.arena-title{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:900;background:linear-gradient(90deg,#f0c040,#fff,#f0c040);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:2px;text-transform:uppercase;}
+.arena-pct-giant{font-family:'Orbitron',monospace;font-size:38px;font-weight:900;line-height:1;text-shadow:0
+0 30px currentColor;}
+.arena-nums-col{text-align:right;}
+.arena-collected-lbl{font-size:9px;color:var(--muted);font-family:'JetBrains
+Mono',monospace;text-transform:uppercase;letter-spacing:.8px;}
+.arena-collected-val{font-family:'Orbitron',monospace;font-size:15px;font-weight:700;color:var(--green);}
+.arena-target-val{font-size:10px;color:var(--muted2);font-family:'JetBrains
+Mono',monospace;}
+
+/* THE RACE TRACK */
+.arena-track{position:relative;height:70px;background:#08101e;border:1px
+solid #1e2d4a;border-radius:12px;overflow:hidden;margin-bottom:8px;}
+.arena-track-road{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent
+40px,rgba(255,255,255,.015) 40px,rgba(255,255,255,.015) 41px);}
+.arena-track-center{position:absolute;top:50%;left:4px;right:4px;height:1px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.08)
+0,rgba(255,255,255,.08) 20px,transparent 20px,transparent
+40px);transform:translateY(-50%);}
+/* Progress fill */
+.arena-fill{position:absolute;top:0;left:0;height:100%;border-radius:12px
+0 0 12px;transition:width 2.5s
+cubic-bezier(.22,1,.36,1);overflow:hidden;}
+.arena-fill-shimmer{position:absolute;inset:0;background:linear-gradient(90deg,transparent
+0%,rgba(255,255,255,.15) 50%,transparent 100%);animation:shimmer 1.8s
+linear infinite;}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+/* Supercar on arena track */
+.arena-car{position:absolute;top:50%;transform:translateY(-50%);transition:left
+2.5s cubic-bezier(.22,1,.36,1);left:4%;z-index:6;filter:drop-shadow(0
+0 16px #f0c040) drop-shadow(0 0 6px #fff);}
+/* Speed streak behind car */
+.arena-streaks{position:absolute;top:50%;transform:translateY(-50%);pointer-events:none;z-index:5;}
+.arena-streak{position:absolute;height:2px;border-radius:1px;animation:streakFade
+.3s linear infinite;}
+@keyframes streakFade{0%{opacity:.7;width:60px}100%{opacity:0;width:20px;transform:translateX(-30px)}}
+/* Flames behind car */
+.arena-flames{position:absolute;top:50%;transform:translateY(-50%);right:calc(100%
++ 1px);pointer-events:none;}
+/* Finish flag at right edge */
+.arena-finish{position:absolute;right:0;top:0;bottom:0;width:18px;background:repeating-linear-gradient(180deg,#fff
+0,#fff 9px,#111 9px,#111 18px);opacity:.35;border-radius:0 12px 12px
+0;}
+/* Milestone markers */
+.arena-milestone{position:absolute;top:0;bottom:0;width:1px;opacity:.25;}
+.arena-milestone-lbl{position:absolute;bottom:2px;font-size:8px;font-family:'JetBrains
+Mono',monospace;color:rgba(255,255,255,.4);transform:translateX(-50%);}
+
+/* Progress sub row */
+.arena-sub{display:flex;justify-content:space-between;align-items:center;font-size:10px;}
+.arena-remaining{color:var(--red);font-family:'JetBrains
+Mono',monospace;font-weight:600;}
+.arena-remaining.done{color:var(--green);}
+.arena-agents{color:var(--muted);font-family:'JetBrains Mono',monospace;}
+
+/* ═══════════════════════════════════════════════
+   TL LEADERSHIP DASHBOARDS — REDESIGNED
+═══════════════════════════════════════════════ */
+.tl-section{position:relative;z-index:10;padding:20px 24px 0;}
+.tl-dashboards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+
+.tl-dash{position:relative;border-radius:18px;overflow:hidden;transition:transform
+.3s,box-shadow .3s;cursor:default;}
+.tl-dash:hover{transform:translateY(-6px);}
+
+/* RANK RIBBON — diagonal top-left corner */
+.tl-ribbon{position:absolute;top:0;left:0;width:64px;height:64px;overflow:hidden;z-index:4;pointer-events:none;}
+.tl-ribbon-inner{position:absolute;top:12px;left:-18px;width:80px;text-align:center;font-size:10px;font-weight:800;font-family:'Orbitron',sans-serif;padding:3px
+0;transform:rotate(-45deg);letter-spacing:.5px;}
+
+/* Hero header with giant name */
+.tl-dash-hero{padding:18px 16px
+12px;position:relative;overflow:hidden;min-height:80px;}
+.tl-dash-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(255,255,255,.06);}
+/* Background circuit lines for visual texture */
+.tl-dash-hero::before{content:'';position:absolute;inset:0;background-image:
+  linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px),
+  linear-gradient(180deg,rgba(255,255,255,.03) 1px,transparent 1px);
+  background-size:16px 16px;pointer-events:none;}
+.tl-hero-rank-num{position:absolute;right:14px;top:10px;font-family:'Orbitron',monospace;font-size:42px;font-weight:900;opacity:.12;line-height:1;pointer-events:none;}
+.tl-hero-badge{display:inline-flex;align-items:center;gap:5px;font-size:9px;font-weight:700;font-family:'Orbitron',sans-serif;padding:3px
+9px;border-radius:20px;border:1px
+solid;letter-spacing:.8px;text-transform:uppercase;margin-bottom:7px;}
+.tl-hero-name{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:900;color:#fff;letter-spacing:.5px;line-height:1.1;margin-bottom:3px;}
+.tl-hero-region{font-size:10px;font-weight:500;opacity:.65;font-family:'Inter',sans-serif;}
+
+/* GIANT % RING AREA */
+.tl-pct-zone{display:flex;align-items:center;justify-content:space-between;padding:14px
+16px 10px;}
+.tl-pct-big{font-family:'Orbitron',monospace;font-size:40px;font-weight:900;line-height:1;letter-spacing:-1px;}
+.tl-pct-sub{font-size:9px;color:rgba(255,255,255,.45);font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:.6px;margin-top:2px;}
+/* Circular progress ring */
+.tl-ring-wrap{position:relative;width:56px;height:56px;flex-shrink:0;}
+.tl-ring-svg{width:56px;height:56px;transform:rotate(-90deg);}
+.tl-ring-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:4;}
+.tl-ring-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset
+2s cubic-bezier(.34,1.4,.64,1);}
+.tl-ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.tl-ring-val{font-family:'Orbitron',monospace;font-size:10px;font-weight:800;line-height:1;}
+.tl-ring-agents{font-size:7px;color:rgba(255,255,255,.45);font-family:'Inter',sans-serif;}
+
+/* PROGRESS TRACK */
+.tl-track-zone{padding:0 16px 10px;}
+.tl-track-label{display:flex;justify-content:space-between;font-size:9px;font-family:'JetBrains
+Mono',monospace;margin-bottom:4px;}
+.tl-track-lbl-l{color:rgba(255,255,255,.5);}
+.tl-track-lbl-r{font-weight:700;}
+.tl-mini-track{position:relative;height:24px;background:rgba(0,0,0,.4);border-radius:6px;overflow:hidden;border:1px
+solid rgba(255,255,255,.06);}
+.tl-mini-road{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent
+14px,rgba(255,255,255,.02) 14px,rgba(255,255,255,.02) 15px);}
+.tl-mini-fill{position:absolute;top:0;left:0;height:100%;border-radius:6px
+0 0 6px;opacity:.3;transition:width 2s cubic-bezier(.34,1.4,.64,1);}
+.tl-mini-car{position:absolute;top:50%;transform:translateY(-50%);font-size:14px;transition:left
+2s cubic-bezier(.22,1,.36,1);left:2%;z-index:3;filter:drop-shadow(0 0
+6px gold);}
+.tl-mini-finish{position:absolute;right:0;top:0;bottom:0;width:7px;background:repeating-linear-gradient(180deg,#fff
+0,#fff 3.5px,#111 3.5px,#111 7px);opacity:.35;border-radius:0 6px 6px
+0;}
+.tl-mini-trophy{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:13px;animation:medalBounce
+1.2s ease-in-out infinite;z-index:4;}
+
+/* STATS STRIP — horizontal */
+.tl-stats-strip{display:grid;grid-template-columns:1fr
+1fr;gap:1px;background:rgba(255,255,255,.04);border-top:1px solid
+rgba(255,255,255,.04);}
+.tl-stat-box{padding:9px 12px;background:#00000033;}
+.tl-stat-lbl{font-size:8px;text-transform:uppercase;letter-spacing:.6px;color:rgba(255,255,255,.4);font-family:'Inter',sans-serif;margin-bottom:3px;}
+.tl-stat-val{font-family:'JetBrains
+Mono',monospace;font-size:12px;font-weight:700;color:#fff;}
+
+/* MORALE FOOTER */
+.tl-morale{padding:10px 16px
+14px;font-size:11px;font-style:italic;font-weight:500;color:rgba(255,255,255,.7);font-family:'Inter',sans-serif;line-height:1.5;border-top:1px
+solid rgba(255,255,255,.04);}
+.tl-morale strong{font-style:normal;font-weight:700;}
+
+/* AGENT DOTS ROW */
+.tl-dots-row{display:flex;align-items:center;gap:3px;padding:6px 16px
+0;flex-wrap:wrap;}
+.tl-agent-dot{width:7px;height:7px;border-radius:50%;transition:all .3s;}
+
+@media(max-width:1100px){.tl-dashboards{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:900px){.kpi-strip{grid-template-columns:repeat(3,1fr);}.podium{flex-direction:column;align-items:center;}.tl-dashboards{grid-template-columns:repeat(2,1fr);}}
 </style>
 </head>
 <body>
 
 <div class="stars" id="stars"></div>
 
+<!-- HEADER -->
 <div class="hdr">
-  <div class="hdr-left">
-    <div class="hdr-icon">🏎️</div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <span style="font-size:26px;filter:drop-shadow(0 0 8px
+#f0c04088);">🏎️</span>
     <div>
-      <div class="hdr-title">TATA CAPITAL · LSA</div>
-      <div class="hdr-sub"><span class="live-dot"></span>Live · Project B · Monthly Collection Race</div>
+      <div class="hdr-title">TATA CAPITAL- LSA </div>
+      <div class="hdr-sub"><span class="live-dot"></span>Live · Google
+Sheet · Project B — Monthly Collection Achievement</div>
     </div>
   </div>
   <div class="hdr-right">
     <span class="month-badge" id="monthBadge">LOADING…</span>
+    <span class="updated-badge" id="updatedBadge">–</span>
+    <button class="refresh-btn" id="refreshBtn" onclick="loadData(true)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1
+15-6.7L21 8M3 16l3 3a9 9 0 0 0 15-7"/></svg>
+      Refresh
+    </button>
   </div>
 </div>
 
-<div class="toggle-wrap">
-  <span class="toggle-label">View:</span>
-  <div class="page-toggle">
-    <button class="ptab active" id="tab1" onclick="switchPage(1)">
-      <span class="ptab-icon">🏎️</span> Agent Race
-    </button>
-    <button class="ptab" id="tab2" onclick="switchPage(2)">
-      <span class="ptab-icon">🏃</span> Supervisor Race
-    </button>
+<!-- FILTERS -->
+<div class="filters">
+  <span class="filter-label">Region:</span>
+  <div class="filter-group" id="zoneFilters"></div>
+  <div class="divider-v"></div>
+  <span class="filter-label">TL:</span>
+  <div class="filter-group" id="tlFilters"></div>
+  <div class="divider-v"></div>
+  <div class="search-wrap">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path
+d="m21 21-4.35-4.35"/></svg>
+    <input class="search" type="text" placeholder="Search agent…"
+id="searchBox" oninput="applyFilters()">
   </div>
-  <button class="refresh-btn" id="refreshBtn" onclick="loadData(true)">
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 15-6.7L21 8M3 16l3 3a9 9 0 0 0 15-7"/></svg>
-    Refresh
-  </button>
+  <span class="cnt-badge" id="cntBadge"></span>
 </div>
 
+<!-- KPI -->
+<div class="kpi-strip" id="kpiStrip"></div>
+
+<!-- LOADING / ERROR -->
 <div id="loadingState">
   <div class="spinner"></div>
-  <div class="load-txt">FETCHING RACE DATA…</div>
+  <div class="load-text">FETCHING LIVE DATA…</div>
 </div>
-
-<!-- PAGE 1 — AGENT RACE -->
-<div class="page" id="page1">
-  <div class="kpi-strip" id="kpiStrip1"></div>
-  <div class="section" style="padding-bottom:0;">
-    <div class="filter-bar">
-      <span class="fl">TL:</span>
-      <div id="tlFilters"></div>
-      <input class="srch" type="text" placeholder="🔍 Search agent…" id="searchBox" oninput="renderAgentPage()">
-      <span id="cntBadge" style="font-size:10px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-left:auto;"></span>
+<div id="errorState">
+  <div style="font-size:44px;">⚠️</div>
+  <div class="err-title">COULD NOT LOAD DATA</div>
+  <div class="err-sub" style="max-width:500px;">
+    To fix this, set up a <strong style="color:#fff">Google Apps
+Script</strong> endpoint.<br>
+    <span style="font-size:11px;color:var(--muted);">See the setup
+guide below or click Try Again.</span>
+  </div>
+  <button class="refresh-btn" onclick="loadData(true)"
+style="margin-top:8px;">↻ Try Again</button>
+  <button onclick="document.getElementById('setupGuide').style.display='block'"
+style="background:none;border:1px solid
+var(--border2);color:var(--muted);padding:7px
+16px;border-radius:8px;cursor:pointer;font-size:12px;margin-top:6px;">📋
+Show Setup Guide</button>
+  <div id="setupGuide"
+style="display:none;background:var(--surface);border:1px solid
+var(--border2);border-radius:10px;padding:16px;max-width:500px;margin-top:12px;text-align:left;font-size:12px;line-height:2;color:var(--muted2);">
+    <div style="color:var(--gold);font-family:Orbitron,monospace;font-size:11px;font-weight:700;margin-bottom:8px;">APPS
+SCRIPT SETUP (ONE TIME)</div>
+    1. Open your Google Sheet → <strong style="color:#fff">Extensions
+→ Apps Script</strong><br>
+    2. Delete existing code. Paste the code below. Click 💾 Save.<br>
+    3. Click <strong style="color:#fff">Deploy → New deployment → Web
+App</strong><br>
+    4. Set "Execute as" → <strong style="color:#fff">Me</strong>, "Who
+has access" → <strong style="color:#fff">Anyone</strong><br>
+    5. Click Deploy → Copy the Web App URL<br>
+    6. Open this dashboard HTML file → find <code
+style="color:var(--gold)">APPS_SCRIPT_URL = ''</code> → paste URL
+between the quotes<br>
+    <div style="background:#0a0e1a;border:1px solid
+var(--border);border-radius:6px;padding:10px;margin-top:10px;font-family:monospace;font-size:11px;color:#a78bfa;">
+    function doGet() {<br>
+    &nbsp;&nbsp;var ss =
+SpreadsheetApp.openById('1lQiE-GpC_8Xy0VWiCDAffF9Lsw-YYB5tblxNFD24cbU');<br>
+    &nbsp;&nbsp;var sheet = ss.getSheets()[0];<br>
+    &nbsp;&nbsp;var data = sheet.getDataRange().getValues();<br>
+    &nbsp;&nbsp;var csv = data.map(r => r.map(c =>
+'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');<br>
+    &nbsp;&nbsp;return
+ContentService.createTextOutput(JSON.stringify({csv:csv}))<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;.setMimeType(ContentService.MimeType.JSON);<br>
+    }
     </div>
   </div>
-  <div class="section" style="padding-bottom:0;">
-    <div class="sec-title">🏆 Podium</div>
-    <div class="podium-wrap" id="podium"></div>
-  </div>
-  <div class="section">
-    <div class="sec-title">🏎️ Live Race Track</div>
-    <div class="track-list" id="trackList"></div>
-  </div>
-  <div class="section" id="benchSec" style="display:none;padding-top:0;">
-    <div class="sec-title">⏸ Pit Lane — Yet to Start</div>
-    <div id="benchGrid" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
-  </div>
 </div>
 
-<!-- PAGE 2 — SUPERVISOR RACE -->
-<div class="page" id="page2">
-  <div class="sv-kpi-strip kpi-strip" id="kpiStrip2"></div>
-  <div class="sv-arena">
-    <div class="sec-title" style="margin-bottom:16px;">🏃 Supervisor Running Race · Live Track</div>
-    <div class="running-scene" id="runningScene"></div>
-    <div class="sec-title" style="margin-top:20px;margin-bottom:12px;">📊 Supervisor Leaderboard</div>
-    <div class="sv-table-wrap">
-      <table class="sv-table" id="svTable">
-        <thead><tr>
-          <th>Rank</th><th>Supervisor</th><th>Achievement</th><th>Collected</th><th>Target</th><th>Gap to Leader</th>
-        </tr></thead>
-        <tbody id="svTableBody"></tbody>
-      </table>
-    </div>
-  </div>
-</div>
+<!-- MAIN -->
+<div id="mainDash">
 
-<!-- POPUP -->
-<div class="popup-overlay" id="popupOverlay" onclick="if(event.target===this)closePopup()">
-  <div class="popup">
-    <div class="pop-hdr" id="popHdr">
-      <div class="pop-av" id="popAv"></div>
-      <div><div class="pop-name" id="popName">–</div><div class="pop-sub" id="popSub">–</div></div>
-      <div class="pop-rank" id="popRank">–</div>
+  <!-- TICKER HEADLINE STRIP -->
+  <div class="ticker-strip" id="tickerStrip">
+    <div class="ticker-flag">
+      <svg viewBox="0 0 22 22" fill="none">
+        <!-- Waving race flag animation -->
+        <rect x="2" y="2" width="4" height="18" rx="1" fill="#555"/>
+        <g style="transform-origin:6px 3px;animation:flagWave .6s
+ease-in-out infinite alternate">
+          <rect x="6" y="2" width="7" height="5" fill="#fff"/>
+          <rect x="6" y="7" width="7" height="5" fill="#111"/>
+          <rect x="13" y="2" width="7" height="5" fill="#111"/>
+          <rect x="13" y="7" width="7" height="5" fill="#fff"/>
+        </g>
+      </svg>
     </div>
-    <div class="pop-body">
-      <div class="pop-ach-row">
-        <span class="pop-ach-label">Achievement</span>
-        <span class="pop-ach-val" id="popAchVal">0%</span>
+    <div class="ticker-inner" id="tickerInner"><!-- filled by JS --></div>
+  </div>
+  <style>
+  @keyframes flagWave{0%{transform:skewY(-3deg)
+scaleX(1)}100%{transform:skewY(3deg) scaleX(1.04)}}
+  </style>
+
+  <!-- CINEMATIC OVERALL RACE ARENA -->
+  <div class="arena-wrap" id="arenaWrap">
+    <div class="arena-sky"></div>
+    <div class="arena-content">
+      <div class="arena-title-row">
+        <div>
+          <div class="arena-title">🏁 Project B · Grand Prix</div>
+          <div style="font-size:10px;color:var(--muted);font-family:'JetBrains
+Mono',monospace;margin-top:2px;">Overall team target · All TLs
+combined</div>
+        </div>
+        <div class="arena-nums-col">
+          <div class="arena-collected-lbl">Total Collected</div>
+          <div class="arena-collected-val" id="arenaCollected">₹0</div>
+          <div class="arena-target-val">of ₹1,35,50,000</div>
+        </div>
+        <div>
+          <div class="arena-pct-giant" id="arenaPctGiant"
+style="color:var(--blue);">0.0%</div>
+          <div style="font-size:9px;color:var(--muted);font-family:'JetBrains
+Mono',monospace;text-align:right;">achievement</div>
+        </div>
       </div>
-      <div class="pop-ach-bar"><div class="pop-ach-fill" id="popAchFill"></div></div>
-      <div class="pop-grid">
-        <div class="pop-stat"><div class="pop-stat-lbl">Collected</div><div class="pop-stat-val" id="popCollected" style="color:var(--green)">–</div></div>
-        <div class="pop-stat"><div class="pop-stat-lbl">Target</div><div class="pop-stat-val" id="popTarget" style="color:var(--gold)">–</div></div>
-        <div class="pop-stat"><div class="pop-stat-lbl">Remaining</div><div class="pop-stat-val" id="popRem" style="color:var(--red)">–</div></div>
-        <div class="pop-stat"><div class="pop-stat-lbl">PTP Pipeline</div><div class="pop-stat-val" id="popPTP" style="color:var(--purple)">–</div></div>
+
+      <!-- THE TRACK -->
+      <div class="arena-track" id="arenaTrack">
+        <div class="arena-track-road"></div>
+        <div class="arena-track-center"></div>
+        <!-- milestone markers at 25/50/75/100% -->
+        <div class="arena-milestone"
+style="left:25%;background:#fff;"><div class="arena-milestone-lbl"
+style="left:0">25%</div></div>
+        <div class="arena-milestone"
+style="left:50%;background:#f0c040;"><div class="arena-milestone-lbl"
+style="left:0">50%</div></div>
+        <div class="arena-milestone"
+style="left:75%;background:#f97316;"><div class="arena-milestone-lbl"
+style="left:0">75%</div></div>
+        <!-- Fill -->
+        <div class="arena-fill" id="arenaFill"
+style="width:0%;background:linear-gradient(90deg,#1d6ae5,#22c55e);">
+          <div class="arena-fill-shimmer"></div>
+        </div>
+        <!-- Streaks -->
+        <div class="arena-streaks" id="arenaStreaks"></div>
+        <!-- Supercar -->
+        <div class="arena-car" id="arenaCar">
+          <svg width="90" height="38" viewBox="0 0 90 38"
+xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+            <defs>
+              <filter id="superglow"><feGaussianBlur stdDeviation="3"
+result="b"/><feMerge><feMergeNode in="b"/><feMergeNode
+in="SourceGraphic"/></feMerge></filter>
+              <linearGradient id="subbody" x1="0" y1="0" x2="1"
+y2="0"><stop offset="0%" stop-color="#f0c040"/><stop offset="40%"
+stop-color="#fff" stop-opacity=".5"/><stop offset="100%"
+stop-color="#f97316"/></linearGradient>
+            </defs>
+            <!-- Glow aura -->
+            <ellipse cx="45" cy="24" rx="40" ry="10" fill="#f0c040"
+opacity=".18" filter="url(#superglow)" style="animation:engineGlow .5s
+ease-in-out infinite"/>
+            <!-- Shadow -->
+            <ellipse cx="45" cy="36" rx="32" ry="2.5" fill="rgba(0,0,0,.6)"/>
+            <!-- Wide body -->
+            <path d="M6 17 L16 9 L74 9 L84 17 L84 28 L6 28 Z"
+fill="url(#subbody)" filter="url(#superglow)"/>
+            <!-- Cockpit -->
+            <path d="M22 9 L32 2 L58 2 L68 9 Z" fill="#f0c04099"/>
+            <!-- Windshield -->
+            <path d="M34 8 L40 2.5 L52 2.5 L58 8 Z" fill="#b8e8ff"
+opacity=".9"/>
+            <!-- Gold racing stripe -->
+            <rect x="6" y="22" width="78" height="3" rx="1.5"
+fill="#f0c040" opacity=".5"/>
+            <!-- LED lights front -->
+            <rect x="78" y="14" width="7" height="3" rx="1.5"
+fill="#fff" style="animation:engineGlow .15s ease-in-out infinite"/>
+            <rect x="78" y="18" width="5" height="2" rx="1"
+fill="#a8e6ff" opacity=".8"/>
+            <!-- Tail lights -->
+            <rect x="4" y="15" width="5" height="3" rx="1.5"
+fill="#ff0044" style="animation:engineGlow .2s ease-in-out infinite"/>
+            <!-- Front wheel -->
+            <g transform="translate(72,28)"><circle r="7"
+fill="#111"/><circle r="5.5" fill="#1e1e1e"/><g
+style="animation:wheelSpin .08s linear infinite;transform-origin:0
+0"><line x1="0" y1="-4.5" x2="0" y2="4.5" stroke="#666"
+stroke-width="1.8"/><line x1="-4.5" y1="0" x2="4.5" y2="0"
+stroke="#666" stroke-width="1.8"/><line x1="-3" y1="-3" x2="3" y2="3"
+stroke="#444" stroke-width="1.2"/><line x1="3" y1="-3" x2="-3" y2="3"
+stroke="#444" stroke-width="1.2"/></g><circle r="2"
+fill="#f0c040"/></g>
+            <!-- Rear wheel -->
+            <g transform="translate(18,28)"><circle r="7"
+fill="#111"/><circle r="5.5" fill="#1e1e1e"/><g
+style="animation:wheelSpin .08s linear infinite;transform-origin:0
+0"><line x1="0" y1="-4.5" x2="0" y2="4.5" stroke="#666"
+stroke-width="1.8"/><line x1="-4.5" y1="0" x2="4.5" y2="0"
+stroke="#666" stroke-width="1.8"/><line x1="-3" y1="-3" x2="3" y2="3"
+stroke="#444" stroke-width="1.2"/><line x1="3" y1="-3" x2="-3" y2="3"
+stroke="#444" stroke-width="1.2"/></g><circle r="2"
+fill="#f0c040"/></g>
+            <!-- Front spoiler -->
+            <path d="M80 24 L90 28 L90 30 L80 27 Z" fill="#f0c040"
+opacity=".7"/>
+            <!-- Rear diffuser -->
+            <path d="M3 22 L6 26 L6 28 L3 28 Z" fill="#f97316" opacity=".8"/>
+            <!-- Star badge -->
+            <text x="45" y="21" text-anchor="middle" font-size="9"
+fill="#000" font-family="monospace" font-weight="900">★</text>
+            <!-- Nitro flames -->
+            <path d="M6 19 L-4 17 L-8 19 L-4 21Z" fill="#f97316"
+style="animation:nitroFlame .12s ease-in-out infinite"/>
+            <path d="M6 19 L-2 18 L-5 19 L-2 20Z" fill="#fbbf24"
+style="animation:nitroFlame .1s ease-in-out infinite .04s"/>
+            <path d="M6 21 L-6 19.5 L-10 21 L-6 22.5Z" fill="#f0c040"
+opacity=".6" style="animation:nitroFlame .15s ease-in-out infinite
+.02s"/>
+          </svg>
+        </div>
+        <!-- Road speed dashes behind car -->
+        <div id="arenaDashes"></div>
+        <div class="arena-finish"></div>
       </div>
-      <div class="pop-msg" id="popMsg"></div>
+
+      <div class="arena-sub">
+        <div class="arena-remaining" id="arenaRemaining">Calculating…</div>
+        <div class="arena-agents" id="arenaAgents">–</div>
+      </div>
     </div>
-    <button class="pop-close" onclick="closePopup()">✕ Close</button>
+  </div>
+
+  <!-- TL LEADERSHIP DASHBOARDS -->
+  <div class="tl-section">
+    <div class="sec-title" style="margin-bottom:12px;">👑 TL Command
+Centers</div>
+    <div class="tl-dashboards" id="tlDashboards"></div>
+  </div>
+
+  <div class="podium-section">
+    <div class="sec-title">🏆 Podium — Top 3 Racers</div>
+    <div class="podium" id="podium"></div>
+    <div id="confettiWrap"
+style="position:relative;height:8px;overflow:visible;margin:0
+24px;"></div>
+  </div>
+  <div class="race-section">
+    <div class="sec-title">🏎️ Live Race Track
+      <span style="font-size:10px;color:var(--muted);font-family:'JetBrains
+Mono',monospace;font-weight:400;text-transform:none;letter-spacing:0;">
+        — car position = achievement % &nbsp;|&nbsp; hover for PTP
+&nbsp;|&nbsp; ⛽ click for fuel check
+      </span>
+    </div>
+    <div class="track-wrap" id="trackWrap"></div>
+  </div>
+  <!-- BENCH — zero collection agents -->
+  <div class="bench-section" id="benchSection" style="display:none;">
+    <div class="bench-wrap">
+      <div class="bench-title">⏸ Waiting in the Pits — Yet to Start</div>
+      <div class="bench-grid" id="benchGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FUEL STATION POPUP -->
+<div class="fuel-overlay" id="fuelOverlay"
+onclick="if(event.target===this)closeFuel()">
+  <div class="fuel-popup">
+    <div class="fuel-popup-hdr" id="fuelHdr">
+      <div class="fuel-avatar" id="fuelAvatar">?</div>
+      <div>
+        <div class="fuel-agent-name" id="fuelName">–</div>
+        <div class="fuel-agent-sub" id="fuelSub">–</div>
+      </div>
+      <div class="fuel-rank" id="fuelRank">–</div>
+    </div>
+    <div class="fuel-popup-body">
+      <!-- Achievement -->
+      <div class="fuel-ach-row">
+        <span class="fuel-ach-label">Current Achievement</span>
+        <span class="fuel-ach-val" id="fuelAchVal">0%</span>
+      </div>
+      <div class="fuel-ach-bar-bg"><div class="fuel-ach-bar-fill"
+id="fuelAchBar" style="width:0%"></div></div>
+      <!-- Collection Stats -->
+      <div class="fuel-target-row">
+        <div class="fuel-stat">
+          <div class="fuel-stat-lbl">Collected</div>
+          <div class="fuel-stat-val" id="fuelCollected"
+style="color:var(--green)">–</div>
+        </div>
+        <div class="fuel-stat">
+          <div class="fuel-stat-lbl">Still Needed</div>
+          <div class="fuel-stat-val" id="fuelRemaining"
+style="color:var(--red)">–</div>
+        </div>
+      </div>
+      <!-- PTP Stats from sheet -->
+      <div class="ptp-stats-section" id="fuelPTPStats">
+        <div class="ptp-stats-title">⛽ PTP Pipeline (from sheet)</div>
+        <div class="ptp-stats-grid">
+          <div class="ptp-mini-stat">
+            <div class="ptp-mini-lbl">PTP Generated</div>
+            <div class="ptp-mini-val" id="fuelPTPGenerated"
+style="color:var(--purple)">–</div>
+          </div>
+          <div class="ptp-mini-stat">
+            <div class="ptp-mini-lbl">PTP Target (3×)</div>
+            <div class="ptp-mini-val" id="fuelPTPTarget"
+style="color:var(--gold)">–</div>
+          </div>
+          <div class="ptp-mini-stat">
+            <div class="ptp-mini-lbl">Still Needed</div>
+            <div class="ptp-mini-val" id="fuelPTPNeeded"
+style="color:var(--red)">–</div>
+          </div>
+        </div>
+        <div class="ptp-progress-bar-bg"><div
+class="ptp-progress-bar-fill" id="fuelPTPProgressBar"
+style="width:0%"></div></div>
+        <div class="ptp-progress-label">
+          <span>0</span>
+          <span id="fuelPTPProgressLabel">0% of PTP target</span>
+          <span id="fuelPTPTargetLabel">–</span>
+        </div>
+      </div>
+      <!-- Manual Fuel Check -->
+      <div class="fuel-input-section">
+        <div class="fuel-input-label">🔍 Manual fuel check — enter any
+PTP amount (₹)</div>
+        <div class="fuel-input-wrap">
+          <input class="fuel-input" type="number" id="fuelInput"
+placeholder="Enter PTP amount…" min="0"
+onkeydown="if(event.key==='Enter')checkFuel()">
+          <button class="fuel-check-btn" onclick="checkFuel()">Check 🔍</button>
+        </div>
+      </div>
+      <!-- Fuel Gauge -->
+      <div class="fuel-gauge-wrap" id="fuelGaugeWrap">
+        <div class="fuel-gauge-label">
+          <span>⛽ Collection Fuel Level</span>
+          <span id="fuelGaugeLabelPct">0%</span>
+        </div>
+        <div class="fuel-gauge-bg">
+          <div class="fuel-gauge-fill" id="fuelGaugeFill" style="width:0%">
+            <span style="font-size:14px;">🏎️</span>
+          </div>
+        </div>
+        <div class="fuel-gauge-pct" id="fuelGaugePct"></div>
+      </div>
+      <!-- Result message -->
+      <div class="fuel-result" id="fuelResult"></div>
+    </div>
+    <button class="fuel-close-btn" onclick="closeFuel()">✕ Close Fuel
+Station</button>
   </div>
 </div>
 
 <script>
-const OVERALL_TARGET = 13550000;
-const TL_TARGETS = {
-  'Madan Kumar':{ target:3200000, color:'#3498db', regions:'Kannada · Telugu', gender:'m' },
-  'Thanushree': { target:2800000, color:'#e91e63', regions:'Kannada · Telugu', gender:'f' },
-  'Nikhil_TN':  { target:4050000, color:'#f0c040', regions:'Tamil Nadu',        gender:'m' },
-  'Nikhil_KL':  { target:1500000, color:'#2ecc71', regions:'Kerala',             gender:'m' },
-};
-const AGENTS = {
-  'Harry Manuel':              {display:'Harry Manuel',         tl:'Nikhil_TN',  region:'Tamil',   target:300000},
-  'Arbina Taj':                {display:'Arbina Taj',           tl:'Thanushree', region:'Kannada', target:400000},
-  'B Komala':                  {display:'Komala',               tl:'Madan Kumar',region:'Telugu',  target:400000},
-  'Santhosh S Jain':           {display:'Santhosh S Jain',      tl:'Thanushree', region:'Kannada', target:500000},
-  'God Will Sandhya J P':      {display:'Sandhya',              tl:'Nikhil_TN',  region:'Tamil',   target:150000},
-  'Srinivasa M V':             {display:'Srinivasa M V',        tl:'Madan Kumar',region:'Kannada', target:800000},
-  'Siddappaji M':              {display:'Siddappaji M',         tl:'Nikhil_TN',  region:'Tamil',   target:400000},
-  'Kotte Kiran Kumar':         {display:'Kotte Kiran Kumar',    tl:'Thanushree', region:'Telugu',  target:200000},
-  'Vigneswara Mohanraj':       {display:'Vigneswara Mohanraj',  tl:'Nikhil_TN',  region:'Tamil',   target:200000},
-  'Gopal K R':                 {display:'Gopal',                tl:'Madan Kumar',region:'Kannada', target:300000},
-  'Gudavalli Ismael':          {display:'Gudavalli Ismael',     tl:'Madan Kumar',region:'Telugu',  target:150000},
-  'Sony Mary KP':              {display:'Sony Mary KP',         tl:'Nikhil_KL',  region:'Malayam', target:300000},
-  'Hemanth Kumar K P':         {display:'Hemanth Kumar K P',    tl:'Madan Kumar',region:'Kannada', target:800000},
-  'Jeevan J':                  {display:'Jeevan J',             tl:'Nikhil_TN',  region:'Tamil',   target:500000},
-  'Nithya Karunanithi':        {display:'Nithya Karunanithi',   tl:'Nikhil_TN',  region:'Tamil',   target:200000},
-  'Siddu':                     {display:'Siddu',                tl:'Thanushree', region:'Kannada', target:150000},
-  'Sumitha G':                 {display:'Sumitha G',            tl:'Nikhil_TN',  region:'Tamil',   target:400000},
-  'Prema B':                   {display:'Prema B',              tl:'Nikhil_TN',  region:'Tamil',   target:400000},
-  'Manoja Raju Arya':          {display:'Manoja Raju Arya',     tl:'Thanushree', region:'Kannada', target:200000},
-  'Steena A S':                {display:'Steena A S',           tl:'Nikhil_KL',  region:'Malayam', target:150000},
-  'R V Priyanka':              {display:'R V Priyanka',         tl:'Thanushree', region:'Telugu',  target:500000},
-  'Madhu Sudhan S':            {display:'Madhu Sudhan S',       tl:'Thanushree', region:'Kannada', target:400000},
-  'Amanzen Kallangoden':       {display:'Amanzen Kallangoden',  tl:'Nikhil_KL',  region:'Malayam', target:800000},
-  'Thimmiseti Sravani':        {display:'Thimmiseti Sravani',   tl:'Madan Kumar',region:'Telugu',  target:150000},
-  'Stefy Sony A S':            {display:'Stefy Sony A S',       tl:'Nikhil_KL',  region:'Malayam', target:150000},
-  'Joe Christy':               {display:'Joe Christy',          tl:'Nikhil_TN',  region:'Tamil',   target:400000},
-  'Bandi. Maneesha':           {display:'Bandi Maneesha',       tl:'Madan Kumar',region:'Telugu',  target:300000},
-  'Bandi Srikanth':            {display:'Bandi Srikanth',       tl:'Madan Kumar',region:'Telugu',  target:150000},
-  'Lourd Gladies A':           {display:'Lourd Gladies A',      tl:'Nikhil_TN',  region:'Tamil',   target:150000},
-  'Gajulapalli Sai Teja':      {display:'Gajulapalli Sai Teja', tl:'Thanushree', region:'Telugu',  target:150000},
-  'Arun Kumar':                {display:'Arun',                 tl:'Nikhil_TN',  region:'Tamil',   target:150000},
-  'Bhagyashree Nimbal':        {display:'Bhagyashree Nimbal',   tl:'Thanushree', region:'Telugu',  target:150000},
-  'Mithun':                    {display:'Mithun',               tl:'Nikhil_KL',  region:'Malayam', target:150000},
-  'Sidireddy Nagavardan Reddy':{display:'Nagavardan Reddy',     tl:'Madan Kumar',region:'Telugu',  target:150000},
-};
-const CAR_COLORS=['#f0c040','#e74c3c','#3498db','#2ecc71','#9b59b6','#1abc9c','#e67e22','#e91e63','#00bcd4','#8bc34a','#ff6b6b','#4ecdc4','#f39c12','#a78bfa','#dda0dd'];
-const MEDALS=['🥇','🥈','🥉'];
-
-let ALL_DATA=[], ACTIVE_TL='ALL';
-
-const fmt = n => new Intl.NumberFormat('en-IN').format(Math.round(n));
-const fmtRs = n => '₹'+fmt(n);
-const fmtPct = n => n.toFixed(1)+'%';
-const getMonth = () => new Date().toLocaleString('en-IN',{month:'long',year:'numeric'}).toUpperCase();
-
-(function buildStars(){
-  const s=document.getElementById('stars');
-  for(let i=0;i<80;i++){
-    const d=document.createElement('div');d.className='star';
-    const sz=Math.random()*2+.5;
-    d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--dl:${Math.random()*4}s;`;
-    s.appendChild(d);
-  }
-})();
-
-function switchPage(n){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('page'+n).classList.add('active');
-  document.getElementById('tab'+n).classList.add('active');
-}
+const SHEET_ID = '1lQiE-GpC_8Xy0VWiCDAffF9Lsw-YYB5tblxNFD24cbU';
 
 function parseCSV(text){
   const lines=text.trim().split('\n');
   const headers=lines[0].split(',').map(h=>h.replace(/^"|"$/g,'').trim());
   return lines.slice(1).map(line=>{
-    const vals=[];let cur='',inQ=false;
+    const vals=[]; let cur='',inQ=false;
     for(const c of line){
       if(c==='"'){inQ=!inQ;}
       else if(c===','&&!inQ){vals.push(cur.trim());cur='';}
       else{cur+=c;}
     }
     vals.push(cur.trim());
-    const row={};headers.forEach((h,i)=>row[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
+    const row={};
+    headers.forEach((h,i)=>row[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());
     return row;
   }).filter(r=>Object.values(r).some(v=>v));
 }
-function parseDate(ds){
-  if(!ds||!ds.trim())return null;
-  ds=ds.trim();
-  try{
-    if(ds.includes('/')){const p=ds.split('/');if(p.length===3){const m=parseInt(p[0]),dy=parseInt(p[1]),yr=parseInt(p[2]);return new Date(yr>100?yr:2000+yr,m-1,dy);}}
-    if(ds.includes('-')){const p=ds.split(' ')[0].split('-').map(Number);if(p.length===3)return new Date(p[0],p[1]-1,p[2]);}
-    const d=new Date(ds);if(!isNaN(d.getTime()))return d;
-  }catch(e){}
-  return null;
-}
-async function fetchWithFallback(){
-  const CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vRSqHLaqSLHpymK3ceLrwbiCF3y_3qw8_BIGSl8TDwnWGv9tcTfiZdElZJkB1rQFcpNQOrndUT8BfXb/pub?gid=1293407987&single=true&output=csv';
-  const proxies=[
-    ()=>fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(CSV)+'&t='+Date.now()),
-    ()=>fetch('https://corsproxy.io/?'+encodeURIComponent(CSV)),
-    ()=>fetch(CSV,{mode:'cors',cache:'no-store'})
-  ];
-  for(const p of proxies){
-    try{const r=await p();if(r.ok){const t=await r.text();if(t&&t.length>50&&!t.includes('<!DOCTYPE'))return t;}}
-    catch(e){}
+
+const OVERALL_TARGET = 13550000;
+
+const TL_TARGETS = {
+  'Madan Kumar': { target: 3200000, color: '#3498db', regions:
+'Kannada · Telugu' },
+  'Thanushree':  { target: 2800000, color: '#e91e63', regions:
+'Kannada · Telugu' },
+  'Nikhil_TN':   { target: 4050000, color: '#f0c040', regions: 'Tamil Nadu' },
+  'Nikhil_KL':   { target: 1500000, color: '#2ecc71', regions: 'Kerala' },
+};
+
+const AGENTS = {
+  'Harry Manuel':              {display:'Harry Manuel',
+tl:'Nikhil_TN',   region:'Tamil',   target:300000},
+  'Arbina Taj':                {display:'Arbina Taj',
+tl:'Thanushree',  region:'Kannada', target:400000},
+  'B Komala':                  {display:'Komala',
+tl:'Madan Kumar', region:'Telugu',  target:400000},
+  'Santhosh S Jain':           {display:'Santhosh S Jain',
+tl:'Thanushree',  region:'Kannada', target:500000},
+  'God Will Sandhya J P':      {display:'Sandhya',
+tl:'Nikhil_TN',   region:'Tamil',   target:150000},
+  'Srinivasa M V':             {display:'Srinivasa M V',
+tl:'Madan Kumar', region:'Kannada', target:800000},
+  'Siddappaji M':              {display:'Siddappaji M',
+tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Kotte Kiran Kumar':         {display:'Kotte Kiran Kumar',
+tl:'Thanushree',  region:'Telugu',  target:200000},
+  'Vigneswara Mohanraj':       {display:'Vigneswara Mohanraj',
+tl:'Nikhil_TN',   region:'Tamil',   target:200000},
+  'Gopal K R':                 {display:'Gopal',
+tl:'Madan Kumar', region:'Kannada', target:300000},
+  'Gudavalli Ismael':          {display:'Gudavalli Ismael',
+tl:'Madan Kumar', region:'Telugu',  target:150000},
+  'Sony Mary KP':              {display:'Sony Mary KP',
+tl:'Nikhil_KL',   region:'Malayam', target:300000},
+  'Hemanth Kumar K P':         {display:'Hemanth Kumar K P',
+tl:'Madan Kumar', region:'Kannada', target:800000},
+  'Jeevan J':                  {display:'Jeevan J',
+tl:'Nikhil_TN',   region:'Tamil',   target:500000},
+  'Nithya Karunanithi':        {display:'Nithya Karunanithi',
+tl:'Nikhil_TN',   region:'Tamil',   target:200000},
+  'Siddu':                     {display:'Siddu',
+tl:'Thanushree',  region:'Kannada', target:150000},
+  'Sumitha G':                 {display:'Sumitha G',
+tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Prema B':                   {display:'Prema B',
+tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Manoja Raju Arya':          {display:'Manoja Raju Arya',
+tl:'Thanushree',  region:'Kannada', target:200000},
+  'Steena A S':                {display:'Steena A S',
+tl:'Nikhil_KL',   region:'Malayam', target:150000},
+  'R V Priyanka':              {display:'R V Priyanka',
+tl:'Thanushree',  region:'Telugu',  target:500000},
+  'Madhu Sudhan S':            {display:'Madhu Sudhan S',
+tl:'Thanushree',  region:'Kannada', target:400000},
+  'Amanzen Kallangoden':       {display:'Amanzen Kallangoden',
+tl:'Nikhil_KL',   region:'Malayam', target:800000},
+  'Thimmiseti Sravani':        {display:'Thimmiseti Sravani',
+tl:'Madan Kumar', region:'Telugu',  target:150000},
+  'Stefy Sony A S':            {display:'Stefy Sony A S',
+tl:'Nikhil_KL',   region:'Malayam', target:150000},
+  'Joe Christy':               {display:'Joe Christy',
+tl:'Nikhil_TN',   region:'Tamil',   target:400000},
+  'Bandi. Maneesha':           {display:'Bandi Maneesha',
+tl:'Madan Kumar', region:'Telugu',  target:300000},
+  'Bandi Srikanth':            {display:'Bandi Srikanth',
+tl:'Madan Kumar', region:'Telugu',  target:150000},
+  'Lourd Gladies A':           {display:'Lourd Gladies A',
+tl:'Nikhil_TN',   region:'Tamil',   target:150000},
+  'Gajulapalli Sai Teja':      {display:'Gajulapalli Sai Teja',
+tl:'Thanushree',  region:'Telugu',  target:150000},
+  'Arun Kumar':                {display:'Arun',
+tl:'Nikhil_TN',   region:'Tamil',   target:150000},
+  'Bhagyashree Nimbal':        {display:'Bhagyashree Nimbal',
+tl:'Thanushree',  region:'Telugu',  target:150000},
+  'Mithun':                    {display:'Mithun',
+tl:'Nikhil_KL',   region:'Malayam', target:150000},
+  'Sidireddy Nagavardan Reddy':{display:'Sidireddy Nagavardan
+Reddy',tl:'Madan Kumar', region:'Telugu',  target:150000},
+};
+
+const CAR_COLORS=['#f0c040','#e74c3c','#3498db','#2ecc71','#9b59b6','#1abc9c','#e67e22','#e91e63','#00bcd4','#8bc34a','#ff6b6b','#4ecdc4','#45b7d1','#96ceb4','#dda0dd','#98d8c8','#f7dc6f','#82e0aa','#85c1e9','#f39c12'];
+const MEDALS=['🥇','🥈','🥉'];
+
+const ENCOURAGE_MSGS = [
+  "Every champion started at zero! 🌟",
+  "The engine's warming up — time to race! 🔥",
+  "First collection = first step to glory! 💪",
+  "Your track awaits! Get that first win! 🏁",
+  "Champions aren't born, they're built. Start now! ⚡",
+  "The race isn't over — it hasn't started yet! 🚀",
+  "Fuel up and hit the road! 🛣️",
+  "One collection can change everything! 💥",
+];
+
+let ALL_DATA=[], ACTIVE_ZONES=new Set(['ALL']), ACTIVE_TLS=new Set(['ALL']);
+
+function buildStars(){
+  const s=document.getElementById('stars');
+  for(let i=0;i<100;i++){
+    const d=document.createElement('div');d.className='star';
+    const sz=Math.random()*2+.5;
+    d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*4}s;`;
+    s.appendChild(d);
   }
-  throw new Error('All fetch methods failed');
 }
-function processRows(rows){
-  const now=new Date(),cm=now.getMonth()+1,cy=now.getFullYear();
-  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
-  const map={};Object.keys(AGENTS).forEach(k=>map[k]={collection:0,ptp_amount:0});
-  const dateKey=rows.length?Object.keys(rows[0]).find(k=>k.toLowerCase().includes('date')):null;
-  const amtKey=rows.length?(Object.keys(rows[0]).find(k=>k.toLowerCase()==='amount')||'Amount'):null;
-  rows.forEach(r=>{
-    const name=(r['Agent Name']||'').trim(),type=(r['Type']||'').trim();
-    const amount=parseFloat(((amtKey?r[amtKey]:'')||'0').replace(/[^0-9.]/g,''))||0;
-    if(!name||!type)return;
-    const key=Object.keys(AGENTS).find(k=>k.toLowerCase()===name.toLowerCase());
-    if(!key)return;
-    const d=parseDate(dateKey?r[dateKey]:'');if(!d)return;
-    const rd=new Date(d.getFullYear(),d.getMonth(),d.getDate());
-    if(type==='Collection'&&d.getMonth()+1===cm&&d.getFullYear()===cy)map[key].collection+=amount;
-    else if(type==='PTP'&&rd>today)map[key].ptp_amount+=amount;
-  });
-  ALL_DATA=Object.entries(AGENTS).map(([formName,info])=>{
-    const p=map[formName]||{collection:0,ptp_amount:0};
-    const ach=info.target>0?(p.collection/info.target*100):0;
-    return{formName,name:info.display,tl:info.tl,region:info.region,
-      target:info.target,collection:p.collection,ptp_amount:p.ptp_amount,
-      ptp_target:info.target*3,ach_pct:Math.round(ach*10)/10,
-      remaining:Math.max(info.target-p.collection,0)};
-  }).sort((a,b)=>b.ach_pct-a.ach_pct);
+
+function fmt(n){return new Intl.NumberFormat('en-IN').format(Math.round(n));}
+function fmtRs(n){return '₹'+fmt(n);}
+function fmtPct(n){return n.toFixed(1)+'%';}
+function getMonthName(){return new
+Date().toLocaleString('en-IN',{month:'long',year:'numeric'}).toUpperCase();}
+
+let APPS_SCRIPT_URL = '';
+
+async function fetchWithFallback(){
+  const CSV_URL =
+'https://docs.google.com/spreadsheets/d/e/2PACX-1vRSqHLaqSLHpymK3ceLrwbiCF3y_3qw8_BIGSl8TDwnWGv9tcTfiZdElZJkB1rQFcpNQOrndUT8BfXb/pub?gid=1293407987&single=true&output=csv';
+  if(APPS_SCRIPT_URL){
+    try{const res=await fetch(APPS_SCRIPT_URL);if(res.ok){const
+j=await res.json();if(j.csv){return
+j.csv;}}}catch(e){console.warn('Apps Script failed:',e.message);}
+  }
+  try{const url='https://api.allorigins.win/raw?url='+encodeURIComponent(CSV_URL)+'&t='+Date.now();const
+res=await fetch(url);if(res.ok){const t=await
+res.text();if(t&&t.length>50&&!t.includes('<!DOCTYPE')){return
+t;}}}catch(e){console.warn('allorigins failed:',e.message);}
+  try{const url='https://corsproxy.io/?'+encodeURIComponent(CSV_URL);const
+res=await fetch(url);if(res.ok){const t=await
+res.text();if(t&&t.length>50&&!t.includes('<!DOCTYPE')){return
+t;}}}catch(e){console.warn('corsproxy failed:',e.message);}
+  try{const res=await
+fetch(CSV_URL,{mode:'cors',cache:'no-store'});if(res.ok){const t=await
+res.text();if(t&&t.length>50){return
+t;}}}catch(e){console.warn('Direct fetch failed:',e.message);}
+  throw new Error('All methods failed');
 }
+
 async function loadData(manual=false){
   const btn=document.getElementById('refreshBtn');
-  btn.classList.add('spin');
+  btn.classList.add('spinning');
   document.getElementById('loadingState').style.display='flex';
-  document.getElementById('page1').classList.remove('active');
-  document.getElementById('page2').classList.remove('active');
+  document.getElementById('mainDash').style.display='none';
+  document.getElementById('errorState').style.display='none';
   try{
     const text=await fetchWithFallback();
-    processRows(parseCSV(text));
-    document.getElementById('monthBadge').textContent=getMonth();
+    const rows=parseCSV(text);
+    if(!rows.length) throw new Error('No rows parsed');
+    processRows(rows);
+    const now=new Date();
+    document.getElementById('updatedBadge').textContent='Live ·
+'+now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('monthBadge').textContent=getMonthName();
     buildFilters();
     renderAll();
     document.getElementById('loadingState').style.display='none';
-    document.getElementById('page1').classList.add('active');
-    document.getElementById('tab1').classList.add('active');
+    document.getElementById('mainDash').style.display='block';
   }catch(e){
-    document.getElementById('loadingState').innerHTML='<div style="color:var(--red);font-family:Orbitron,monospace;font-size:11px;text-align:center;">COULD NOT LOAD DATA<br><br><small style="color:var(--muted);font-family:Outfit,sans-serif;font-size:12px;">Loading demo data for preview…</small></div>';
-    setTimeout(loadDemoData,1200);
+    console.error('Load error:',e.message);
+    document.getElementById('loadingState').style.display='none';
+    document.getElementById('errorState').style.display='flex';
   }
-  btn.classList.remove('spin');
+  btn.classList.remove('spinning');
 }
-function loadDemoData(){
-  const demoCollections={'Harry Manuel':220000,'Arbina Taj':380000,'B Komala':260000,'Santhosh S Jain':470000,'Sandhya':0,'Srinivasa M V':680000,'Siddappaji M':310000,'Kotte Kiran Kumar':140000,'Vigneswara Mohanraj':180000,'Gopal':250000,'Gudavalli Ismael':0,'Sony Mary KP':210000,'Hemanth Kumar K P':590000,'Jeevan J':420000,'Nithya Karunanithi':160000,'Siddu':75000,'Sumitha G':330000,'Prema B':280000,'Manoja Raju Arya':0,'Steena A S':90000,'R V Priyanka':390000,'Madhu Sudhan S':310000,'Amanzen Kallangoden':620000,'Thimmiseti Sravani':0,'Stefy Sony A S':80000,'Joe Christy':290000,'Bandi Maneesha':0,'Bandi Srikanth':0,'Lourd Gladies A':0,'Gajulapalli Sai Teja':0,'Arun':0,'Bhagyashree Nimbal':0,'Mithun':110000,'Nagavardan Reddy':0};
+
+function parseDate(ds){
+  if(!ds||!ds.trim()) return null;
+  ds=ds.trim();
+  let d=null;
+  try{
+    if(ds.includes('/')){const p=ds.split('/');if(p.length===3){const
+m=parseInt(p[0]),dy=parseInt(p[1]),yr=parseInt(p[2]);d=new
+Date(yr>100?yr:2000+yr,m-1,dy);}}
+    else if(ds.includes('-')){const parts=ds.split('
+')[0].split('-').map(Number);if(parts.length===3) d=new
+Date(parts[0],parts[1]-1,parts[2]);}
+    else{d=new Date(ds);}
+  }catch(e){return null;}
+  return(d&&!isNaN(d.getTime()))?d:null;
+}
+
+function processRows(rows){
+  const now=new Date();
+  const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  const cm=now.getMonth()+1, cy=now.getFullYear();
+  const map={};
+  Object.keys(AGENTS).forEach(k=>{map[k]={collection:0,ptp_amount:0};});
+
+  if(rows.length>0) console.log('CSV Headers:',Object.keys(rows[0]));
+  const dateKey=rows.length>0?Object.keys(rows[0]).find(k=>k.toLowerCase().includes('date')):null;
+  const amtKey=rows.length>0?(Object.keys(rows[0]).find(k=>k.toLowerCase()==='amount')||'Amount'):null;
+
+  rows.forEach(r=>{
+    const agentName=(r['Agent Name']||'').trim();
+    const type=(r['Type']||'').trim();
+    const rawDate=(dateKey?r[dateKey]:'')||'';
+    const amount=parseFloat(((amtKey?r[amtKey]:'')||'0').toString().replace(/[^0-9.]/g,''))||0;
+    if(!agentName||!type) return;
+    const key=Object.keys(AGENTS).find(k=>k.toLowerCase()===agentName.toLowerCase());
+    if(!key) return;
+    const d=parseDate(rawDate);
+    if(!d) return;
+    const rowDate=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+    const rowMonth=d.getMonth()+1, rowYear=d.getFullYear();
+    if(type==='Collection'){
+      if(rowMonth===cm&&rowYear===cy) map[key].collection+=amount;
+    } else if(type==='PTP'){
+      if(rowDate>today) map[key].ptp_amount+=amount;
+    }
+  });
+
   ALL_DATA=Object.entries(AGENTS).map(([formName,info])=>{
-    const c=demoCollections[info.display]||0;
-    const ach=info.target>0?(c/info.target*100):0;
-    return{formName,name:info.display,tl:info.tl,region:info.region,
-      target:info.target,collection:c,ptp_amount:c*2.1,ptp_target:info.target*3,
-      ach_pct:Math.round(ach*10)/10,remaining:Math.max(info.target-c,0)};
+    const perf=map[formName]||{collection:0,ptp_amount:0};
+    const ach=info.target>0?(perf.collection/info.target*100):0;
+    return{
+      formName, name:info.display, tl:info.tl, region:info.region,
+      target:info.target, collection:perf.collection,
+      ptp_amount:perf.ptp_amount,
+      ptp_target:info.target*3,  // PTP target = 3× collection target
+      ach_pct:Math.round(ach*10)/10,
+      remaining:Math.max(info.target-perf.collection,0)
+    };
   }).sort((a,b)=>b.ach_pct-a.ach_pct);
-  document.getElementById('monthBadge').textContent=getMonth()+' (DEMO)';
-  buildFilters();
-  renderAll();
-  document.getElementById('loadingState').style.display='none';
-  document.getElementById('page1').classList.add('active');
-  document.getElementById('tab1').classList.add('active');
 }
 
 function buildFilters(){
+  const zones=[...new Set(ALL_DATA.map(a=>a.region))].sort();
   const tls=[...new Set(ALL_DATA.map(a=>a.tl))].sort();
-  const wrap=document.getElementById('tlFilters');
-  wrap.innerHTML=`<button class="fb ${ACTIVE_TL==='ALL'?'active':''}" onclick="setTL('ALL',this)">All</button>`
-    +tls.map(t=>`<button class="fb ${ACTIVE_TL===t?'active':''}" onclick="setTL('${t}',this)">${t}</button>`).join('');
+  const make=(id,items,fnName)=>{
+    document.getElementById(id).innerHTML=
+      `<button class="fb active" data-v="ALL"
+onclick="${fnName}('ALL',this)">All</button>`
+      +items.map(v=>`<button class="fb" data-v="${v}"
+onclick="${fnName}('${v}',this)">${v}</button>`).join('');
+  };
+  make('zoneFilters',zones,'toggleZone');
+  make('tlFilters',tls,'toggleTL');
 }
-function setTL(v,btn){
-  ACTIVE_TL=v;
-  document.querySelectorAll('#tlFilters .fb').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderAgentPage();
+function toggleFilter(val,btn,set,gid){
+  if(val==='ALL'){set.clear();set.add('ALL');document.querySelectorAll(`#${gid}
+.fb`).forEach(b=>b.classList.toggle('active',b.dataset.v==='ALL'));}
+  else{
+    set.delete('ALL');document.querySelector(`#${gid}
+.fb[data-v="ALL"]`).classList.remove('active');
+    if(set.has(val)){set.delete(val);btn.classList.remove('active');if(!set.size){set.add('ALL');document.querySelector(`#${gid}
+.fb[data-v="ALL"]`).classList.add('active');}}
+    else{set.add(val);btn.classList.add('active');}
+  }
+  applyFilters();
 }
+function toggleZone(v,b){toggleFilter(v,b,ACTIVE_ZONES,'zoneFilters');}
+function toggleTL(v,b){toggleFilter(v,b,ACTIVE_TLS,'tlFilters');}
+
 function getFiltered(){
   const q=document.getElementById('searchBox').value.toLowerCase();
-  return ALL_DATA.filter(a=>(ACTIVE_TL==='ALL'||a.tl===ACTIVE_TL)&&a.name.toLowerCase().includes(q)).sort((a,b)=>b.ach_pct-a.ach_pct);
+  return ALL_DATA.filter(a=>{
+    return(ACTIVE_ZONES.has('ALL')||ACTIVE_ZONES.has(a.region))
+      &&(ACTIVE_TLS.has('ALL')||ACTIVE_TLS.has(a.tl))
+      &&a.name.toLowerCase().includes(q);
+  }).sort((a,b)=>b.ach_pct-a.ach_pct);
 }
+function applyFilters(){renderAll();}
 
 function renderAll(){
-  renderAgentPage();
-  renderSupervisorPage();
-}
-
-function renderAgentPage(){
   const all=getFiltered();
   const racing=all.filter(a=>a.collection>0);
   const benched=all.filter(a=>a.collection===0);
-  buildKPI1(all);
+
+  buildKPI(all);
+  buildTicker();
+  buildOverallBanner();
+  buildTLRace();
   buildPodium(racing);
   buildTracks(racing);
   buildBench(benched);
-  document.getElementById('cntBadge').textContent=`${racing.length} racing · ${benched.length} in pits`;
+  document.getElementById('cntBadge').textContent=racing.length+'
+racing · '+benched.length+' in pits';
 }
-function buildKPI1(data){
+
+function buildKPI(data){
   const totC=data.reduce((s,a)=>s+a.collection,0);
   const totT=data.reduce((s,a)=>s+a.target,0);
   const overall=totT>0?(totC/totT*100):0;
+  const avg=data.length?data.reduce((s,a)=>s+a.ach_pct,0)/data.length:0;
   const above=data.filter(a=>a.ach_pct>=100).length;
   const active=data.filter(a=>a.collection>0).length;
-  const leader=data.filter(a=>a.collection>0)[0];
-  document.getElementById('kpiStrip1').innerHTML=`
-    <div class="kpi"><div class="lbl">Total Collected</div><div class="val val-gold">${fmtRs(totC)}</div><div class="sub">vs ${fmtRs(totT)} target</div></div>
-    <div class="kpi"><div class="lbl">Team Achievement</div><div class="val ${overall>=100?'val-green':'val-blue'}">${fmtPct(overall)}</div><div class="sub">vs targets</div></div>
-    <div class="kpi"><div class="lbl">Targets Hit ≥100%</div><div class="val val-green">${above}</div><div class="sub">out of ${data.length} agents</div></div>
-    <div class="kpi"><div class="lbl">Active Racers</div><div class="val" style="color:#fff">${active}</div><div class="sub">collecting this month</div></div>
-    <div class="kpi"><div class="lbl">Race Leader</div><div class="val val-gold" style="font-size:13px;">${leader?leader.name.split(' ')[0]:'–'}</div><div class="sub">${leader?fmtPct(leader.ach_pct):''}</div></div>
-  `;
-}
-function buildPodium(data){
-  const top3=data.slice(0,3);
-  const order=[1,0,2];
-  document.getElementById('podium').innerHTML=order.filter(i=>top3[i]).map(i=>{
-    const a=top3[i];
-    const racing=getFiltered().filter(x=>x.collection>0);
-    return `<div class="pod-card p${i+1}" onclick="openAgentPopup(${i})">
-      <span class="pod-medal">${MEDALS[i]}</span>
-      <div class="pod-name">${a.name}</div>
-      <div class="pod-pct">${fmtPct(a.ach_pct)}</div>
-      <div class="pod-sub">${fmtRs(a.collection)}</div>
-      <div class="pod-tl">${a.tl}</div>
-    </div>`;
-  }).join('');
-}
-function buildTracks(data){
-  const wrap=document.getElementById('trackList');
-  if(!data.length){wrap.innerHTML='<div style="text-align:center;padding:30px;color:var(--muted);font-family:Orbitron,monospace;font-size:11px;">No racers match filter</div>';return;}
-  wrap.innerHTML=data.map((a,i)=>{
-    const color=CAR_COLORS[i%CAR_COLORS.length];
-    const achColor=a.ach_pct>=100?'var(--green)':a.ach_pct>=75?'var(--gold2)':a.ach_pct>=50?'var(--blue)':'var(--red)';
-    const medal=i<3?MEDALS[i]:`<span style="font-size:10px;color:var(--muted)">${i+1}</span>`;
-    return `<div class="track-row ${a.ach_pct>=100?'finished':''}" id="tr${i}" onclick="openAgentPopup(${i})">
-      <div class="track-road"></div><div class="track-center"></div>
-      <div class="track-fill" id="tf${i}" style="background:${color};width:0%"></div>
-      <div class="track-rank">${medal}</div>
-      <div class="car-grp" id="tc${i}" style="left:8%">
-        ${makeCarSVG(color,i,a.ach_pct>=100)}
-        <div class="car-label">
-          <div class="car-name">${a.ach_pct>=100?'🏆 ':''}${a.name}</div>
-          <div class="car-stat" style="color:${achColor}">${fmtPct(a.ach_pct)} · ${fmtRs(a.collection)}</div>
-        </div>
-      </div>
-      ${a.ach_pct>=100?`<div class="fin-trophy">🏆</div>`:`<div class="ach-badge" style="color:${achColor}">${fmtPct(a.ach_pct)}</div>`}
-      <div class="finish-line"></div>
-    </div>`;
-  }).join('');
-  setTimeout(()=>{
-    data.forEach((a,i)=>{
-      const pct=Math.min(a.ach_pct,150);
-      const carL=a.ach_pct>=100?84:Math.min(Math.max(pct/150*80,8),80);
-      const fillW=Math.min(pct/150*100,100);
-      const c=document.getElementById(`tc${i}`);
-      const f=document.getElementById(`tf${i}`);
-      if(c)c.style.left=carL+'%';
-      if(f)f.style.width=fillW+'%';
-    });
-  },200);
-}
-function makeCarSVG(color,idx,finished){
-  const wd=finished?'0.1s':'0.35s';
-  return `<svg class="car-svg" viewBox="0 0 72 30" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
-    <ellipse cx="36" cy="28" rx="24" ry="2" fill="rgba(0,0,0,.4)"/>
-    <rect x="4" y="11" width="58" height="13" rx="4" fill="${color}"/>
-    <path d="M17 11 L24 3 L48 3 L55 11Z" fill="${color}cc"/>
-    <path d="M27 10 L31 4 L45 4 L49 10Z" fill="#a8d8ff" opacity=".75"/>
-    ${finished?`<path d="M4 17 L62 17 L62 18.5 L4 18.5Z" fill="#f0c040" opacity=".6"/>`:''}
-    <rect x="59" y="14" width="4" height="3" rx="1" fill="#ffff88" opacity=".9"/>
-    <rect x="3" y="14" width="3" height="3" rx="1" fill="#ff3333" opacity=".9"/>
-    <g transform="translate(55,24)"><circle r="5" fill="#1a1a1a"/><circle r="3.5" fill="#2d2d2d"/>
-      <g style="animation:wheelSpin ${wd} linear infinite;transform-origin:0 0">
-        <line x1="0" y1="-3" x2="0" y2="3" stroke="#555" stroke-width="1.2"/>
-        <line x1="-3" y1="0" x2="3" y2="0" stroke="#555" stroke-width="1.2"/>
-      </g><circle r="1.2" fill="#888"/></g>
-    <g transform="translate(17,24)"><circle r="5" fill="#1a1a1a"/><circle r="3.5" fill="#2d2d2d"/>
-      <g style="animation:wheelSpin ${wd} linear infinite;transform-origin:0 0">
-        <line x1="0" y1="-3" x2="0" y2="3" stroke="#555" stroke-width="1.2"/>
-        <line x1="-3" y1="0" x2="3" y2="0" stroke="#555" stroke-width="1.2"/>
-      </g><circle r="1.2" fill="#888"/></g>
-    ${finished?`<text x="34" y="20" text-anchor="middle" font-size="6" fill="#f0c040" font-family="monospace" font-weight="bold">★</text>`:''}
-    <style>@keyframes wheelSpin{to{transform:rotate(360deg)}}</style>
-  </svg>`;
-}
-function buildBench(benched){
-  const sec=document.getElementById('benchSec');
-  if(!benched.length){sec.style.display='none';return;}
-  sec.style.display='block';
-  document.getElementById('benchGrid').innerHTML=benched.map(a=>`
-    <div style="background:var(--surf);border:1px solid var(--bdr);border-radius:10px;padding:10px 14px;min-width:150px;">
-      <div style="font-size:11px;font-weight:700;color:var(--muted2);">${a.name}</div>
-      <div style="font-size:10px;color:var(--muted);margin-top:2px;">Target: ${fmtRs(a.target)}</div>
-      <div style="font-size:10px;color:var(--gold2);margin-top:3px;font-style:italic;">🔋 Ready to race!</div>
-    </div>
-  `).join('');
+  const racing=data.filter(a=>a.collection>0);
+  document.getElementById('kpiStrip').innerHTML=`
+    <div class="kpi"><div class="lbl">Total Collection</div><div
+class="val gold">${fmtRs(totC)}</div><div class="sub">vs
+${fmtRs(totT)} agent targets</div></div>
+    <div class="kpi"><div class="lbl">Overall Achievement</div><div
+class="val ${overall>=100?'green':'blue'}">${fmtPct(overall)}</div><div
+class="sub">Team average: ${fmtPct(avg)}</div></div>
+    <div class="kpi"><div class="lbl">Target Hit ≥100%</div><div
+class="val green">${above}</div><div class="sub">out of ${data.length}
+agents</div></div>
+    <div class="kpi"><div class="lbl">⛽ PTP Hover</div><div class="val
+purple">3× Target</div><div class="sub">Hover any car to see
+PTP</div></div>
+    <div class="kpi"><div class="lbl">Active Racers</div><div
+class="val white">${active}</div><div class="sub">with
+collections</div></div>
+    <div class="kpi"><div class="lbl">Race Leader</div><div class="val
+gold">${racing[0]?racing[0].name.split(' ')[0]:'–'}</div><div
+class="sub">${racing[0]?fmtPct(racing[0].ach_pct):''}</div></div>`;
 }
 
-function renderSupervisorPage(){
+// ── TICKER ──
+function buildTicker(){
   const tlData=getTLData();
+  const totalC=ALL_DATA.reduce((s,a)=>s+a.collection,0);
+  const overallPct=(totalC/OVERALL_TARGET*100).toFixed(1);
   const sorted=Object.values(tlData).sort((a,b)=>b.pct-a.pct);
-  buildKPI2(sorted);
-  buildRunningTrack(sorted);
-  buildSVTable(sorted);
+
+  const items=[
+    {color:'#f0c040',text:`🏁 GRAND PRIX ${overallPct}% — Overall Team
+Achievement`},
+    ...sorted.map((t,i)=>{
+      const rank=['👑 LEADER','🥈 P2','🥉 P3','4th'][i];
+      const status=t.pct>=100?'TARGET CROSSED ✅':t.pct>=75?'ON TRACK
+🔥':t.pct>=50?'IN RACE ⚡':'NEEDS FUEL ⛽';
+      return {color:t.color,text:`${rank} · ${t.tl} ·
+${t.pct.toFixed(1)}% · ${fmtRs(t.collected)} collected · ${status}`};
+    }),
+    {color:'#a78bfa',text:`⛽ PTP Rule: Generate 3× your collection
+target to keep your tank full`},
+    {color:'#22c55e',text:`🏎️
+${ALL_DATA.filter(a=>a.collection>0).length} agents currently racing ·
+${ALL_DATA.filter(a=>a.ach_pct>=100).length} targets crossed`},
+  ];
+
+  const html=items.map(it=>`
+    <span class="ticker-item">
+      <span class="ticker-dot" style="background:${it.color}"></span>
+      <span style="color:#ffffff;opacity:.9">${it.text}</span>
+    </span>
+    <span class="ticker-sep">✦</span>
+  `).join('');
+  // Duplicate for seamless infinite loop
+  document.getElementById('tickerInner').innerHTML=html+html;
 }
+
+// ── OVERALL ARENA ──
+function buildOverallBanner(){
+  const totalCollected=ALL_DATA.reduce((s,a)=>s+a.collection,0);
+  const pct=(totalCollected/OVERALL_TARGET)*100;           // exact %
+  const clampedPct=Math.min(pct,100);                      // bar max 100%
+  const remaining=Math.max(OVERALL_TARGET-totalCollected,0);
+  const active=ALL_DATA.filter(a=>a.collection>0).length;
+
+  document.getElementById('arenaCollected').textContent=fmtRs(totalCollected);
+
+  const giant=document.getElementById('arenaPctGiant');
+  giant.textContent=pct.toFixed(1)+'%';
+  giant.style.color=pct>=100?'var(--green)':pct>=75?'var(--gold)':pct>=50?'var(--blue)':'var(--red)';
+
+  const fill=document.getElementById('arenaFill');
+  const gradMap=pct>=100?'linear-gradient(90deg,#22c55e,#86efac,#22c55e)':
+    pct>=75?'linear-gradient(90deg,#f97316,#f0c040,#f97316)':
+    pct>=50?'linear-gradient(90deg,#3b82f6,#a78bfa,#3b82f6)':
+    'linear-gradient(90deg,#f87171,#fca5a5,#f87171)';
+  fill.style.background=gradMap;
+  // Width = exact achievement %, capped at 100%
+  setTimeout(()=>fill.style.width=clampedPct+'%',200);
+
+  // Car position mirrors fill exactly (leave ~8% right margin so car
+stays visible)
+  const carLeft=Math.min(Math.max(clampedPct*0.88,3),88);
+  setTimeout(()=>{
+    const car=document.getElementById('arenaCar');
+    if(car) car.style.left=carLeft+'%';
+  },300);
+
+  // Speed streaks
+  const streaksEl=document.getElementById('arenaStreaks');
+  if(streaksEl){
+    streaksEl.innerHTML=Array.from({length:5},(_,i)=>`
+      <div class="arena-streak"
+style="top:${-8+i*4}px;left:${-40-i*12}px;width:${30+i*10}px;background:linear-gradient(90deg,transparent,#f0c04066);animation-delay:${i*0.06}s"></div>
+    `).join('');
+    streaksEl.style.left=carLeft+'%';
+  }
+
+  // Road dashes
+  const dashes=document.getElementById('arenaDashes');
+  if(dashes){
+    dashes.innerHTML=Array.from({length:8},(_,i)=>`
+      <div class="road-dash"
+style="bottom:${8+i%3*10}px;left:${5+i*12}%;width:${20+Math.random()*20}px;animation-delay:${i*0.05}s;animation-duration:${0.3+Math.random()*0.2}s"></div>
+    `).join('');
+  }
+
+  const remEl=document.getElementById('arenaRemaining');
+  remEl.textContent=remaining>0?`🏁 Still needed:
+${fmtRs(remaining)}`:'🏆 OVERALL TARGET CROSSED!';
+  remEl.className='arena-remaining'+(remaining===0?' done':'');
+  document.getElementById('arenaAgents').textContent=`${active}/${ALL_DATA.length}
+agents collecting`;
+}
+
+// ── GET TL DATA helper ──
 function getTLData(){
-  const res={};
+  const tlData={};
   Object.entries(TL_TARGETS).forEach(([tl,info])=>{
     const agents=ALL_DATA.filter(a=>a.tl===tl);
     const collected=agents.reduce((s,a)=>s+a.collection,0);
     const pct=info.target>0?(collected/info.target*100):0;
-    res[tl]={...info,tl,collected,pct:Math.round(pct*10)/10,
-      agents,agentCount:agents.length,
+    tlData[tl]={...info,tl,collected,pct:Math.round(pct*10)/10,
+      agents,
+      agentCount:agents.length,
       activeCount:agents.filter(a=>a.collection>0).length,
       hitTarget:agents.filter(a=>a.ach_pct>=100).length,
       remaining:Math.max(info.target-collected,0)};
   });
-  return res;
-}
-function buildKPI2(sorted){
-  const totC=sorted.reduce((s,t)=>s+t.collected,0);
-  const overallPct=OVERALL_TARGET>0?(totC/OVERALL_TARGET*100):0;
-  const leader=sorted[0];
-  document.getElementById('kpiStrip2').innerHTML=`
-    <div class="kpi"><div class="lbl">Grand Total</div><div class="val val-gold">${fmtRs(totC)}</div><div class="sub">of ${fmtRs(OVERALL_TARGET)}</div></div>
-    <div class="kpi"><div class="lbl">Overall %</div><div class="val ${overallPct>=100?'val-green':'val-blue'}">${fmtPct(overallPct)}</div><div class="sub">team achievement</div></div>
-    <div class="kpi"><div class="lbl">Leading TL</div><div class="val val-gold" style="font-size:13px;">${leader?leader.tl:'–'}</div><div class="sub">${leader?fmtPct(leader.pct):''}</div></div>
-    <div class="kpi"><div class="lbl">Supervisors Racing</div><div class="val" style="color:#fff">${sorted.length}</div><div class="sub">all on the track</div></div>
-  `;
+  return tlData;
 }
 
-function maleRunnerSVG(color,s){
-  return `<svg viewBox="0 0 40 64" width="40" height="64" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
-    <style>
-      @keyframes rB${s}{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-2px) rotate(1deg)}}
-      @keyframes rAF${s}{0%,100%{transform:rotate(30deg)}50%{transform:rotate(-30deg)}}
-      @keyframes rAB${s}{0%,100%{transform:rotate(-30deg)}50%{transform:rotate(30deg)}}
-      @keyframes rLF${s}{0%,100%{transform:rotate(40deg)}50%{transform:rotate(-40deg)}}
-      @keyframes rLB${s}{0%,100%{transform:rotate(-40deg)}50%{transform:rotate(40deg)}}
-      @keyframes rFt${s}{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(10deg)}}
-    </style>
-    <g style="animation:rB${s} .5s ease-in-out infinite;transform-origin:20px 32px">
-      <circle cx="20" cy="8" r="7" fill="#e8c49a"/>
-      <path d="M14 6 Q20 0 26 6" fill="#333"/>
-      <circle cx="17" cy="8" r="1.2" fill="#fff"/><circle cx="23" cy="8" r="1.2" fill="#fff"/>
-      <circle cx="17.4" cy="8.2" r=".6" fill="#222"/><circle cx="23.4" cy="8.2" r=".6" fill="#222"/>
-      <rect x="13" y="16" width="14" height="18" rx="3" fill="${color}"/>
-      <rect x="16" y="20" width="8" height="9" rx="1" fill="rgba(0,0,0,.25)"/>
-      <g style="transform-origin:14px 18px;animation:rAF${s} .5s ease-in-out infinite">
-        <rect x="7" y="18" width="7" height="3" rx="1.5" fill="${color}"/>
-        <circle cx="6" cy="19.5" r="2.5" fill="#e8c49a"/>
-      </g>
-      <g style="transform-origin:26px 18px;animation:rAB${s} .5s ease-in-out infinite">
-        <rect x="26" y="18" width="7" height="3" rx="1.5" fill="${color}"/>
-        <circle cx="34" cy="19.5" r="2.5" fill="#e8c49a"/>
-      </g>
-      <rect x="13" y="32" width="14" height="8" rx="2" fill="#222"/>
-      <g style="transform-origin:16px 40px;animation:rLF${s} .5s ease-in-out infinite">
-        <rect x="14" y="40" width="5" height="14" rx="2.5" fill="#e8c49a"/>
-        <g style="transform-origin:16.5px 54px;animation:rFt${s} .5s ease-in-out infinite">
-          <rect x="11" y="53" width="10" height="4" rx="2" fill="#333"/>
-          <rect x="10" y="54" width="5" height="3" rx="1.5" fill="#555"/>
-        </g>
-      </g>
-      <g style="transform-origin:24px 40px;animation:rLB${s} .5s ease-in-out infinite">
-        <rect x="22" y="40" width="5" height="14" rx="2.5" fill="#e8c49a"/>
-        <g style="transform-origin:24.5px 54px;animation:rFt${s} .5s ease-in-out infinite .25s">
-          <rect x="21" y="53" width="10" height="4" rx="2" fill="#333"/>
-          <rect x="21" y="54" width="5" height="3" rx="1.5" fill="#555"/>
-        </g>
-      </g>
-    </g>
-  </svg>`;
-}
+// ── TL COMMAND CENTERS — REDESIGNED ──
+function buildTLRace(){
+  const tlData=getTLData();
+  const sorted=Object.values(tlData).sort((a,b)=>b.pct-a.pct);
 
-function femaleRunnerSVG(color){
-  return `<svg viewBox="0 0 40 68" width="40" height="68" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
-    <style>
-      @keyframes rBF{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-2px) rotate(1deg)}}
-      @keyframes rAFF{0%,100%{transform:rotate(30deg)}50%{transform:rotate(-30deg)}}
-      @keyframes rABF{0%,100%{transform:rotate(-30deg)}50%{transform:rotate(30deg)}}
-      @keyframes rLFF{0%,100%{transform:rotate(38deg)}50%{transform:rotate(-38deg)}}
-      @keyframes rLBF{0%,100%{transform:rotate(-38deg)}50%{transform:rotate(38deg)}}
-      @keyframes rFtF{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(10deg)}}
-    </style>
-    <g style="animation:rBF .5s ease-in-out infinite;transform-origin:20px 34px">
-      <circle cx="20" cy="9" r="7.5" fill="#e8c49a"/>
-      <path d="M12 7 Q20 -2 28 7 Q28 3 20 1 Q12 3 12 7Z" fill="#2c1a0e"/>
-      <path d="M25 6 Q30 12 32 20 Q30 22 28 18 Q27 12 25 9Z" fill="#2c1a0e"/>
-      <circle cx="27" cy="8" r="2" fill="${color}" opacity=".8"/>
-      <circle cx="17" cy="9" r="1.2" fill="#fff"/><circle cx="23" cy="9" r="1.2" fill="#fff"/>
-      <circle cx="17.4" cy="9.2" r=".6" fill="#3a2010"/><circle cx="23.4" cy="9.2" r=".6" fill="#3a2010"/>
-      <path d="M17.5 13.5 Q20 15 22.5 13.5" fill="none" stroke="#d4826e" stroke-width="1" stroke-linecap="round"/>
-      <path d="M13 18 Q20 14 27 18 L28 34 Q20 36 12 34 Z" fill="${color}"/>
-      <path d="M16 18 Q20 16 24 18" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
-      <g style="transform-origin:14px 20px;animation:rAFF .5s ease-in-out infinite">
-        <rect x="6" y="19" width="8" height="3" rx="1.5" fill="${color}"/>
-        <circle cx="5" cy="20.5" r="2.5" fill="#e8c49a"/>
-      </g>
-      <g style="transform-origin:26px 20px;animation:rABF .5s ease-in-out infinite">
-        <rect x="26" y="19" width="8" height="3" rx="1.5" fill="${color}"/>
-        <circle cx="35" cy="20.5" r="2.5" fill="#e8c49a"/>
-      </g>
-      <path d="M12 33 Q20 37 28 33 L30 42 Q20 44 10 42 Z" fill="#111"/>
-      <path d="M10 40 Q20 43 30 40 L31 45 Q20 47 9 45Z" fill="${color}" opacity=".6"/>
-      <g style="transform-origin:16px 43px;animation:rLFF .5s ease-in-out infinite">
-        <rect x="14" y="43" width="5" height="15" rx="2.5" fill="#e8c49a"/>
-        <g style="transform-origin:16.5px 58px;animation:rFtF .5s ease-in-out infinite">
-          <rect x="11" y="57" width="10" height="4" rx="2" fill="#333"/>
-          <rect x="10" y="58" width="5" height="3" rx="1.5" fill="${color}"/>
-        </g>
-      </g>
-      <g style="transform-origin:24px 43px;animation:rLBF .5s ease-in-out infinite">
-        <rect x="22" y="43" width="5" height="15" rx="2.5" fill="#e8c49a"/>
-        <g style="transform-origin:24.5px 58px;animation:rFtF .5s ease-in-out infinite .25s">
-          <rect x="21" y="57" width="10" height="4" rx="2" fill="#333"/>
-          <rect x="21" y="58" width="5" height="3" rx="1.5" fill="${color}"/>
-        </g>
-      </g>
-    </g>
-  </svg>`;
-}
+  const rankMeta=[
+    {emoji:'👑',label:'LEADER',bg:'linear-gradient(145deg,#1a1200,#0f1628)',ribbonBg:'#f0c040',ribbonText:'#000'},
+    {emoji:'🥈',label:'2ND
+PLACE',bg:'linear-gradient(145deg,#111820,#0a0e1a)',ribbonBg:'#c0c0d0',ribbonText:'#000'},
+    {emoji:'🥉',label:'3RD
+PLACE',bg:'linear-gradient(145deg,#150d08,#0a0e1a)',ribbonBg:'#cd7f32',ribbonText:'#fff'},
+    {emoji:'4️⃣',label:'4TH
+PLACE',bg:'linear-gradient(145deg,#0d0f1a,#0a0e1a)',ribbonBg:'#253560',ribbonText:'#94a3b8'},
+  ];
 
-function buildRunningTrack(sorted){
-  const scene=document.getElementById('runningScene');
-  const rankEmojis=['🥇','🥈','🥉','4️⃣'];
-  scene.innerHTML=sorted.map((t,i)=>{
-    const isFinished=t.pct>=100;
-    const achColor=t.pct>=100?'var(--green)':t.pct>=75?'var(--gold2)':t.pct>=50?'var(--blue)':'var(--red)';
-    const isWoman=(t.gender==='f');
-    const runnerSVG=isWoman?femaleRunnerSVG(t.color):maleRunnerSVG(t.color,i);
-    return `<div class="track-lane ${isFinished?'finished':''}" id="tl${i}">
-      <div class="lane-fill" id="lf${i}" style="background:${t.color};width:0%"></div>
-      <div class="lane-road"></div>
-      <div class="lane-center"></div>
-      <div class="lane-num">${rankEmojis[i]||i+1}</div>
-      <div class="runner-grp" id="rg${i}" style="left:8%">
-        <div class="runner-fig">${runnerSVG}</div>
-        <div class="runner-info">
-          <div class="runner-name">${t.tl}${isWoman?' 👩':''}${isFinished?' 🏆':''}</div>
-          <div class="runner-pct" style="color:${achColor}">${fmtPct(t.pct)}</div>
-          <div class="runner-amt">${fmtRs(t.collected)}</div>
-          <div class="runner-rem">${t.remaining>0?'Need: '+fmtRs(t.remaining):'✅ Target crossed!'}</div>
-        </div>
+  const moraleMessages=(t,i)=>{
+    if(t.pct>=100) return `<strong>🏆 TARGET CROSSED!</strong>
+Exceptional work — the finish flag is yours. Keep the momentum for
+bonus miles!`;
+    if(t.pct>=75)  return `<strong>🔥 Final stretch!</strong>
+${t.pct.toFixed(0)}% there. Just ${fmtRs(t.remaining)} more to cross
+the line. You've got this!`;
+    if(t.pct>=50)  return `<strong>⚡ Halfway and
+accelerating!</strong> ${t.activeCount} warriors on the road. Push the
+gas — the podium is within reach!`;
+    if(i===0)      return `<strong>🏎️ You're leading!</strong> Set
+the pace — the team follows your fuel pressure. Drive hard every
+single day!`;
+    return `<strong>🛠️ Time to ignite!</strong> Every collection
+counts. Get those engines roaring — the race is still wide open!`;
+  };
+
+  // SVG ring helper
+  const ring=(pct,color)=>{
+    const r=22,circ=2*Math.PI*r;
+    const offset=circ-(Math.min(pct,100)/100)*circ;
+    return `<svg class="tl-ring-svg" viewBox="0 0 56 56">
+      <circle class="tl-ring-bg" cx="28" cy="28" r="${r}"/>
+      <circle class="tl-ring-fill" cx="28" cy="28" r="${r}" stroke="${color}"
+        stroke-dasharray="${circ}" stroke-dashoffset="${circ}"
+        style="transition:stroke-dashoffset 2s cubic-bezier(.34,1.4,.64,1)"
+        id="ring_${pct.toFixed(0)}_${Math.random().toString(36).slice(2,6)}"/>
+    </svg>`;
+  };
+
+  document.getElementById('tlDashboards').innerHTML=sorted.map((t,i)=>{
+    const meta=rankMeta[i];
+    const achColor=t.pct>=100?'#4ade80':t.pct>=75?'#fbbf24':t.pct>=50?'#60a5fa':'#f87171';
+    const carPos=Math.min(Math.max(t.pct/100*80,2),84);
+    const ringCirc=2*Math.PI*22;
+    const ringOffset=ringCirc-(Math.min(t.pct,100)/100)*ringCirc;
+
+    // Agent dots
+    const dots=t.agents.map(a=>{
+      const dotColor=a.collection<=0?'rgba(255,255,255,.08)':a.ach_pct>=100?'#4ade80':t.color;
+      const glow=a.collection>0?`box-shadow:0 0 5px ${dotColor}88`:''
+      return `<div class="tl-agent-dot" title="${a.name}:
+${a.ach_pct}%" style="background:${dotColor};${glow}"></div>`;
+    }).join('');
+
+    const gapText=i===0?`${sorted[0].pct.toFixed(1)}% ·
+Leading`:`-${fmtRs(Math.max(sorted[0].collected-t.collected,0))} vs
+leader`;
+
+    return `<div class="tl-dash"
+style="background:${meta.bg};border:1.5px solid
+${t.color}44;${i===0?`box-shadow:0 0 32px ${t.color}30,0 8px 32px
+rgba(0,0,0,.5)`:''}" id="tlcard_${i}">
+      <!-- Diagonal rank ribbon -->
+      <div class="tl-ribbon"><div class="tl-ribbon-inner"
+style="background:${meta.ribbonBg};color:${meta.ribbonText}">${meta.emoji}
+${meta.label}</div></div>
+
+      <!-- Hero header -->
+      <div class="tl-dash-hero"
+style="background:linear-gradient(135deg,${t.color}1a,transparent)">
+        <div class="tl-hero-rank-num" style="color:${t.color}">${i+1}</div>
+        <div class="tl-hero-badge"
+style="color:${t.color};border-color:${t.color}44;background:${t.color}11">${meta.emoji}
+${meta.label}</div>
+        <div class="tl-hero-name">${t.tl}</div>
+        <div class="tl-hero-region">${t.regions}</div>
       </div>
-      ${isFinished?`<div class="run-trophy">🏆</div>`:`<div class="lane-ach" style="color:${achColor}">${fmtPct(t.pct)}</div>`}
-      <div class="run-finish"></div>
-    </div>`;
-  }).join('');
-  setTimeout(()=>{
-    sorted.forEach((t,i)=>{
-      const pct=Math.min(t.pct,150);
-      const runnerL=t.pct>=100?80:Math.min(Math.max(pct/150*76,8),76);
-      const fillW=Math.min(pct/150*100,100);
-      const rg=document.getElementById(`rg${i}`);
-      const lf=document.getElementById(`lf${i}`);
-      if(rg)rg.style.left=runnerL+'%';
-      if(lf)lf.style.width=fillW+'%';
-    });
-  },300);
-}
 
-function buildSVTable(sorted){
-  const leader=sorted[0];
-  const medals=['🥇','🥈','🥉','4️⃣'];
-  document.getElementById('svTableBody').innerHTML=sorted.map((t,i)=>{
-    const achColor=t.pct>=100?'var(--green)':t.pct>=75?'var(--gold2)':t.pct>=50?'var(--blue)':'var(--red)';
-    const gap=i===0?'–':'-'+fmtRs(Math.max(leader.collected-t.collected,0));
-    const initials=t.tl.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-    const isWoman=(t.gender==='f');
-    return `<tr style="cursor:pointer;" onclick="openSVPopup(${i})">
-      <td><div class="rank-badge">${medals[i]||i+1}</div></td>
-      <td>
-        <div class="tl-name-cell">
-          <div class="tl-avatar" style="background:${t.color}22;border-color:${t.color};color:${t.color}">${initials}</div>
-          <div>
-            <div style="font-weight:700;color:#fff;font-size:12px;">${t.tl}${isWoman?' 👩':''}</div>
-            <div style="font-size:10px;color:var(--muted);">${t.regions} · ${t.agentCount} agents</div>
+      <!-- % + ring -->
+      <div class="tl-pct-zone">
+        <div>
+          <div class="tl-pct-big"
+style="color:${achColor};text-shadow:0 0 24px
+${achColor}66">${t.pct.toFixed(1)}%</div>
+          <div class="tl-pct-sub">Achievement</div>
+        </div>
+        <div class="tl-ring-wrap">
+          <svg class="tl-ring-svg" viewBox="0 0 56 56">
+            <circle class="tl-ring-bg" cx="28" cy="28" r="22"/>
+            <circle class="tl-ring-fill" cx="28" cy="28" r="22"
+stroke="${achColor}"
+              stroke-dasharray="${ringCirc.toFixed(1)}"
+              stroke-dashoffset="${ringCirc.toFixed(1)}"
+              id="tlring_${i}"/>
+          </svg>
+          <div class="tl-ring-label">
+            <div class="tl-ring-val"
+style="color:${achColor}">${t.activeCount}</div>
+            <div class="tl-ring-agents">active</div>
           </div>
         </div>
-      </td>
-      <td>
-        <div style="font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:${achColor};margin-bottom:3px;">${fmtPct(t.pct)}</div>
-        <div class="tl-pct-bar"><div class="tl-pct-fill" style="width:${Math.min(t.pct,100)}%;background:${t.color}"></div></div>
-      </td>
-      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--green);">${fmtRs(t.collected)}</td>
-      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);">${fmtRs(t.target)}</td>
-      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:${i===0?'var(--green)':'var(--red)'};">${gap}</td>
-    </tr>`;
+      </div>
+
+      <!-- Agent dots -->
+      <div class="tl-dots-row">${dots}</div>
+
+      <!-- Mini track -->
+      <div class="tl-track-zone">
+        <div class="tl-track-label">
+          <span class="tl-track-lbl-l">${fmtRs(t.collected)}</span>
+          <span class="tl-track-lbl-r"
+style="color:${t.remaining>0?'#f87171':'#4ade80'}">${t.remaining>0?'−'+fmtRs(t.remaining):'✅
+Done!'}</span>
+        </div>
+        <div class="tl-mini-track">
+          <div class="tl-mini-road"></div>
+          <div class="tl-mini-fill" id="tlmf_${i}"
+style="background:${t.color};width:0%"></div>
+          <div class="tl-mini-car" id="tlmc_${i}"
+style="left:2%">${i===0?'🏎️':'🚗'}</div>
+          <div class="tl-mini-finish"></div>
+          ${t.pct>=100?`<div class="tl-mini-trophy">🏆</div>`:''}
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="tl-stats-strip">
+        <div class="tl-stat-box">
+          <div class="tl-stat-lbl">Target</div>
+          <div class="tl-stat-val"
+style="color:${t.color}">${fmtRs(t.target)}</div>
+        </div>
+        <div class="tl-stat-box">
+          <div class="tl-stat-lbl">Hit 100%</div>
+          <div class="tl-stat-val"
+style="color:#fbbf24">${t.hitTarget} / ${t.agentCount} 🎯</div>
+        </div>
+        <div class="tl-stat-box" style="grid-column:1/-1">
+          <div class="tl-stat-lbl">${i===0?'🏆 Gap to 2nd':'📍 Gap to
+Leader'}</div>
+          <div class="tl-stat-val"
+style="color:${i===0?'#4ade80':'#f87171'};font-size:11px">${gapText}</div>
+        </div>
+      </div>
+
+      <!-- Morale message -->
+      <div class="tl-morale"
+style="color:rgba(255,255,255,.8)">${moraleMessages(t,i)}</div>
+    </div>`;
+  }).join('');
+
+  // Animate mini track cars, fills, and rings
+  setTimeout(()=>{
+    sorted.forEach((t,i)=>{
+      const mf=document.getElementById(`tlmf_${i}`);
+      const mc=document.getElementById(`tlmc_${i}`);
+      const ringEl=document.getElementById(`tlring_${i}`);
+      const w=Math.min(t.pct,100)+'%';
+      const carP=Math.min(Math.max(t.pct/100*80,2),84)+'%';
+      const circ=2*Math.PI*22;
+      const offset=circ-(Math.min(t.pct,100)/100)*circ;
+      if(mf) mf.style.width=w;
+      if(mc) mc.style.left=carP;
+      if(ringEl) ringEl.style.strokeDashoffset=offset.toFixed(1);
+    });
+  },400);
+}
+
+function buildPodium(data){
+  // Only agents with collection > 0 qualify for podium
+  const top3=data.filter(a=>a.collection>0).slice(0,3);
+  const order=[1,0,2];
+  document.getElementById('podium').innerHTML=order.filter(i=>top3[i]).map(i=>{
+    const a=top3[i];
+    return `<div class="podium-card p${i+1}"
+onclick="openFuelPopup(${i},'racing')">
+      <span class="podium-medal">${MEDALS[i]}</span>
+      <div class="podium-name">${a.name}</div>
+      <div class="podium-pct">${fmtPct(a.ach_pct)}</div>
+      <div class="podium-sub">${fmtRs(a.collection)}</div>
+      <div class="podium-tl">${a.tl}</div>
+      <div class="podium-bar"></div>
+    </div>`;
+  }).join('');
+  const cw=document.getElementById('confettiWrap');
+  const cols=['#f0c040','#e74c3c','#3498db','#2ecc71','#9b59b6','#f97316'];
+  cw.innerHTML=Array.from({length:18},(_,i)=>{
+    const c=cols[i%cols.length];
+    return `<div class="conf-dot"
+style="left:${Math.random()*100}%;background:${c};animation-delay:${Math.random()*3}s;animation-duration:${2+Math.random()*2}s;"></div>`;
   }).join('');
 }
 
-// Store TL data globally for popup use
-let _SV_DATA = [];
-function renderSupervisorPage(){
-  const tlData=getTLData();
-  _SV_DATA=Object.values(tlData).sort((a,b)=>b.pct-a.pct);
-  buildKPI2(_SV_DATA);
-  buildRunningTrack(_SV_DATA);
-  buildSVTable(_SV_DATA);
+function buildBench(benched){
+  const sec=document.getElementById('benchSection');
+  const grid=document.getElementById('benchGrid');
+  if(!benched.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  grid.innerHTML=benched.map((a,i)=>{
+    const msg=ENCOURAGE_MSGS[Math.floor(Math.random()*ENCOURAGE_MSGS.length)];
+    const emojis=['💤','😴','🛋️','☕','🔋','⏳','🎯','💡'];
+    const emoji=emojis[i%emojis.length];
+    return `<div class="bench-card">
+      <div class="bench-name">${a.name}</div>
+      <div class="bench-target">Target: ${fmtRs(a.target)} · ${a.tl}</div>
+      <div class="bench-msg">${msg}</div>
+      <div class="bench-emoji">${emoji}</div>
+    </div>`;
+  }).join('');
 }
 
-function openAgentPopup(idx){
-  const data=getFiltered().filter(a=>a.collection>0);
-  const a=data[idx];if(!a)return;
+// ── TRACKS (only racing agents) ──
+function makeSmoke(color, count=4){
+  let html='<div class="smoke-container">';
+  for(let i=0;i<count;i++){
+    const sz=6+Math.random()*8, top=-4+Math.random()*10,
+delay=Math.random()*1.2, dur=0.9+Math.random()*0.6;
+    html+=`<div class="smoke-dot"
+style="width:${sz}px;height:${sz}px;background:rgba(180,180,180,0.35);top:${top}px;--sd:${dur}s;--sdl:${delay}s;"></div>`;
+  }
+  return html+'</div>';
+}
+function makeSpeedLines(color, count=4){
+  let html='<div class="speed-lines">';
+  for(let i=0;i<count;i++){
+    const w=12+Math.random()*20, delay=Math.random()*0.4,
+dur=0.3+Math.random()*0.2;
+    html+=`<div class="speed-line"
+style="width:${w}px;background:${color};--sl:${dur}s;--sll:${delay}s;"></div>`;
+  }
+  return html+'</div>';
+}
+function makeNitro(ach){
+  if(ach<100) return '';
+  return `<div class="nitro"><svg width="18" height="14" viewBox="0 0 18 14">
+    <path d="M18 7 L8 1 L10 6 L0 7 L10 8 L8 13Z" fill="#f97316"
+opacity=".9" style="animation:nitroFlame .2s ease-in-out
+infinite;transform-origin:right center"/>
+    <path d="M14 7 L7 3 L9 6.5 L2 7 L9 7.5 L7 11Z" fill="#fbbf24"
+opacity=".7" style="animation:nitroFlame .15s ease-in-out infinite
+.05s;transform-origin:right center"/>
+  </svg></div>`;
+}
+
+function buildTracks(data){
+  const wrap=document.getElementById('trackWrap');
+  if(!data.length){
+    wrap.innerHTML='<div
+style="text-align:center;padding:40px;color:var(--muted);font-family:Orbitron,monospace;font-size:12px;">No
+racers match this filter — all in the pits!</div>';
+    return;
+  }
+  const maxPTP=Math.max(...data.map(a=>a.ptp_amount),1);
+
+  wrap.innerHTML=data.map((a,i)=>{
+    const color=CAR_COLORS[i%CAR_COLORS.length];
+    const pct=Math.min(a.ach_pct,150);
+    const isFinished=a.ach_pct>=100;
+    const medal=i<3?MEDALS[i]:`<span
+style="font-size:10px;color:var(--muted)">${i+1}</span>`;
+    const achColor=isFinished?'var(--green)':a.ach_pct>=75?'var(--gold2)':a.ach_pct>=50?'var(--blue)':'var(--red)';
+
+    // PTP info
+    const ptpGenerated=a.ptp_amount;
+    const ptpTarget=a.ptp_target;
+    const ptpNeeded=Math.max(ptpTarget-ptpGenerated,0);
+    const ptpPct=Math.min((ptpGenerated/ptpTarget)*100,100);
+
+    const tooltip=`<div class="car-tooltip">
+      <div class="tt-name">${isFinished?'🏆 ':''} ${a.name}
+${isFinished?'— FINISHED! 🏁':''}</div>
+      <div class="tt-row"><span class="tt-lbl">Achievement</span><span
+class="tt-v" style="color:${achColor}">${fmtPct(a.ach_pct)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">Collected</span><span
+class="tt-v" style="color:var(--green)">${fmtRs(a.collection)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">Target</span><span
+class="tt-v" style="color:var(--gold)">${fmtRs(a.target)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">Remaining</span><span
+class="tt-v" style="color:${a.remaining>0?'var(--red)':'var(--green)'}">${a.remaining>0?fmtRs(a.remaining):'✅
+Done!'}</span></div>
+      <div class="tt-divider"></div>
+      <div class="tt-ptp-title">⛽ PTP Pipeline (3× Target)</div>
+      <div class="tt-row"><span class="tt-lbl">PTP
+Generated</span><span class="tt-v"
+style="color:var(--purple)">${fmtRs(ptpGenerated)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">PTP Target
+(3×)</span><span class="tt-v"
+style="color:var(--gold)">${fmtRs(ptpTarget)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">PTP Still
+Needed</span><span class="tt-v"
+style="color:${ptpNeeded>0?'var(--red)':'var(--green)'}">${ptpNeeded>0?fmtRs(ptpNeeded):'✅
+Done!'}</span></div>
+      <div class="tt-row"><span class="tt-lbl">PTP
+Coverage</span><span class="tt-v"
+style="color:${ptpPct>=100?'var(--green)':ptpPct>=50?'var(--blue)':'var(--red)'}">${fmtPct(ptpPct)}</span></div>
+      <div class="tt-divider"></div>
+      <div class="tt-row"><span class="tt-lbl">TL</span><span
+class="tt-v" style="color:var(--muted2)">${a.tl}</span></div>
+      <div class="tt-row"><span class="tt-lbl"
+style="color:var(--purple)">⛽ Click to check fuel</span><span
+class="tt-v">→</span></div>
+    </div>`;
+
+    const roadMarkings=`<div
+style="position:absolute;top:50%;left:36px;right:14px;height:1px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.07)
+0,rgba(255,255,255,.07) 12px,transparent 12px,transparent
+24px);transform:translateY(-50%);"></div>`;
+
+    const ptpBarWidth=`${Math.min(ptpPct,100)*0.82}%`; // scale to track width
+
+    const carSvg=isFinished?supercavSVG(color,i):animatedCarSVG(color,i,i===0,a.ach_pct);
+
+    return `<div class="track-row ${isFinished?'finished':''}" id="tr${i}">
+      <div class="track-road"></div>
+      ${roadMarkings}
+      <div class="track-fill" id="tf${i}"
+style="background:${color};width:0%"></div>
+      <div class="ptp-track-bar" id="tp${i}"
+style="width:0%;right:${100-Math.min(pct/150*82+8,90)}%;max-width:${Math.min(pct/150*80,80)}%"></div>
+      <div class="track-rank">${medal}</div>
+      <div class="car-group ${isFinished?'supercar-mode':'racing'}"
+id="tc${i}" style="left:8%;--car-color:${color}"
+onclick="openFuelPopup(${i},'racing')">
+        ${tooltip}
+        ${makeNitro(a.ach_pct)}
+        ${makeSmoke(color)}
+        ${makeSpeedLines(color)}
+        ${carSvg}
+        <div class="car-label">
+          <div class="car-name">${isFinished?'🏆 ':''}${a.name}</div>
+          <div class="car-stats"
+style="color:${achColor}">${fmtPct(a.ach_pct)} ·
+${fmtRs(a.collection)}</div>
+          <div class="ptp-pill">⛽ ${fmtRs(ptpGenerated)} /
+${fmtRs(ptpTarget)}</div>
+        </div>
+      </div>
+      ${isFinished?`<div class="finish-trophy">🏆</div>`:''}
+      <div class="ach-badge"
+style="color:${achColor};${isFinished?'opacity:.9':''}">${isFinished?'✅':''}
+${fmtPct(a.ach_pct)}</div>
+      <div class="finish-line"></div>
+    </div>`;
+  }).join('');
+
+  // Animate cars
+  setTimeout(()=>{
+    data.forEach((a,i)=>{
+      const pct=Math.min(a.ach_pct,150);
+      // Finished agents park AT the finish line (right edge)
+      const carL=a.ach_pct>=100 ? 84 : Math.min(Math.max(pct/150*80,8),82);
+      const trackFillW=Math.min(pct/150*100,100);
+      const ptpBarW=Math.min((a.ptp_amount/a.ptp_target)*82,82);
+      const c=document.getElementById(`tc${i}`);
+      const f=document.getElementById(`tf${i}`);
+      const p=document.getElementById(`tp${i}`);
+      if(c) c.style.left=carL+'%';
+      if(f) f.style.width=trackFillW+'%';
+      if(p) p.style.width=ptpBarW+'%';
+    });
+  },150);
+
+  setTimeout(()=>startCarMicroAnimations(data),2500);
+}
+
+function startCarMicroAnimations(data){
+  data.forEach((a,i)=>{
+    if(a.ach_pct>=100) return; // finished cars don't jitter
+    const car=document.getElementById(`tc${i}`);
+    if(!car) return;
+    const jitterInterval=setInterval(()=>{
+      if(!document.getElementById(`tc${i}`)) return
+clearInterval(jitterInterval);
+      const pct=Math.min(a.ach_pct,150);
+      const base=Math.min(Math.max(pct/150*80,8),82);
+      const jitter=(Math.random()-0.5)*0.6;
+      car.style.left=(base+jitter)+'%';
+    }, 800+Math.random()*400);
+  });
+}
+
+// ── REGULAR CAR ──
+function animatedCarSVG(color, idx, isLeader, achPct){
+  const wheelDur=isLeader?'0.15s':achPct>50?'0.25s':'0.4s';
+  const glowColor=achPct>=100?'#22c55e':achPct>=75?color:achPct>=50?color:'#f87171';
+  const bodyHighlight=color+'cc';
+  return `<svg class="car-svg" viewBox="0 0 72 30"
+xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <defs><filter id="glow${idx}"><feGaussianBlur stdDeviation="1.5"
+result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode
+in="SourceGraphic"/></feMerge></filter></defs>
+    <ellipse cx="36" cy="28" rx="26" ry="2.5" fill="rgba(0,0,0,0.4)"/>
+    <rect x="4" y="10" width="58" height="14" rx="5"
+fill="${glowColor}" opacity=".15" filter="url(#glow${idx})"/>
+    <rect x="4" y="11" width="58" height="13" rx="4" fill="${color}"/>
+    <path d="M17 11 L24 3 L48 3 L55 11Z" fill="${bodyHighlight}"/>
+    <path d="M27 10 L31 4 L45 4 L49 10Z" fill="#a8d8ff" opacity=".75"/>
+    <rect x="20" y="4" width="6" height="6" rx="1" fill="#a8d8ff" opacity=".5"/>
+    <rect x="4" y="17" width="58" height="2" rx="1"
+fill="rgba(255,255,255,0.12)"/>
+    <rect x="59" y="14" width="4" height="3" rx="1" fill="#ffff88"
+opacity=".9" style="animation:engineGlow .4s ease-in-out infinite"/>
+    <rect x="3" y="14" width="3" height="3" rx="1" fill="#ff3333"
+opacity=".9" style="animation:engineGlow .3s ease-in-out infinite
+.1s"/>
+    <g transform="translate(55,24)"><circle r="5.5"
+fill="#1a1a1a"/><circle r="4" fill="#2d2d2d"/><g
+style="animation:wheelSpin ${wheelDur} linear
+infinite;transform-origin:0 0"><line x1="0" y1="-3.5" x2="0" y2="3.5"
+stroke="#555" stroke-width="1.2"/><line x1="-3.5" y1="0" x2="3.5"
+y2="0" stroke="#555" stroke-width="1.2"/></g><circle r="1.5"
+fill="#888"/></g>
+    <g transform="translate(17,24)"><circle r="5.5"
+fill="#1a1a1a"/><circle r="4" fill="#2d2d2d"/><g
+style="animation:wheelSpin ${wheelDur} linear
+infinite;transform-origin:0 0"><line x1="0" y1="-3.5" x2="0" y2="3.5"
+stroke="#555" stroke-width="1.2"/><line x1="-3.5" y1="0" x2="3.5"
+y2="0" stroke="#555" stroke-width="1.2"/></g><circle r="1.5"
+fill="#888"/></g>
+    <text x="34" y="20" text-anchor="middle" font-size="5.5"
+fill="#fff" opacity=".6" font-family="monospace"
+font-weight="bold">${idx+1}</text>
+    ${isLeader?`<text x="34" y="10" text-anchor="middle" font-size="5"
+fill="${color}" font-family="monospace" font-weight="bold"
+style="animation:engineGlow .8s ease-in-out infinite">★</text>`:''}
+  </svg>`;
+}
+
+// ── SUPERCAR (100%+ achievement) ──
+function supercavSVG(color, idx){
+  return `<svg class="car-svg" viewBox="0 0 80 28"
+xmlns="http://www.w3.org/2000/svg"
+style="overflow:visible;width:64px;height:28px;">
+    <defs>
+      <filter id="sglow${idx}"><feGaussianBlur stdDeviation="2"
+result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode
+in="SourceGraphic"/></feMerge></filter>
+      <linearGradient id="sbody${idx}" x1="0" y1="0" x2="1"
+y2="0"><stop offset="0%" stop-color="${color}"/><stop offset="50%"
+stop-color="#fff" stop-opacity=".3"/><stop offset="100%"
+stop-color="${color}"/></linearGradient>
+      <linearGradient id="sroof${idx}" x1="0" y1="0" x2="0"
+y2="1"><stop offset="0%" stop-color="#fff" stop-opacity=".6"/><stop
+offset="100%" stop-color="${color}"
+stop-opacity=".8"/></linearGradient>
+    </defs>
+    <!-- Glow aura -->
+    <ellipse cx="40" cy="20" rx="34" ry="7" fill="${color}"
+opacity=".2" filter="url(#sglow${idx})" style="animation:engineGlow
+.6s ease-in-out infinite"/>
+    <!-- Shadow -->
+    <ellipse cx="40" cy="27" rx="28" ry="2" fill="rgba(0,0,0,0.5)"/>
+    <!-- Wide low body -->
+    <path d="M5 14 L12 8 L68 8 L75 14 L75 22 L5 22 Z"
+fill="url(#sbody${idx})" filter="url(#sglow${idx})"/>
+    <!-- Sleek roof -->
+    <path d="M18 8 L26 2 L54 2 L62 8 Z" fill="url(#sroof${idx})"/>
+    <!-- Windshield -->
+    <path d="M28 7 L33 2.5 L48 2.5 L53 7 Z" fill="#b0e0ff" opacity=".85"/>
+    <!-- Side air vents -->
+    <rect x="6" y="13" width="8" height="2" rx="1" fill="rgba(0,0,0,0.4)"/>
+    <rect x="7" y="16" width="6" height="1.5" rx=".7" fill="rgba(0,0,0,0.3)"/>
+    <!-- Gold racing stripe -->
+    <rect x="5" y="17" width="70" height="2.5" rx="1" fill="#f0c040"
+opacity=".6"/>
+    <!-- Front spoiler -->
+    <path d="M70 20 L78 22 L78 23 L70 22 Z" fill="${color}" opacity=".8"/>
+    <!-- Rear diffuser -->
+    <path d="M2 19 L5 21 L5 22 L2 23 Z" fill="${color}" opacity=".7"/>
+    <!-- LED headlights -->
+    <rect x="67" y="12" width="6" height="2" rx="1" fill="#fff"
+opacity="1" style="animation:engineGlow .2s ease-in-out infinite"/>
+    <rect x="67" y="15" width="4" height="1.5" rx=".7" fill="#fff"
+opacity=".6" style="animation:engineGlow .3s ease-in-out infinite
+.05s"/>
+    <!-- Taillights -->
+    <rect x="3" y="13" width="4" height="2" rx="1" fill="#ff0044"
+opacity="1" style="animation:engineGlow .25s ease-in-out infinite"/>
+    <!-- Front wheel (bigger, low profile) -->
+    <g transform="translate(62,22)">
+      <circle r="5.5" fill="#111"/>
+      <circle r="4.2" fill="#222"/>
+      <g style="animation:wheelSpin .1s linear infinite;transform-origin:0 0">
+        <line x1="0" y1="-3.2" x2="0" y2="3.2" stroke="#888"
+stroke-width="1.5"/>
+        <line x1="-3.2" y1="0" x2="3.2" y2="0" stroke="#888"
+stroke-width="1.5"/>
+        <line x1="-2.2" y1="-2.2" x2="2.2" y2="2.2" stroke="#666"
+stroke-width="1"/>
+        <line x1="2.2" y1="-2.2" x2="-2.2" y2="2.2" stroke="#666"
+stroke-width="1"/>
+      </g>
+      <circle r="1.8" fill="${color}"/>
+    </g>
+    <!-- Rear wheel -->
+    <g transform="translate(18,22)">
+      <circle r="5.5" fill="#111"/>
+      <circle r="4.2" fill="#222"/>
+      <g style="animation:wheelSpin .1s linear infinite;transform-origin:0 0">
+        <line x1="0" y1="-3.2" x2="0" y2="3.2" stroke="#888"
+stroke-width="1.5"/>
+        <line x1="-3.2" y1="0" x2="3.2" y2="0" stroke="#888"
+stroke-width="1.5"/>
+        <line x1="-2.2" y1="-2.2" x2="2.2" y2="2.2" stroke="#666"
+stroke-width="1"/>
+        <line x1="2.2" y1="-2.2" x2="-2.2" y2="2.2" stroke="#666"
+stroke-width="1"/>
+      </g>
+      <circle r="1.8" fill="${color}"/>
+    </g>
+    <!-- Gold star badge -->
+    <text x="40" y="17" text-anchor="middle" font-size="7"
+fill="#f0c040" font-family="monospace" font-weight="900"
+style="animation:engineGlow .5s ease-in-out infinite">★</text>
+    <!-- Nitro sparks -->
+    <circle cx="${3+Math.random()*4}" cy="${10+Math.random()*6}" r="1"
+fill="#f0c040" style="animation:supercarspark .3s ease-in-out
+infinite"/>
+    <circle cx="${-2+Math.random()*3}" cy="${13+Math.random()*4}"
+r=".7" fill="#fff" style="animation:supercarspark .2s ease-in-out
+infinite .1s"/>
+  </svg>`;
+}
+
+// ── FUEL POPUP ──
+let _fuelAgent=null, _fuelIdx=0;
+
+function openFuelPopup(idx, dataset){
+  const data=dataset==='racing'?getFiltered().filter(a=>a.collection>0):getFiltered();
+  const a=data[idx];
+  if(!a) return;
+  _fuelAgent=a; _fuelIdx=idx;
   const color=CAR_COLORS[idx%CAR_COLORS.length];
-  const initials=a.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  const av=document.getElementById('popAv');
-  av.textContent=initials;av.style.background=color+'22';av.style.borderColor=color;av.style.color=color;
-  document.getElementById('popHdr').style.background=`linear-gradient(135deg,${color}11,transparent)`;
-  document.getElementById('popName').textContent=a.name;
-  document.getElementById('popSub').textContent='TL: '+a.tl+' · '+a.region;
-  document.getElementById('popRank').textContent=idx<3?MEDALS[idx]:'#'+(idx+1);
-  const achColor=a.ach_pct>=100?'var(--green)':a.ach_pct>=75?'var(--gold)':'var(--red)';
-  document.getElementById('popAchVal').textContent=fmtPct(a.ach_pct);
-  document.getElementById('popAchVal').style.color=achColor;
-  const fill=document.getElementById('popAchFill');
-  fill.style.width=Math.min(a.ach_pct,100)+'%';
-  fill.style.background=a.ach_pct>=100?'linear-gradient(90deg,#22c55e,#86efac)':a.ach_pct>=75?'linear-gradient(90deg,#f0c040,#fbbf24)':'linear-gradient(90deg,#f87171,#fca5a5)';
-  document.getElementById('popCollected').textContent=fmtRs(a.collection);
-  document.getElementById('popTarget').textContent=fmtRs(a.target);
-  document.getElementById('popRem').textContent=a.remaining>0?fmtRs(a.remaining):'✅ Done!';
-  document.getElementById('popRem').style.color=a.remaining>0?'var(--red)':'var(--green)';
-  document.getElementById('popPTP').textContent=fmtRs(a.ptp_amount)+' / '+fmtRs(a.ptp_target);
-  document.getElementById('popPTP').style.color='var(--purple)';
-  const msg=document.getElementById('popMsg');
-  if(a.ach_pct>=100){msg.className='pop-msg great';msg.innerHTML='🏆 <strong>Target Crossed!</strong> Outstanding — keep the momentum going!';}
-  else if(a.ach_pct>=75){msg.className='pop-msg good';msg.innerHTML='🔥 <strong>Final stretch!</strong> Just '+fmtRs(a.remaining)+' more to hit 100%!';}
-  else{msg.className='pop-msg low';msg.innerHTML='⛽ <strong>Fuel up!</strong> Need '+fmtRs(a.remaining)+' more. Every collection counts!';}
-  document.getElementById('popupOverlay').classList.add('show');
-}
-function openSVPopup(idx){
-  const t=_SV_DATA[idx];if(!t)return;
-  const color=t.color;
-  const initials=t.tl.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-  const medals=['🥇','🥈','🥉','4️⃣'];
-  const av=document.getElementById('popAv');
-  av.textContent=initials;av.style.background=color+'22';av.style.borderColor=color;av.style.color=color;
-  document.getElementById('popHdr').style.background=`linear-gradient(135deg,${color}11,transparent)`;
-  document.getElementById('popName').textContent=t.tl+(t.gender==='f'?' 👩':'');
-  document.getElementById('popSub').textContent=t.regions+' · '+t.agentCount+' agents';
-  document.getElementById('popRank').textContent=medals[idx]||'#'+(idx+1);
-  const achColor=t.pct>=100?'var(--green)':t.pct>=75?'var(--gold)':'var(--red)';
-  document.getElementById('popAchVal').textContent=fmtPct(t.pct);
-  document.getElementById('popAchVal').style.color=achColor;
-  const fill=document.getElementById('popAchFill');
-  fill.style.width=Math.min(t.pct,100)+'%';
-  fill.style.background=t.pct>=100?'linear-gradient(90deg,#22c55e,#86efac)':t.pct>=75?'linear-gradient(90deg,#f0c040,#fbbf24)':'linear-gradient(90deg,#f87171,#fca5a5)';
-  document.getElementById('popCollected').textContent=fmtRs(t.collected);
-  document.getElementById('popTarget').textContent=fmtRs(t.target);
-  document.getElementById('popRem').textContent=t.remaining>0?fmtRs(t.remaining):'✅ Done!';
-  document.getElementById('popRem').style.color=t.remaining>0?'var(--red)':'var(--green)';
-  document.getElementById('popPTP').textContent=t.activeCount+' active / '+t.hitTarget+' hit 100%';
-  document.getElementById('popPTP').style.color='var(--purple)';
-  const msg=document.getElementById('popMsg');
-  if(t.pct>=100){msg.className='pop-msg great';msg.innerHTML='🏆 <strong>Target Crossed!</strong> Team champion — '+t.hitTarget+' agents hit 100%!';}
-  else if(t.pct>=75){msg.className='pop-msg good';msg.innerHTML='🔥 <strong>Almost there!</strong> Just '+fmtRs(t.remaining)+' more to finish!';}
-  else{msg.className='pop-msg low';msg.innerHTML='⛽ <strong>Need fuel!</strong> '+fmtRs(t.remaining)+' remaining. Get all agents pushing!';}
-  document.getElementById('popupOverlay').classList.add('show');
-}
-function closePopup(){document.getElementById('popupOverlay').classList.remove('show');}
+  const initials=a.name.split('
+').map(w=>w[0]).join('').slice(0,2).toUpperCase();
 
-document.getElementById('monthBadge').textContent=getMonth();
+  const av=document.getElementById('fuelAvatar');
+  av.textContent=initials; av.style.background=color+'22';
+av.style.borderColor=color; av.style.color=color;
+  document.getElementById('fuelHdr').style.background=`linear-gradient(135deg,${color}11,transparent)`;
+  document.getElementById('fuelName').textContent=a.name;
+  document.getElementById('fuelSub').textContent='TL: '+a.tl+' · '+a.region;
+  document.getElementById('fuelRank').textContent=idx<3?MEDALS[idx]:'#'+(idx+1);
+
+  const achColor=a.ach_pct>=100?'var(--green)':a.ach_pct>=75?'var(--gold)':'var(--red)';
+  document.getElementById('fuelAchVal').textContent=fmtPct(a.ach_pct);
+  document.getElementById('fuelAchVal').style.color=achColor;
+  const achBar=document.getElementById('fuelAchBar');
+  achBar.style.width=Math.min(a.ach_pct,100)+'%';
+  achBar.style.background=a.ach_pct>=100?'linear-gradient(90deg,#22c55e,#86efac)':a.ach_pct>=75?'linear-gradient(90deg,#f0c040,#fbbf24)':'linear-gradient(90deg,#f87171,#fca5a5)';
+
+  document.getElementById('fuelCollected').textContent=fmtRs(a.collection);
+  document.getElementById('fuelRemaining').textContent=a.remaining>0?fmtRs(a.remaining):'✅
+Done!';
+  document.getElementById('fuelRemaining').style.color=a.remaining>0?'var(--red)':'var(--green)';
+
+  // PTP stats from sheet
+  const ptpGen=a.ptp_amount;
+  const ptpTgt=a.ptp_target;
+  const ptpNeeded=Math.max(ptpTgt-ptpGen,0);
+  const ptpPct=ptpTgt>0?Math.min((ptpGen/ptpTgt)*100,100):0;
+  document.getElementById('fuelPTPGenerated').textContent=fmtRs(ptpGen);
+  document.getElementById('fuelPTPTarget').textContent=fmtRs(ptpTgt);
+  document.getElementById('fuelPTPNeeded').textContent=ptpNeeded>0?fmtRs(ptpNeeded):'✅
+Done!';
+  document.getElementById('fuelPTPNeeded').style.color=ptpNeeded>0?'var(--red)':'var(--green)';
+  document.getElementById('fuelPTPProgressBar').style.width=ptpPct+'%';
+  document.getElementById('fuelPTPProgressLabel').textContent=fmtPct(ptpPct)+'
+of PTP target';
+  document.getElementById('fuelPTPTargetLabel').textContent=fmtRs(ptpTgt);
+
+  // Reset manual fuel check
+  document.getElementById('fuelInput').value='';
+  document.getElementById('fuelGaugeWrap').classList.remove('show');
+  document.getElementById('fuelResult').classList.remove('show');
+  document.getElementById('fuelGaugeFill').style.width='0%';
+
+  document.getElementById('fuelOverlay').classList.add('show');
+  setTimeout(()=>document.getElementById('fuelInput').focus(),300);
+}
+
+function openPopup(idx){openFuelPopup(idx,'racing');}
+
+function checkFuel(){
+  const a=_fuelAgent;
+  if(!a) return;
+  const ptpRaw=parseFloat(document.getElementById('fuelInput').value)||0;
+  if(ptpRaw<=0){
+    document.getElementById('fuelInput').style.borderColor='var(--red)';
+    setTimeout(()=>document.getElementById('fuelInput').style.borderColor='',1000);
+    return;
+  }
+  const remaining=Math.max(a.remaining,0);
+  const needed50=remaining*0.5;
+  const coverPct=remaining>0?Math.min((ptpRaw/remaining)*100,150):150;
+  const gaugeWrap=document.getElementById('fuelGaugeWrap');
+  gaugeWrap.classList.add('show');
+  const fill=document.getElementById('fuelGaugeFill');
+  fill.style.width='0%';
+  const displayPct=Math.min(coverPct,100);
+  let gaugeColor, resultClass, resultMsg;
+
+  if(a.remaining<=0){
+    gaugeColor='linear-gradient(90deg,#22c55e,#86efac)';
+    resultClass='full';
+    resultMsg=`🏆 <strong>Target Already
+Crossed!</strong><br>${a.name.split(' ')[0]} has achieved
+${fmtPct(a.ach_pct)}. The finish line is yours — keep collecting for
+bonus miles! 🎉`;
+  } else if(ptpRaw>=remaining){
+    gaugeColor='linear-gradient(90deg,#22c55e,#86efac)';
+    resultClass='full';
+    resultMsg=`🏆 <strong>Tank Full! Ready to finish the
+race!</strong><br>PTP of ${fmtRs(ptpRaw)} covers the full remaining
+${fmtRs(remaining)}. <strong>Convert every PTP — the finish line is
+yours!</strong> 🏁`;
+  } else if(ptpRaw>=needed50){
+    gaugeColor='linear-gradient(90deg,#60a5fa,#a78bfa)';
+    resultClass='ok';
+    resultMsg=`🚀 <strong>Fuel Sufficient!</strong><br>PTP of
+${fmtRs(ptpRaw)} covers ${fmtPct(coverPct)} of remaining. Still need
+${fmtRs(remaining-ptpRaw)} more in collections. <strong>Keep
+driving!</strong> ⚡`;
+  } else {
+    const shortfall=needed50-ptpRaw;
+    gaugeColor='linear-gradient(90deg,#f87171,#fca5a5)';
+    resultClass='low';
+    resultMsg=`🔴 <strong>Fuel Low!</strong><br>PTP of
+${fmtRs(ptpRaw)} covers only ${fmtPct(coverPct)} of remaining
+${fmtRs(remaining)}. Need at least ${fmtRs(needed50)} in PTP.
+<strong>Get ${fmtRs(shortfall)} more PTPs!</strong> ⛽`;
+  }
+
+  fill.style.background=gaugeColor;
+  document.getElementById('fuelGaugeLabelPct').textContent=fmtPct(coverPct)+'
+of remaining covered';
+  setTimeout(()=>{
+    fill.style.width=displayPct+'%';
+    document.getElementById('fuelGaugePct').textContent=fmtRs(ptpRaw)+' PTP';
+    document.getElementById('fuelGaugePct').style.color=resultClass==='low'?'var(--red)':resultClass==='full'?'var(--green)':'var(--blue)';
+  },100);
+  setTimeout(()=>{
+    const resultEl=document.getElementById('fuelResult');
+    resultEl.className='fuel-result show '+resultClass;
+    resultEl.innerHTML=resultMsg;
+  },800);
+}
+
+function closeFuel(){
+  document.getElementById('fuelOverlay').classList.remove('show');
+  _fuelAgent=null;
+}
+function closePopup(){closeFuel();}
+
+buildStars();
+document.getElementById('monthBadge').textContent=getMonthName();
 setInterval(()=>loadData(false), 5*60*1000);
 loadData();
 </script>
